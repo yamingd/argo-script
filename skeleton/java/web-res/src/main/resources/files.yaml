@@ -1,0 +1,16 @@
+folder: /data/image/fs
+
+thumbs:
+  - 160
+  - 320
+  - 480
+
+ffmpeg: /usr/local/bin/ffmpeg
+
+tasks:
+  - thumb
+  - mp3
+
+tasksleep: 500
+taskwait: 2000
+tasktry: 3

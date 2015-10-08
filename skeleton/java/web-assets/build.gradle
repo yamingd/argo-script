@@ -1,0 +1,10 @@
+apply plugin: 'war'
+
+war {
+    into('/assets'){
+        from '../web-admin/src/main/webapp/assets'
+        from '../web-home/src/main/webapp/assets'
+        from '../web-wx/src/main/webapp/assets'
+        from '../web-mobile/src/main/webapp/assets'
+    }
+}

@@ -1,0 +1,27 @@
+//
+//  Prefix.pch
+//  _project_
+//
+//  Created by Yaming on 10/4/15.
+//  Copyright © 2015 _company_.com. All rights reserved.
+//
+
+#ifndef Prefix_pch
+#define Prefix_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#ifdef __OBJC__
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
+#import "iOSBootstrap/boost.h"
+#import "AppConfig.h"
+
+#import "TSServiceBase.h"
+
+#endif
+
+#endif /* Prefix_pch */

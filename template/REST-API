@@ -1,0 +1,5 @@
+GET     /items      # Read all items
+GET     /items/:id  # Read one item
+POST    /items      # Create a new item
+PUT     /items/:id  # Update one item
+DELETE  /items/:id  # Delete one item

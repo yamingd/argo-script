@@ -1,0 +1,11 @@
+host: "smtp.example.com"
+user: "test"
+passwd: "test12345"
+feedback: "feedback@example.com"
+failedLimit: 1
+domain: "@example.com"
+batch: 100
+auth: true
+timeout: 25000
+interval: 1000
+enabled: false

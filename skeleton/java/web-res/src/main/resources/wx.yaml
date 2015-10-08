@@ -1,0 +1,5 @@
+appdomain: http://localhost.com
+token: 123
+appId: 123
+secret: 123
+enabled: false

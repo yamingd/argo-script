@@ -1,0 +1,7 @@
+description = 'test cases'
+
+dependencies {
+    compile project(':model')
+    compile project(':service')
+    compile project(':serviceImpl')
+}

@@ -1,0 +1,15 @@
+id: _name_01
+domain: http://localhost:8080
+assets: http://localhost:8080
+title: _title_
+name: _name_
+login: /account/signin
+denied: /account/denied
+logout: /account/signout
+anonymous: true
+attachmentview: X-Accel-Redirect
+
+
+ext:
+  k1: a
+  k2: b
