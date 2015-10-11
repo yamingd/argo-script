@@ -268,7 +268,7 @@ class Table(object):
             url = self.mname + '/' + url
         else:
             url = self.mname
-        self.url = url
+        self.url = url + "s"
         return url
     
     def sql_fields(self):

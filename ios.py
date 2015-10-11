@@ -9,7 +9,7 @@ import string
 
 from common import *
 
-IOS_MAPPER_BASE_FOLDER = 'ios/_project_/_project_/Mapper'
+IOS_MAPPER_BASE_FOLDER = 'ios/_project_/_project_/Mappers'
 
 def gen_model(prjinfo, minfo):
     outfolder = os.path.join(prjinfo.iosfolder, 'models')
@@ -89,7 +89,7 @@ def gen_mapper_init(prjinfo):
 
 
 def gen_service(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo.iosfolder, 'services')
+    outfolder = os.path.join(prjinfo.iosfolder, 'ios/_project_/_project_/Services')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):
@@ -107,11 +107,18 @@ def gen_service(prjinfo, minfo):
         kwargs['_tbi_'] = table
         kwargs['_cols_'] = table.columns
         kwargs['_pks_'] = table.pks
-        fname = os.path.join(fpath, 'TS' + table.entityName + 'Service.h')
+        fname = os.path.join(fpath, table.entityName + 'Service.h')
         render_template(fname, 'ios-service-h.mako', **kwargs)
 
-        fname = os.path.join(fpath, 'TS' + table.entityName + 'Service.m')
+        fname = os.path.join(fpath, table.entityName + 'Service.m')
         render_template(fname, 'ios-service-m.mako', **kwargs)
+
+def gen_controller_folder(prjinfo, minfo):
+    outfolder = os.path.join(prjinfo.iosfolder, 'ios/_project_/_project_/Controllers')
+    outfolder = format_line(outfolder, prjinfo)
+    fpath = os.path.join(outfolder, minfo['ns'])
+    if not os.path.exists(fpath):
+        os.makedirs(fpath)
 
 
 def start(prjinfo):
@@ -122,5 +129,8 @@ def start(prjinfo):
 
     for minfo in prjinfo._modules_:
         gen_mapper(prjinfo, minfo)
+        gen_service(prjinfo, minfo)
+        gen_controller_folder(prjinfo, minfo)
+
     gen_mapper_init(prjinfo)
 

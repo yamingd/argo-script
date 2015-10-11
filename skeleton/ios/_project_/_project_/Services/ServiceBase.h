@@ -1,5 +1,5 @@
 //
-//  TSServiceBase.h
+//  ServiceBase.h
 //  _project_
 //
 //  Created by _user_ on 11/5/14.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TSServiceBase : NSObject
+@interface ServiceBase : NSObject
 
 + (void) postNotice:(NSString*)name userInfo:(NSDictionary*)userInfo;
 

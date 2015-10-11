@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @Controller
-@RequestMapping("/m/{{_tbi_.mvc_url()}}s")
+@RequestMapping("/m/{{_tbi_.mvc_url()}}")
 public class Mobile{{_tbi_.entityName}}Controller extends MobileBaseController {
     
     @Autowired

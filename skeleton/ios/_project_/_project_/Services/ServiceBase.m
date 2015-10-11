@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 jiaxiaobang.com. All rights reserved.
 //
 
-#import "TSServiceBase.h"
+#import "ServiceBase.h"
 
-@implementation TSServiceBase
+@implementation ServiceBase
 
 + (void)postNotice:(NSString *)name userInfo:(NSDictionary *)userInfo{
     

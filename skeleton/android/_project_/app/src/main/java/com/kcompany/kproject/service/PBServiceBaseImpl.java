@@ -2,7 +2,7 @@ package com.kcompany.kproject.service;
 
 import com.kcompany.kproject.SqliteCommonProvider;
 import com.kcompany.kproject.SqliteUserProvider;
-import com.kcompany.kproject.model.NoResultException;
+import com.kcompany.kproject.NoResultException;
 import com.argo.sdk.AppSession;
 import com.argo.sdk.FlashBucket;
 import com.argo.sdk.http.APIClientProvider;
@@ -13,7 +13,7 @@ import javax.inject.Inject;
 /**
  * Created by user on 6/18/15.
  */
-public class TSServiceBase implements TSService {
+public class PBServiceBaseImpl implements PBServiceBase {
 
     public static final int PAGE_SIZE = 20;
 
@@ -35,7 +35,7 @@ public class TSServiceBase implements TSService {
     protected static Exception NO_RESULT_RETURN = new NoResultException();
 
     @Inject
-    public TSServiceBase(APIClientProvider apiClientProvider, AppSession appSession, Bus eventBus) {
+    public PBServiceBaseImpl(APIClientProvider apiClientProvider, AppSession appSession, Bus eventBus) {
         this.apiClientProvider = apiClientProvider;
         this.appSession = appSession;
         this.eventBus = eventBus;

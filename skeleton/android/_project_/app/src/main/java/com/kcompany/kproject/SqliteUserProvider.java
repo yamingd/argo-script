@@ -5,13 +5,14 @@ import android.content.Context;
 import com.argo.sqlite.SqliteContext;
 import com.argo.sqlite.SqliteEngine;
 import com.argo.sdk.AppSession;
+import com.kcompany.kproject.mapper.PBMapperInit;
 
 import javax.inject.Provider;
 
 import timber.log.Timber;
 
 /**
- * Created by user on 8/15/15.
+ * Created by _user_.
  */
 public class SqliteUserProvider implements Provider<SqliteContext> {
 
@@ -43,21 +44,20 @@ public class SqliteUserProvider implements Provider<SqliteContext> {
     }
 
     /**
-     *
+     * 重置数据库链接
      * @return
      */
     public synchronized void reset(boolean signIn){
         close();
         if (signIn) {
             get();
-            //TODO: call ModelInit
-            //ModelInit.prepare();
+            PBMapperInit.prepare();
             sqliteContext.clearTables();
         }
     }
 
     /**
-     *
+     * 关闭数据库链接
      */
     public void close(){
 
@@ -65,8 +65,7 @@ public class SqliteUserProvider implements Provider<SqliteContext> {
             sqliteContext.close();
         }
 
-        //TODO: call ModelInit
-        //ModelInit.reset();
+        PBMapperInit.reset();
     }
 
 }

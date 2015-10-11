@@ -13,7 +13,7 @@ import net.sqlcipher.database.SQLiteStatement;
 import timber.log.Timber;
 
 {% for c in _refms_ %}
-import com.{{prj._company_}}.{{prj._project_}}.model.{{c.ref_obj.mname}}.{{c.ref_obj.entityName}};
+import com.{{prj._company_}}.{{prj._project_}}.model.{{c.ref_obj.mname}}.PB{{c.ref_obj.entityName}};
 import com.{{prj._company_}}.{{prj._project_}}.mapper.{{c.ref_obj.mname}}.PB{{c.ref_obj.entityName}}Mapper; 
 {% endfor %}
 

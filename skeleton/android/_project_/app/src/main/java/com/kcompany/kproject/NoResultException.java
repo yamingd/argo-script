@@ -1,4 +1,4 @@
-package com.kcompany.kproject.model;
+package com.kcompany.kproject;
 
 /**
  * Created by user on 6/30/15.

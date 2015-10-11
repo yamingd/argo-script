@@ -4,7 +4,7 @@ package com.kcompany.kproject.service;
  * API服务
  * Created by _user_.
  */
-public interface TSService {
+public interface PBServiceBase {
 
     void setupEventSubscriber();
 
