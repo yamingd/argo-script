@@ -1,10 +1,11 @@
-package com.{{prj._company_}}.{{prj._name_}}.{{_module_}};
+package com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}};
 
 import com.argo.annotation.Column;
 import com.argo.annotation.Table;
 import com.google.common.base.Objects;
 import org.msgpack.annotation.MessagePackMessage;
 import java.util.Date;
+import java.util.List;
 import java.io.Serializable;
 import javax.annotation.Generated;
 
@@ -47,7 +48,7 @@ public abstract class Abstract{{_tbi_.entityName}} implements Serializable {
     public {{col.ref_javatype}} get{{ col.ref_varName.capitalize() }}(){
         return this.{{ col.ref_varName }};
     }
-    public void set{{col.ref_varName.capitalize()}}({{col.ref_javatype}} {{col.ref_varName}}){
+    public void set{{col.ref_varNameC}}({{col.ref_javatype}} {{col.ref_varName}}){
         this.{{col.ref_varName}} = {{col.ref_varName}};
     }
 

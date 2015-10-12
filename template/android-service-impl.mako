@@ -1,4 +1,4 @@
-package com.{{prj.company}}.{{prj.name}}.service.{{_tbi_.mname}};
+package com.{{prj._company_}}.{{prj._name_}}.service.{{_tbi_.mname}};
 
 import com.argo.sdk.ApiError;
 import com.argo.sdk.AppSession;
@@ -6,14 +6,19 @@ import com.argo.sdk.http.APICallback;
 import com.argo.sdk.http.APIClientProvider;
 import com.argo.sdk.http.PBuilder;
 import com.argo.sdk.protobuf.PAppResponse;
+import com.argo.sqlite.SqliteBlock;
+import net.sqlcipher.database.SQLiteDatabase;
 
-import com.{{prj.company}}.{{prj.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}ListResultEvent;
-import com.{{prj.company}}.{{prj.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}CreateResultEvent;
-import com.{{prj.company}}.{{prj.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}SaveResultEvent;
-import com.{{prj.company}}.{{prj.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}RemoveResultEvent;
+import com.{{prj._company_}}.{{prj._name_}}.service.PBServiceBaseImpl;
 
-import com.{{prj.company}}.{{prj.name}}.protobuf.{{_tbi_.mname}}.PB{{_tbi_.entityName}};
-import com.{{prj.company}}.{{prj.name}}.mapper.{{_tbi_.mname}}.PB{{_tbi_.entityName}}Mapper;
+import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}}.PB{{_tbi_.entityName}}ListResultEvent;
+import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}}.PB{{_tbi_.entityName}}CreateResultEvent;
+import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}}.PB{{_tbi_.entityName}}SaveResultEvent;
+import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}}.PB{{_tbi_.entityName}}RemoveResultEvent;
+import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}}.PB{{_tbi_.entityName}}DetailResultEvent;
+
+import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.mname}}.PB{{_tbi_.entityName}};
+import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_tbi_.mname}}.PB{{_tbi_.entityName}}Mapper;
 
 import com.squareup.okhttp.Request;
 import com.squareup.otto.Bus;
@@ -39,7 +44,7 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
     public void findLatest(int cursorId) {
         List<PB{{_tbi_.entityName}}> list = PB{{_tbi_.entityName}}Mapper.instance.selectLimit("{{_tbi_.pkCol.name}} > ?", "{{_tbi_.pkCol.name}} desc", new String[]{cursorId+"", PAGE_SIZE + "", "0"});
         if (list.size() > 0){
-            {{_tbi_.entityName}}ListResultEvent event = new {{_tbi_.entityName}}ListResultEvent(list, 1);
+            PB{{_tbi_.entityName}}ListResultEvent event = new PB{{_tbi_.entityName}}ListResultEvent(list, 1);
             event.setDataFromCache(true);
             eventBus.post(event);
         }
@@ -50,14 +55,14 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error){
                     error.printout();
-                    eventBus.post(new {{_tbi_.entityName}}ListResultEvent(error));
+                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(error));
                     return;
                 }
 
                 try {
-                    List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
+                    final List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
                     if (result.size() == 0){
-                        eventBus.post(new {{_tbi_.entityName}}ListResultEvent(result, 1));
+                        eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(result, 1));
                         return;
                     }
 
@@ -68,11 +73,11 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
                         }
                     });
 
-                    eventBus.post(new {{_tbi_.entityName}}ListResultEvent(result, 1));
+                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(result, 1));
 
                 } catch (Exception e) {
                     Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new {{_tbi_.entityName}}ListResultEvent(e));
+                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(e));
                 }
             }
         });
@@ -82,7 +87,7 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
     public void findMore(int page, int cursorId) {
         List<PB{{_tbi_.entityName}}> list = PB{{_tbi_.entityName}}Mapper.instance.selectLimit("{{_tbi_.pkCol.name}} < ?", "{{_tbi_.pkCol.name}} desc", new String[]{cursorId+"", PAGE_SIZE + "", "0"});
         if (list.size() > 0){
-            {{_tbi_.entityName}}ListResultEvent event = new {{_tbi_.entityName}}ListResultEvent(list, 1);
+            PB{{_tbi_.entityName}}ListResultEvent event = new PB{{_tbi_.entityName}}ListResultEvent(list, 1);
             event.setDataFromCache(true);
             eventBus.post(event);
             if(list.size() == PAGE_SIZE){
@@ -96,14 +101,14 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error){
                     error.printout();
-                    eventBus.post(new {{_tbi_.entityName}}ListResultEvent(error));
+                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(error));
                     return;
                 }
 
                 try {
-                    List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
+                    final List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
                     if (result.size() == 0){
-                        eventBus.post(new {{_tbi_.entityName}}ListResultEvent(result, 1));
+                        eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(result, 1));
                         return;
                     }
 
@@ -114,11 +119,11 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
                         }
                     });
 
-                    eventBus.post(new {{_tbi_.entityName}}ListResultEvent(result, 1));
+                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(result, 1));
 
                 } catch (Exception e) {
                     Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new {{_tbi_.entityName}}ListResultEvent(e));
+                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(e));
                 }
             }
         });
@@ -145,14 +150,14 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error){
                     error.printout();
-                    eventBus.post(new {{_tbi_.entityName}}DetailResultEvent(error));
+                    eventBus.post(new PB{{_tbi_.entityName}}DetailResultEvent(error));
                     return;
                 }
 
                 try {
-                    List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
+                    final List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
                     if (result.size() == 0){
-                        eventBus.post(new {{_tbi_.entityName}}DetailResultEvent(NO_RESULT_RETURN));
+                        eventBus.post(new PB{{_tbi_.entityName}}DetailResultEvent(NO_RESULT_RETURN));
                         return;
                     }
 
@@ -163,11 +168,11 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
                         }
                     });
 
-                    eventBus.post(new {{_tbi_.entityName}}DetailResultEvent(result.get(0)));
+                    eventBus.post(new PB{{_tbi_.entityName}}DetailResultEvent(result.get(0)));
 
                 } catch (Exception e) {
                     Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new {{_tbi_.entityName}}DetailResultEvent(e));
+                    eventBus.post(new PB{{_tbi_.entityName}}DetailResultEvent(e));
                 }
             }
         });
@@ -183,14 +188,14 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error){
                     error.printout();
-                    eventBus.post(new {{_tbi_.entityName}}CreateResultEvent(error));
+                    eventBus.post(new PB{{_tbi_.entityName}}CreateResultEvent(error));
                     return;
                 }
 
                 try {
-                    List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
+                    final List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
                     if (result.size() == 0){
-                        eventBus.post(new {{_tbi_.entityName}}DetailResultEvent(NO_RESULT_RETURN));
+                        eventBus.post(new PB{{_tbi_.entityName}}CreateResultEvent(NO_RESULT_RETURN));
                         return;
                     }
 
@@ -201,11 +206,11 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
                         }
                     });
 
-                    eventBus.post(new {{_tbi_.entityName}}CreateResultEvent(result.get(0)));
+                    eventBus.post(new PB{{_tbi_.entityName}}CreateResultEvent(result.get(0)));
 
                 } catch (Exception e) {
                     Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new {{_tbi_.entityName}}CreateResultEvent(e));
+                    eventBus.post(new PB{{_tbi_.entityName}}CreateResultEvent(e));
                 }
             }
         });
@@ -221,14 +226,14 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error) {
                     error.printout();
-                    eventBus.post(new {{_tbi_.entityName}}SaveResultEvent(error));
+                    eventBus.post(new PB{{_tbi_.entityName}}SaveResultEvent(error));
                     return;
                 }
 
                 try {
-                    List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
+                    final List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
                     if (result.size() == 0) {
-                        eventBus.post(new {{_tbi_.entityName}}SaveResultEvent(NO_RESULT_RETURN));
+                        eventBus.post(new PB{{_tbi_.entityName}}SaveResultEvent(NO_RESULT_RETURN));
                         return;
                     }
 
@@ -239,11 +244,11 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
                         }
                     });
 
-                    eventBus.post(new {{_tbi_.entityName}}SaveResultEvent(result.get(0)));
+                    eventBus.post(new PB{{_tbi_.entityName}}SaveResultEvent(result.get(0)));
 
                 } catch (Exception e) {
                     Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new {{_tbi_.entityName}}SaveResultEvent(e));
+                    eventBus.post(new PB{{_tbi_.entityName}}SaveResultEvent(e));
                 }
             }
         });
@@ -259,7 +264,7 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error) {
                     error.printout();
-                    eventBus.post(new {{_tbi_.entityName}}RemoveResultEvent(error));
+                    eventBus.post(new PB{{_tbi_.entityName}}RemoveResultEvent(error));
                     return;
                 }
 
@@ -272,11 +277,11 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
                         }
                     });
 
-                    eventBus.post(new {{_tbi_.entityName}}RemoveResultEvent(item));
+                    eventBus.post(new PB{{_tbi_.entityName}}RemoveResultEvent(item));
 
                 } catch (Exception e) {
                     Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new {{_tbi_.entityName}}RemoveResultEvent(e));
+                    eventBus.post(new PB{{_tbi_.entityName}}RemoveResultEvent(e));
                 }
             }
         });

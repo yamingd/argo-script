@@ -9,33 +9,49 @@
 #ifndef AppConfig_h
 #define AppConfig_h
 
+#define kListPageSize 20
+#define kAppName @"_project_"
+
+#define kQQKey @""
+#define kQQSecret @""
+
+#define kWxKey @""
+#define kWxSecret @""
+
+#define kTongJiKey @""
+#define kTongJiSecret @""
+
+
 #ifdef DEBUG
 
-#define kAppName @"_title_"
 #define kAppCookieId @"x-auth"
-#define kAppCookieSalt @"iOSBootstrapDemoSecret"
+#define kAppCookieSalt @"_project_secret_dev_"
 #define kAppAPIBaseUrl @"http://localhost:8080/m"
 #define kAppAPNSEnable NO
+#define kIMServerIP @""
+#define kIMServerPort 9080
 
 #endif
 
 #ifdef TEST
 
-#define kAppName @"_title_"
 #define kAppCookieId @"x-auth"
-#define kAppCookieSalt @"iOSBootstrapDemoSecret"
+#define kAppCookieSalt @"_project_secret_test_"
 #define kAppAPIBaseUrl @"http://localhost:8080/m"
 #define kAppAPNSEnable NO
+#define kIMServerIP @""
+#define kIMServerPort 9080
 
 #endif
 
 #ifdef RELEASE
 
-#define kAppName @"_title_"
 #define kAppCookieId @"x-auth"
-#define kAppCookieSalt @"iOSBootstrapDemoSecret"
+#define kAppCookieSalt @"_project_secret_prod_"
 #define kAppAPIBaseUrl @"http://localhost:8080/m"
 #define kAppAPNSEnable NO
+#define kIMServerIP @""
+#define kIMServerPort 9080
 
 #endif
 

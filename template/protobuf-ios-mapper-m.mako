@@ -67,17 +67,17 @@
 
 #pragma mark - Wrap
 {% for c in _tbi_.refs %}
--(void)wrap{{c.ref_varName.capitalize()}}:(PB{{_tbi_.entityName}}Builder*)builder{
+-(void)wrap{{c.ref_varNameC}}:(PB{{_tbi_.entityName}}Builder*)builder{
 {% if c.pbrepeated %}
     id val = {{c.ios.valExp("builder")}};
     if(val){
-       NSArray* items = [[PB{{c.ref_obj.entityName}}Mapper instance] gets:@"wrap{{c.ref_varName.capitalize()}}" withComma:val withRef:YES];
-       [builder set{{c.ref_varName.capitalize()}}Array:items];
+       NSArray* items = [[PB{{c.ref_obj.entityName}}Mapper instance] gets:@"wrap{{c.ref_varNameC}}" withComma:val withRef:YES];
+       [builder set{{c.ref_varNameC}}Array:items];
     }
 {% else %}
     id val = {{c.ios.valExp("builder")}};
     id item = [[PB{{c.ref_obj.entityName}}Mapper instance] get:val withRef:YES];
-    [builder set{{c.ref_varName.capitalize()}}:item];
+    [builder set{{c.ref_varNameC}}:item];
 {% endif %}
 }
 {% endfor %} 
@@ -90,20 +90,20 @@
     PB{{_tbi_.entityName}}Builder* builder = [PB{{_tbi_.entityName}}Builder builderWithPrototype:item];
 {% for c in _tbi_.refs %}
     //
-    [self wrap{{c.ref_varName.capitalize()}}:builder];
+    [self wrap{{c.ref_varNameC}}:builder];
 {% endfor %}    
 {% endif %}
 
 }
 
 {% for c in _tbi_.refs %}
--(void)wrap{{c.ref_varName.capitalize()}}List:(NSArray*)builders{
+-(void)wrap{{c.ref_varNameC}}List:(NSArray*)builders{
 {% if c.pbrepeated %}
     for(PB{{_tbi_.entityName}}Builder* builder in builders){
         id val = {{c.ios.valExp("builder")}};
         if(val){
-           NSArray* items = [[PB{{c.ref_obj.entityName}}Mapper instance] gets:@"wrap{{c.ref_varName.capitalize()}}" withComma:val withRef:YES];
-           [builder set{{c.ref_varName.capitalize()}}Array:items];
+           NSArray* items = [[PB{{c.ref_obj.entityName}}Mapper instance] gets:@"wrap{{c.ref_varNameC}}" withComma:val withRef:YES];
+           [builder set{{c.ref_varNameC}}Array:items];
         }
     }
 {% else %}
@@ -112,13 +112,13 @@
         id val = {{c.ios.valExp("builder")}};
         [vals addObject:val];
     }
-    NSArray* items = [[PB{{c.ref_obj.entityName}}Mapper instance] gets:@"wrap{{c.ref_varName.capitalize()}}List" withSet:vals withRef:YES];
+    NSArray* items = [[PB{{c.ref_obj.entityName}}Mapper instance] gets:@"wrap{{c.ref_varNameC}}List" withSet:vals withRef:YES];
     for(PB{{_tbi_.entityName}}* item in items){
         id val0 = {{c.ios.valExp("item")}};
         for(PB{{_tbi_.entityName}}Builder* builder in builders){
             id val1 = {{c.ios.valExp("builder")}};
             if([val0 isEqual:val1]){
-                [builder set{{c.ref_varName.capitalize()}}:item];
+                [builder set{{c.ref_varNameC}}:item];
             }
         }
     }
@@ -138,7 +138,7 @@
     }
 {% for c in _tbi_.refs %}
     //
-    [self wrap{{c.ref_varName.capitalize()}}List:builders];
+    [self wrap{{c.ref_varNameC}}List:builders];
 {% endfor %}    
 {% endif %}
 
@@ -151,11 +151,11 @@
     // 保存 {{c.ref_varName}}
     id {{c.ref_varName}} =  pb.{{c.ref_varName}};
     if ({{c.ref_varName}}){
-    {% if c.pbrepeated %}
+{% if c.pbrepeated %}
         [[PB{{c.ref_obj.entityName}}Mapper instance] save:@"{{_tbi_entityName}}SaveRef" withList:{{c.ref_varName}} withRef:YES];
-    {% else %}
+{% else %}
         [[PB{{c.ref_obj.entityName}}Mapper instance] save:@"{{_tbi_entityName}}SaveRef" withItem:{{c.ref_varName}} withRef:YES];
-    {% endif %}
+{% endif %}
     }
 
 {% endfor %}
@@ -174,12 +174,12 @@
     for(PB{{_tbi_.entityName}}* pb in items){
         id {{c.ref_varName}} =  pb.{{c.ref_varName}};
         if ({{c.ref_varName}}){
-    {% if c.pbrepeated %}
-        [vals addObjectsFromArray:{{c.ref_varName}}];
-    {% else %}
-        [vals addObject:{{c.ref_varName}}];
-    {% endif %}
-    }
+{% if c.pbrepeated %}
+            [vals addObjectsFromArray:{{c.ref_varName}}];
+{% else %}
+            [vals addObject:{{c.ref_varName}}];
+{% endif %}
+        }
     }
     [[PB{{c.ref_obj.entityName}}Mapper instance] save:@"{{_tbi_entityName}}SaveRefList" withList:vals withRef:YES];
     [vals removeAllObjects];

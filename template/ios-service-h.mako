@@ -10,7 +10,7 @@
 
 #import "APIClient.h"
 #import "ServiceBase.h"
-#import "PB{{_tbi_.entityName}}.h"
+#import "{{_tbi_.entityName}}Proto.pb.h"
 #import "PB{{_tbi_.entityName}}Mapper.h"
 
 @interface {{_tbi_.entityName}}Service : ServiceBase

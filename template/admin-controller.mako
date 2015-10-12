@@ -3,6 +3,7 @@ package com.{{prj._company_}}.{{prj._project_}}.web.admin.{{_module_}};
 import com.argo.db.exception.EntityNotFoundException;
 import com.argo.web.JsonResponse;
 import com.argo.collection.Pagination;
+import com.argo.security.UserIdentity;
 
 import com.{{prj._company_}}.{{prj._project_}}.web.admin.AdminBaseController;
 import com.{{prj._company_}}.{{prj._project_}}.model.{{_module_}}.{{_tbi_.entityName}};
@@ -30,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @Controller
-@RequestMapping("/a/{{_tbi_.mvc_url()}}s")
+@RequestMapping("/a/{{_tbi_.mvc_url()}}")
 public class Admin{{_tbi_.entityName}}Controller extends AdminBaseController {
 	
 	@Autowired
@@ -38,7 +39,7 @@ public class Admin{{_tbi_.entityName}}Controller extends AdminBaseController {
     
     @RequestMapping(value="{page}", method = RequestMethod.GET)
     public ModelAndView all(ModelAndView model, HttpServletRequest request, HttpServletResponse response,
-                            @PathVariable Integer page){
+                            @PathVariable Integer page) throws Exception {
 
         UserIdentity user = getCurrentUser();                    
         Pagination<{{_tbi_.entityName}}> result = new Pagination<{{_tbi_.entityName}}>();
@@ -47,30 +48,30 @@ public class Admin{{_tbi_.entityName}}Controller extends AdminBaseController {
 
         //TODO: service function
 
-        model.setViewName("/admin/{{_mvcurl_}}/list");
+        model.setViewName("/admin/{{_tbi_.mvc_url()}}/list");
         model.addObject("items", result);
 
         return model;
     }
 
 	@RequestMapping(value="/", method = RequestMethod.GET)
-    public ModelAndView add(ModelAndView model, HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView add(ModelAndView model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        model.setViewName("/admin/{{_mvcurl_}}/add");
+        model.setViewName("/admin/{{_tbi_.mvc_url()}}/add");
         model.addObject("{{_tbi_.entityName}}", new {{_tbi_.entityName}}());
 
         return model;
     }
 
     @RequestMapping(value="{id}", method = RequestMethod.GET)
-    public ModelAndView view(ModelAndView model, @PathVariable {{_tbi_.pkType}} id, HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView view(ModelAndView model, @PathVariable {{_tbi_.pkType}} id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         UserIdentity user = getCurrentUser();
 
         try {
             {{_tbi_.entityName}} item = {{_tbi_.varName}}Service.find(user, id);
             model.addObject("item", item);
-            model.setViewName("/admin/{{_mvcurl_}}/view");
+            model.setViewName("/admin/{{_tbi_.mvc_url()}}/view");
         } catch (EntityNotFoundException e) {
             RedirectView view = new RedirectView("404");
             model.setView(view);

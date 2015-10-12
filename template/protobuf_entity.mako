@@ -1,5 +1,5 @@
 {% for col in _refms_ %}
-import "{{col | capitalize}}Proto.proto";
+import "{{col}}Proto.proto";
 {% endfor %}
 
 package {{emm[_tbi_.name]}};

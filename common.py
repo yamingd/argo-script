@@ -29,6 +29,9 @@ def render_template(fname, tmplname, **kwargs):
 
 
 def read_tables(prjinfo):
+    if prjinfo._dbload_:
+        return
+        
     dbm.open(prjinfo._dburl_)
     dburl = prjinfo._dburl_.split('@')[-1]
     tbrefs = {}
@@ -46,7 +49,7 @@ def read_tables(prjinfo):
         tb = tbrefs[name]
         for c in tb.refs:
             c.ref_obj = tbrefs[c.ref_obj.name]
-
+    prjinfo._dbload_ = True
 
 def format_line(line, prjinfo):
     try:
@@ -73,8 +76,8 @@ def copy_file(src, dst, prjinfo):
 
 
 def gen_file(src, dst, prjinfo):
-    print src
-    print dst
+    #print src
+    #print dst
     if os.path.isdir(src):
         os.makedirs(dst)
     else:

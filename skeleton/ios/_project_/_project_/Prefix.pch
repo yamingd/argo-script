@@ -20,7 +20,8 @@
 #import "iOSBootstrap/boost.h"
 #import "AppConfig.h"
 
-#import "TSServiceBase.h"
+#import "FMDB.h"
+#import "ServiceBase.h"
 
 #endif
 

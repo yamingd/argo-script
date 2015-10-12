@@ -18,9 +18,9 @@ ANDROID_SERVICE_BASE_FOLDRR = 'android/_project_/app/src/main/java/com/_company_
 def gen_mapper(prjinfo, minfo):
     outfolder = os.path.join(prjinfo._root_, ANDROID_MAPPER_BASE_FOLDRR)
     outfolder = format_line(outfolder, prjinfo)
-    fpath = os.path.join(outfolder, minfo['ns'])
-    if not os.path.exists(fpath):
-        os.makedirs(fpath)
+    outfolder = os.path.join(outfolder, minfo['ns'])
+    if not os.path.exists(outfolder):
+        os.makedirs(outfolder)
 
     kwargs = {}
     kwargs['prj'] = prjinfo
@@ -61,9 +61,9 @@ def gen_mapper_init(prjinfo):
 def gen_event(prjinfo, minfo):
     outfolder = os.path.join(prjinfo._root_, ANDROID_BASE_FOLDRR + 'event')
     outfolder = format_line(outfolder, prjinfo)
-    fpath = os.path.join(outfolder, minfo['ns'])
-    if not os.path.exists(fpath):
-        os.makedirs(fpath)
+    outfolder = os.path.join(outfolder, minfo['ns'])
+    if not os.path.exists(outfolder):
+        os.makedirs(outfolder)
 
     kwargs = {}
     kwargs['prj'] = prjinfo
@@ -77,27 +77,27 @@ def gen_event(prjinfo, minfo):
     for table in minfo['tables']:
         kwargs['_tbi_'] = table
         #
-        fpath = os.path.join(outfolder, table.entityName + "CreateResultEvent.java")
+        fpath = os.path.join(outfolder, 'PB' + table.entityName + "CreateResultEvent.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-event-create.mako', **kwargs)
         #
-        fpath = os.path.join(outfolder, table.entityName + "DetailResultEvent.java")
+        fpath = os.path.join(outfolder, 'PB' + table.entityName + "DetailResultEvent.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-event-detail.mako', **kwargs)
         #
-        fpath = os.path.join(outfolder, table.entityName + "ListResultEvent.java")
+        fpath = os.path.join(outfolder, 'PB' + table.entityName + "ListResultEvent.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-event-list.mako', **kwargs)
         #
-        fpath = os.path.join(outfolder, table.entityName + "RemoveResultEvent.java")
+        fpath = os.path.join(outfolder, 'PB' + table.entityName + "RemoveResultEvent.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-event-remove.mako', **kwargs)
         #
-        fpath = os.path.join(outfolder, table.entityName + "SaveResultEvent.java")
+        fpath = os.path.join(outfolder, 'PB' + table.entityName + "SaveResultEvent.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-event-save.mako', **kwargs)
@@ -105,9 +105,9 @@ def gen_event(prjinfo, minfo):
 def gen_service(prjinfo, minfo):
     outfolder = os.path.join(prjinfo._root_, ANDROID_BASE_FOLDRR + 'service')
     outfolder = format_line(outfolder, prjinfo)
-    fpath = os.path.join(outfolder, minfo['ns'])
-    if not os.path.exists(fpath):
-        os.makedirs(fpath)
+    outfolder = os.path.join(outfolder, minfo['ns'])
+    if not os.path.exists(outfolder):
+        os.makedirs(outfolder)
 
     kwargs = {}
     kwargs['prj'] = prjinfo

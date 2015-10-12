@@ -1,0 +1,41 @@
+
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+description = 'Web All'
+
+dependencies {
+    compile project(':model')
+    compile project(':common')
+    compile project(':service')
+    compile project(':serviceImpl')
+    compile project(':web-home')
+    compile project(':web-admin')
+    compile project(':web-wx')
+    compile project(':web-mobile')
+    compile 'com.github.yamingd.argo:argo-web:2.1'
+}
+
+jettyRun {
+    httpPort=8080
+    stopPort=8081
+    contextPath ="/"
+    reload ="automatic"
+    scanIntervalSeconds = 1
+}
+
+
+war {
+
+    into("/") {
+        from '../web-assets/src/main/webapp'
+        from '../web-admin/src/main/webapp'
+        from '../web-home/src/main/webapp'
+        from '../web-wx/src/main/webapp'
+        from '../web-mobile/src/main/webapp'
+    }
+
+    into("/WEB-INF/classes"){
+        from '../web-res/src/main/resources'
+    }
+}

@@ -11,7 +11,7 @@ import dbm
 from common import *
 
 def gen_controller(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/web-home/src/main/java/com/_company_/_project_/web/home')
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/web-home/src/main/java/com/_company_/_project_/web/home')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):
@@ -39,7 +39,7 @@ def gen_controller(prjinfo, minfo):
 
 
 def gen_views(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/web-home/src/main/webapp/WEB-INF/views/home')
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/web-home/src/main/webapp/WEB-INF/views/home')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):

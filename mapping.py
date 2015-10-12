@@ -196,10 +196,10 @@ sqlite_getter = {
     'char': 'getString',
     'nchar': 'getString',
 
-    'datetime': 'getDate',
-    'date': 'getDate',
-    'timestamp': 'getDate',
-    'time': 'getDate',
+    'datetime': 'getLong',
+    'date': 'getLong',
+    'timestamp': 'getLong',
+    'time': 'getLong',
     'byte[]': 'getBlob'
 }
 

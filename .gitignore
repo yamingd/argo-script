@@ -2,4 +2,4 @@
 *.pyc
 output
 
-sx.py
+prj_*.py

@@ -12,10 +12,19 @@ class Sqlite3Column(object):
         self.column = column
         self.typeName = mapping.sqlite_types.get(column.valType, 'text')
         self.binder = mapping.sqlite_setter.get(column.valType, 'NULL')
-        self.rsGetter = mapping.sqlite_getter.get(column.valType, 'NULL')
-        self.bindValue = 'get%s()' % column.capName
+        
+    def bindValue(self, tag):
+        s = '%s.get%s()' % (tag, self.column.capName)
         if self.typeName == 'text':
-        	self.bindValue = 'filterNull(%s)' % self.bindValue
+            s = 'filterNull(%s)' % s
+        return s
+
+    def rsGetter(self, typeName=None):
+        if typeName is None:
+            return mapping.sqlite_getter.get(self.column.valType, 'NULL')
+        else:
+            return mapping.sqlite_getter.get(typeName, 'NULL')
+
 
 class Sqlite3Table(object):
 

@@ -1,5 +1,0 @@
-description = 'service definition'
-
-dependencies {
-    compile project(':model')
-}

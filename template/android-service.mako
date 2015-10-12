@@ -1,8 +1,8 @@
-package com.{{prj.company}}.{{prj.name}}.service.{{_tbi_.mname}};
+package com.{{prj._company_}}.{{prj._name_}}.service.{{_tbi_.mname}};
 
-import com.{{prj.company}}.{{prj.name}}.protobuf.{{_tbi_.mname}}.PB{{_tbi_.entityName}};
-import com.{{prj.company}}.{{prj.name}}.mapper.{{_tbi_.mname}}.PB{{_tbi_.entityName}}Mapper;
-import com.{{prj.company}}.{{prj.name}}.service.PBServiceBase;
+import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.mname}}.PB{{_tbi_.entityName}};
+import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_tbi_.mname}}.PB{{_tbi_.entityName}}Mapper;
+import com.{{prj._company_}}.{{prj._name_}}.service.PBServiceBase;
 
 import java.util.List;
 

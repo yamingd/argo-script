@@ -1,11 +1,13 @@
 package com.{{prj._company_}}.{{prj._name_}}.mapper.impl.{{_module_}};
 
 import com.argo.db.Values;
+import com.argo.db.exception.EntityNotFoundException;
 import com.argo.db.mysql.TableContext;
 import com.argo.db.template.MySqlMapper;
 
 import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.entityName}};
 import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}}.{{_tbi_.entityName}}Mapper;
+import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}}.{{_tbi_.entityName}}Tx;
 
 {% for col in _refms_ %}
 import com.{{prj._company_}}.{{prj._name_}}.model.{{emm[col.ref_obj.name]}}.{{col.ref_obj.entityName}};
@@ -16,6 +18,7 @@ import com.google.common.base.Preconditions;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -101,6 +104,16 @@ public class {{_tbi_.entityName}}MapperImpl extends MySqlMapper<{{_tbi_.entityNa
     }
 
     @Override
+    public {{_tbi_.pkType}}[] toPKArrays(String pkWithCommas){
+        String[] tmp = pkWithCommas.split(",");
+        {{_tbi_.pkType}}[] vals = new {{_tbi_.pkType}}[tmp.length];
+        for(int i=0; i<tmp.length; i++){
+            vals[i] = {{_tbi_.pkType}}.valueOf(tmp[i]);
+        }
+        return vals;
+    }
+
+    @Override
     protected {{_tbi_.entityName}} mapRow(ResultSet rs, int rowIndex) throws SQLException {
         {{_tbi_.entityName}} item = new {{_tbi_.entityName}}();
 
@@ -169,7 +182,7 @@ public class {{_tbi_.entityName}}MapperImpl extends MySqlMapper<{{_tbi_.entityNa
             s.append("{{col.name}}=?, ");
 {% if col.valTypeR != col.java_type %}        
             {{col.valTypeR}} {{col.name}} = Values.get(item.get{{col.capName}}(), {{col.valTypeR}}.class);
-            args.add({{col.capName}});
+            args.add({{col.name}});
 {% else %}
             args.add(item.get{{col.capName}}());
 {% endif %}
@@ -223,15 +236,29 @@ public class {{_tbi_.entityName}}MapperImpl extends MySqlMapper<{{_tbi_.entityNa
         return super.deleteBy(context, where, args);
     }
 
-{% for rc in _tbi_.refs %}    
-    public void wrap{{rc.ref_obj.entityName}}(TableContext context, {{_tbi_.entityName}} item) throws DataAccessException{
+{% for rc in _tbi_.refs %}
+    @Override
+    public void wrap{{rc.ref_varNameC}}(TableContext context, {{_tbi_.entityName}} item) throws DataAccessException, EntityNotFoundException{
         Preconditions.checkNotNull(item);
-        {{rc.ref_obj.entityName}} refItem = {{rc.ref_obj.varName}}Mapper.find(context, item.get{{rc.capName}}());
-        item.set{{rc.ref_varName.capitalize()}}(refItem);
+{% if rc.pbrepeated %}
+        List<{{rc.ref_obj.entityName}}> refItem = {{rc.refJavaMapper(_tbi_.varName)}}.findRows(context, item.get{{rc.capName}}(), false);
+        item.set{{rc.ref_varNameC}}(refItem);
+{% else %}
+        {{rc.ref_obj.entityName}} refItem = {{rc.refJavaMapper(_tbi_.varName)}}.find(context, item.get{{rc.capName}}());
+        item.set{{rc.ref_varNameC}}(refItem);
+{% endif %}
     }
 
-    public void wrap{{rc.ref_obj.entityName}}(TableContext context, List<{{_tbi_.entityName}}> list) throws DataAccessException{
+    @Override
+    public void wrap{{rc.ref_varNameC}}(TableContext context, List<{{_tbi_.entityName}}> list) throws DataAccessException{
         Preconditions.checkNotNull(list);
+{% if rc.pbrepeated %}
+        for(int i=0; i<list.size(); i++){
+            {{_tbi_.entityName}} item = list.get(i);
+            List<{{rc.ref_obj.entityName}}> refItems = {{rc.refJavaMapper(_tbi_.varName)}}.findRows(context, item.get{{rc.capName}}(), false);
+            item.set{{rc.ref_varNameC}}(refItems);
+        }
+{% else %}
         List<{{rc.java_type}}> ids = new ArrayList<{{rc.java_type}}>();
         for(int i=0; i<list.size(); i++){
             {{rc.java_type}} v0 = list.get(i).get{{rc.capName}}();
@@ -240,16 +267,17 @@ public class {{_tbi_.entityName}}MapperImpl extends MySqlMapper<{{_tbi_.entityNa
             }
             ids.add(v0);
         }
-        List<{{rc.ref_obj.entityName}}> refItems = {{rc.ref_obj.varName}}Mapper.selectRows(context, ids, false);
+        List<{{rc.ref_obj.entityName}}> refItems = {{rc.refJavaMapper(_tbi_.varName)}}.selectRows(context, ids, false);
         for(int i=0; i<refItems.size(); i++){
             {{rc.java_type}} v0 = refItems.get(i).getId();
             for(int j=0; j<list.size(); j++){
                 {{rc.java_type}} v1 = list.get(j).get{{rc.capName}}();
                 if(v0.equals(v1)){
-                     list.get(j).set{{rc.ref_varName.capitalize()}}(refItems.get(i));
+                     list.get(j).set{{rc.ref_varNameC}}(refItems.get(i));
                 }
             }
         }
+{% endif %}
     }
 {% endfor %}
     /********分隔线*******/

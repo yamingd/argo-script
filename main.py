@@ -18,8 +18,10 @@ import mapper
 import home
 import android
 import ios
+import protobuf
 
 actions = {
+    'project': project,
     'model': model,
     'service': service,
     'admin': admin,
@@ -27,7 +29,8 @@ actions = {
     'mapper': mapper,
     'home': home,
     'android': android,
-    'ios': ios
+    'ios': ios,
+    'pb': protobuf
 }
 
 def main():
@@ -59,7 +62,8 @@ def main():
             emm[t] = m['ns']
     prjinfo.emm = emm
     if options.action == 'init':
-        project.start(prjinfo)
+        for act in actions:
+            actions[act].start(prjinfo)
     else:
         act = actions[options.action]
         act.start(prjinfo)

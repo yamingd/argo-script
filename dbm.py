@@ -39,10 +39,13 @@ class Column(object):
         self.auto_increment = row[7] == 'auto_increment'
         self.index = index
         self.lname = self.name.lower()
+        if self.default == 'CURRENT_TIMESTAMP':
+            self.default = None
         if self.comment and self.comment.startswith('@'):
             i = self.comment.index('.')
             self.ref_obj = Table(self.comment[1:i], '')
             self.ref_varName = self.name.replace('Id', '')
+            self.ref_varNameC = self.ref_varName[0].upper() + self.ref_varName[1:]
             self.ref_type = 'optional'  # single
             self.ref_javatype = self.ref_obj.entityName
             self.pbrepeated = False
@@ -96,8 +99,8 @@ class Column(object):
     @property
     def protobuf_value(self):
         if self.java_type == 'Date':
-            return '.getTime()/1000'
-        return ''
+            return 'dateToInt(item.get%s())' % self.capName
+        return 'item.get%s()' % self.capName
 
     @property
     def protobuf_type(self):
@@ -109,6 +112,13 @@ class Column(object):
         if self.lname in ['typeid', 'typename']:
             return self.lname + '_'
         return self.lname
+
+    def refJavaMapper(self, current):
+        v = self.ref_obj.varName
+        if v == current:
+            return "this"
+        else:
+            return v + "Mapper"
 
     @property
     def cpp_type(self):
@@ -137,6 +147,8 @@ class Column(object):
     @property
     def defaultValue(self):
         if self.default:
+            if self.default.startswith('0.0'):
+                return self.default + "f"
             return self.default
         else:
             return 'null'

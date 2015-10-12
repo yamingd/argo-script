@@ -1,7 +1,0 @@
-description = 'service impl'
-
-dependencies {
-    compile project(':model')
-    compile project(':service')
-    compile project(':common')
-}

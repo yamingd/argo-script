@@ -1,11 +1,11 @@
 package com.{{prj._company_}}.{{prj._project_}}.web.home.{{_module_}};
 
 import com.argo.db.exception.EntityNotFoundException;
-import com.argo.service.ServiceException
+import com.argo.service.ServiceException;
 import com.argo.collection.Pagination;
-import com.argo.web.protobuf.PAppResponse
-import com.argo.web.protobuf.ProtobufResponse
+import com.argo.web.JsonResponse;
 import com.argo.web.Enums;
+import com.argo.security.UserIdentity;
 
 import com.{{prj._company_}}.{{prj._project_}}.web.home.HomeBaseController;
 import com.{{prj._company_}}.{{prj._project_}}.model.{{_module_}}.{{_tbi_.entityName}};
@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @Controller
-@RequestMapping("/{{_tbi_.mvc_url()}}s")
+@RequestMapping("/{{_tbi_.mvc_url()}}")
 public class Home{{_tbi_.entityName}}Controller extends HomeBaseController {
 	
     @Autowired
@@ -41,7 +41,7 @@ public class Home{{_tbi_.entityName}}Controller extends HomeBaseController {
     
     @RequestMapping(value="{page}", method = RequestMethod.GET)
     public ModelAndView all(ModelAndView model, HttpServletRequest request, HttpServletResponse response,
-                            @PathVariable Integer page){
+                            @PathVariable Integer page) throws Exception {
 
         UserIdentity user = getCurrentUser();                    
         Pagination<{{_tbi_.entityName}}> result = new Pagination<{{_tbi_.entityName}}>();
@@ -50,30 +50,30 @@ public class Home{{_tbi_.entityName}}Controller extends HomeBaseController {
 
         //TODO: service function
 
-        model.setViewName("/home/{{_mvcurl_}}/list");
+        model.setViewName("/home/{{_tbi_.mvc_url()}}/list");
         model.addObject("items", result);
 
         return model;
     }
 
     @RequestMapping(value="/", method = RequestMethod.GET)
-    public ModelAndView add(ModelAndView model, HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView add(ModelAndView model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        model.setViewName("/home/{{_mvcurl_}}/add");
+        model.setViewName("/home/{{_tbi_.mvc_url()}}/add");
         model.addObject("{{_tbi_.entityName}}", new {{_tbi_.entityName}}());
 
         return model;
     }
 
     @RequestMapping(value="{id}", method = RequestMethod.GET)
-    public ModelAndView view(ModelAndView model, @PathVariable {{_tbi_.pkType}} id, HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView view(ModelAndView model, @PathVariable {{_tbi_.pkType}} id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         UserIdentity user = getCurrentUser();
 
         try {
             {{_tbi_.entityName}} item = {{_tbi_.varName}}Service.find(user, id);
             model.addObject("item", item);
-            model.setViewName("/home/{{_mvcurl_}}/view");
+            model.setViewName("/home/{{_tbi_.mvc_url()}}/view");
         } catch (EntityNotFoundException e) {
             RedirectView view = new RedirectView("404");
             model.setView(view);
@@ -84,7 +84,7 @@ public class Home{{_tbi_.entityName}}Controller extends HomeBaseController {
 
     @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public JsonResponse postCreate(@Valid Admin{{_tbi_.entityName}}Form form, BindingResult result, JsonResponse actResponse) throws Exception {
+    public JsonResponse postCreate(@Valid Home{{_tbi_.entityName}}Form form, BindingResult result, JsonResponse actResponse) throws Exception {
 
         if (result.hasErrors()){
             this.wrapError(result, actResponse);
@@ -103,7 +103,7 @@ public class Home{{_tbi_.entityName}}Controller extends HomeBaseController {
 
     @RequestMapping(value="{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public JsonResponse postSave(@Valid Admin{{_tbi_.entityName}}Form form, BindingResult result, @PathVariable {{_tbi_.pkType}} id, JsonResponse actResponse) throws Exception {
+    public JsonResponse postSave(@Valid Home{{_tbi_.entityName}}Form form, BindingResult result, @PathVariable {{_tbi_.pkType}} id, JsonResponse actResponse) throws Exception {
 
         if (result.hasErrors()){
             this.wrapError(result, actResponse);

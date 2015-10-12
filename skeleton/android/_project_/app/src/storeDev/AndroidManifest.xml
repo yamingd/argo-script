@@ -4,7 +4,7 @@
     package="com.kcompany.kproject">
 
     <application
-        android:label="@string/app_name_dev"
+        android:label="@string/appName_dev"
         tools:replace="android:label"
         >
 

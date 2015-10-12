@@ -6,7 +6,7 @@ import com.argo.service.ServiceException;
 import com.argo.collection.Pagination;
 
 import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}}.{{_tbi_.entityName}}Mapper;
-import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.;
+import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.entityName}};
 import com.{{prj._company_}}.{{prj._name_}}.service.{{_module_}}.{{_tbi_.entityName}}Service;
 import com.{{prj._company_}}.{{prj._name_}}.service.impl.ServiceBaseImpl;
 import org.springframework.beans.factory.annotation.Autowired;

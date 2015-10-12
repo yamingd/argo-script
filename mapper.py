@@ -26,7 +26,7 @@ def render_mapperImpl(fname, **kwargs):
 
 
 def gen_mapper(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/service/src/main/java/com/_company_/_project_/mapper')
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/service/src/main/java/com/_company_/_project_/mapper')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):
@@ -45,17 +45,11 @@ def gen_mapper(prjinfo, minfo):
         kwargs['_tbi_'] = table
         kwargs['_cols_'] = table.columns
         kwargs['_pks_'] = table.pks
-        refs = table.refs
-        if refs:
-            refs2 = [c for c in refs if c.ref_obj.entityName != table.entityName]
-            kwargs['_refms_'] = refs2
-        else:
-            kwargs['_refms_'] = []
         render_mapper(fname, **kwargs)
 
 
 def gen_mapperImpl(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/serviceImpl/src/main/java/com/_company_/_project_/mapper/impl')
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/serviceImpl/src/main/java/com/_company_/_project_/mapper/impl')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):
@@ -77,7 +71,17 @@ def gen_mapperImpl(prjinfo, minfo):
         refs = table.refs
         if refs:
             refs2 = [c for c in refs if c.ref_obj.entityName != table.entityName]
-            kwargs['_refms_'] = refs2
+            rs3 = []
+            for c in refs2:
+                found = False
+                for c2 in rs3:
+                    if c.ref_obj.entityName == c2.ref_obj.entityName:
+                        found = True
+                        break
+                if not found:
+                    rs3.append(c)
+
+            kwargs['_refms_'] = rs3
         else:
             kwargs['_refms_'] = []
         render_mapperImpl(fname, **kwargs)
@@ -88,7 +92,7 @@ def gen_config(prjinfo, target):
     kwargs = {}
     kwargs['_modules_'] = prjinfo._modules_
 
-    outfolder = os.path.join(prjinfo._root_, 'java/web-res/src/%s/resources' % target)
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/web-res/src/%s/resources' % target)
     outfolder = format_line(outfolder, prjinfo)
 
     fname = os.path.join(outfolder, 'mysql.yaml')

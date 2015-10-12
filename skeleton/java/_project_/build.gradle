@@ -1,0 +1,64 @@
+allprojects {
+    apply plugin: 'maven'
+    apply plugin: 'java'
+
+    group = 'com._company_._project_'
+    version = '1.0-SNAPSHOT'
+}
+
+subprojects {
+
+    compileJava {
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
+        options.encoding = 'UTF-8'
+    }
+
+    compileTestJava {
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
+        options.encoding = 'UTF-8'
+    }
+
+    repositories {
+
+        mavenLocal()
+
+        maven { url 'http://maven.oschina.net/content/groups/public/' }
+
+        mavenCentral()
+    }
+
+
+    dependencies {
+        compile 'com.github.yamingd.argo:argo-security:2.1'
+        compile 'com.github.yamingd.argo:argo-util:2.0'
+        compile 'com.github.yamingd.argo:argo-redis:2.1'
+        compile 'com.github.yamingd.argo:argo-db:2.1'
+        compile 'com.github.yamingd.argo:annotations:2.0'
+
+        compile 'com.github.yamingd.qpush:client:1.2'
+
+        compile 'javax.servlet:servlet-api:2.5'
+        compile 'com.belerweb:pinyin4j:2.5.0'
+        compile 'org.imgscalr:imgscalr-lib:4.2'
+        compile 'net.glxn.qrgen:javase:2.0'
+        compile 'org.jdom:jdom2:2.0.5'
+        compile 'org.quartz-scheduler:quartz:2.1.7'
+
+        testCompile 'junit:junit:4.12'
+
+        compile('javax.servlet:javax.servlet-api:3.1.0') {
+            /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+            This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+            Please review and delete this closure when resolved. */
+        }
+        compile('javax.servlet.jsp:jsp-api:2.1') {
+            /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+            This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+            Please review and delete this closure when resolved. */
+        }
+    }
+
+
+}

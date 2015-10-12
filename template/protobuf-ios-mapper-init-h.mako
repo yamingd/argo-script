@@ -7,6 +7,8 @@
 //
 
 {% for minfo in prj._modules_ %}
+
+// {{minfo['ns']}}
 {% for t in minfo['tables'] %}
 @class PB{{t.entityName}}Mapper;
 {% endfor %}

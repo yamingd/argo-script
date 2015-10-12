@@ -1,8 +1,8 @@
-package com.{{prj.company}}.{{prj.name}}.event.{{_tbi_.mname}};
+package com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}};
 
 import com.argo.sdk.ApiError;
 import com.argo.sdk.event.AppBaseEvent;
-import com.{{prj.company}}.{{prj.name}}.protobuf.{{_tbi_.mname}}.PB{{_tbi_.mname}};
+import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.mname}}.PB{{_tbi_.entityName}};
 
 /**
  * PB{{_tbi_.mname}}新建事件

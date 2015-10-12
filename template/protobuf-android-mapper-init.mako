@@ -10,7 +10,7 @@ public final class PBMapperInit {
 
 {% for minfo in prj._modules_ %}
 {% for t in minfo['tables'] %}
-  public static PB{{t.entityName}}Mapper {{t.varName}}Mapper;
+      public static PB{{t.entityName}}Mapper {{t.varName}}Mapper;
 {% endfor %}
 {% endfor %}
 
@@ -18,7 +18,7 @@ public final class PBMapperInit {
 
 {% for minfo in prj._modules_ %}
 {% for t in minfo['tables'] %}
-  {{t.varName}}Mapper = new PB{{t.entityName}}Mapper();
+      {{t.varName}}Mapper = new PB{{t.entityName}}Mapper();
 {% endfor %}
 {% endfor %}
 
@@ -27,7 +27,7 @@ public final class PBMapperInit {
   public static void prepare() {
 {% for minfo in prj._modules_ %}
 {% for t in minfo['tables'] %}
-  {{t.varName}}Mapper.prepare();
+      {{t.varName}}Mapper.prepare();
 {% endfor %}
 {% endfor %}
   }
@@ -35,7 +35,7 @@ public final class PBMapperInit {
   public static void reset() {
 {% for minfo in prj._modules_ %}
 {% for t in minfo['tables'] %}
-  {{t.varName}}Mapper.resetStatement();
+      {{t.varName}}Mapper.resetStatement();
 {% endfor %}
 {% endfor %}
   }

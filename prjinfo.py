@@ -13,6 +13,7 @@ _output_ = 'output'
 # _dburl_ = 'mysql://devtest:123456@127.0.0.1:3306/INFORMATION_SCHEMA?charset=utf8'
 _dbtype_ = 'mysql'
 _dburl_ = 'devtest:123456@127.0.0.1:3306'
+_dbload_ = False
 
 _apps_ = ['mobile', 'home', 'wx', 'admin']
 

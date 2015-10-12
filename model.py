@@ -10,7 +10,7 @@ import string
 from common import *
 
 def gen_java_model(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/model/src/main/java/com/_company_/_project_/model')
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/model/src/main/java/com/_company_/_project_/model')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):
@@ -40,7 +40,8 @@ def gen_java_model(prjinfo, minfo):
         render_template(fname, 'entity.mako', **kwargs)
 
     # protobuf files
-    outfolder = os.path.join(prjinfo._root_, 'java/model/src/resources')
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/model/src/resources')
+    outfolder = format_line(outfolder, prjinfo)
     if not os.path.exists(outfolder):
         os.makedirs(outfolder)
     cmds = []
@@ -49,7 +50,7 @@ def gen_java_model(prjinfo, minfo):
         refs = table.refs
         if refs:
             refs2 = [c.ref_obj.entityName for c in refs if c.ref_obj.entityName != table.entityName]
-            kwargs['_refms_'] = refs2
+            kwargs['_refms_'] = set(refs2)
         else:
             kwargs['_refms_'] = []
         fpath = os.path.join(outfolder, table.entityName + "Proto.proto")
@@ -61,13 +62,16 @@ def gen_java_model(prjinfo, minfo):
     # gen-module.sh
     fpath = os.path.join(outfolder, 'gen-' + minfo['ns'] + '.sh')
     with open(fpath, 'w+') as fw:
+        fw.write('#!/usr/bin/env bash')
+        fw.write('\n\n')
         for line in cmds:
             fw.write(line)
             fw.write('\n')
-
+    # to run sh
+    
 
 def gen_convertor(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/model/src/main/java/com/_company_/_project_/convertor')
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/model/src/main/java/com/_company_/_project_/convertor')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):

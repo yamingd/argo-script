@@ -7,4 +7,5 @@ ms:
        - {{m['dburl']}}/{{m['db']}}
      slave: 
        - {{m['dburl']}}/{{m['db']}}
+
 {% endfor %}

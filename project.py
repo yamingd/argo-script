@@ -6,6 +6,7 @@ import os
 import glob
 import shutil
 import string
+import md5
 
 from common import *
 
@@ -35,11 +36,17 @@ def gen_structure(prjinfo, lang):
     folders = os.listdir(fpath)
     #print folders
     for folder in folders:
-        print 'dst: ', folder
+        #print 'dst: ', folder
         if folder in ['target', 'out', '.DS_Store']:
             continue
         dst = format_line(folder, prjinfo)
         gen_file(os.path.join(fpath, folder), os.path.join(opath, dst), prjinfo)
+    
+    #git ignore
+    gfile = os.path.join(opath, prjinfo._project_)
+    gfile = gfile + '/.gitignore'
+    render_template(gfile, 'gitignore.mako', **{})
+
     return folders, fpath, opath
 
 

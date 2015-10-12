@@ -7,6 +7,8 @@
 //
 
 {% for minfo in prj._modules_ %}
+
+// {{minfo['ns']}}
 {% for t in minfo['tables'] %}
 #import "PB{{t.entityName}}Mapper.h"
 {% endfor %}
@@ -31,8 +33,10 @@
 -(void)start{
 
 {% for minfo in prj._modules_ %}
+
+	// {{minfo['ns']}}
 {% for t in minfo['tables'] %}
-[[PB{{t.entityName}}Mapper instance] prepare];
+	[[PB{{t.entityName}}Mapper instance] prepare];
 {% endfor %}
 {% endfor %}
 

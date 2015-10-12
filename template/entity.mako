@@ -1,4 +1,4 @@
-package com.{{prj._company_}}.{{prj._name_}}.{{_module_}};
+package com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}};
 
 import com.argo.annotation.Column;
 import com.argo.annotation.Table;

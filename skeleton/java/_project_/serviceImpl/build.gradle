@@ -1,0 +1,8 @@
+description = 'service impl'
+
+dependencies {
+    compile project(':model')
+    compile project(':service')
+    compile project(':common')
+    compile 'com.github.yamingd.argo:argo-service:2.0'
+}

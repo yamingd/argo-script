@@ -11,7 +11,7 @@ import dbm
 from common import *
 
 def gen_controller(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/web-mobile/src/main/java/com/_company_/_project_/web/mobile')
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/web-mobile/src/main/java/com/_company_/_project_/web/mobile')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):

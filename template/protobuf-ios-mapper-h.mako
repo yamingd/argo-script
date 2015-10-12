@@ -19,11 +19,11 @@
 
 #pragma mark - Wrap
 {% for c in _tbi_.refs %}
--(void)wrap{{c.ref_varName.capitalize()}}:(PB{{_tbi_.entityName}}Builder*)builder;
+-(void)wrap{{c.ref_varNameC}}:(PB{{_tbi_.entityName}}Builder*)builder;
 {% endfor %} 
 
 {% for c in _tbi_.refs %}
--(void)wrap{{c.ref_varName.capitalize()}}List:(NSArray*)builders;
+-(void)wrap{{c.ref_varNameC}}List:(NSArray*)builders;
 {% endfor %}
 
 

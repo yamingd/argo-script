@@ -40,9 +40,9 @@ def gen_model(prjinfo, minfo):
 def gen_mapper(prjinfo, minfo):
     outfolder = os.path.join(prjinfo._root_, IOS_MAPPER_BASE_FOLDER)
     outfolder = format_line(outfolder, prjinfo)
-    fpath = os.path.join(outfolder, minfo['ns'])
-    if not os.path.exists(fpath):
-        os.makedirs(fpath)
+    outfolder = os.path.join(outfolder, minfo['ns'])
+    if not os.path.exists(outfolder):
+        os.makedirs(outfolder)
 
     kwargs = {}
     kwargs['prj'] = prjinfo

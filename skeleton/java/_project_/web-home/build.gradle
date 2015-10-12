@@ -1,0 +1,33 @@
+
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+description = 'Web Home Portal'
+
+dependencies {
+    compile project(':model')
+    compile project(':common')
+    compile project(':service')
+    compile project(':serviceImpl')
+    compile 'com.github.yamingd.argo:argo-web:2.1'
+}
+
+jettyRun {
+    httpPort=8280
+    stopPort=8281
+    contextPath ="/"
+    reload ="automatic"
+    scanIntervalSeconds = 1
+}
+
+
+war {
+
+    into("/") {
+        from '../web-assets/src/main/webapp'
+    }
+
+    into("/WEB-INF/classes"){
+        from '../web-res/src/main/resources'
+    }
+}

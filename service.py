@@ -26,7 +26,7 @@ def render_serviceTest(fname, **kwargs):
 
 
 def gen_service(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/service/src/main/java/com/_company_/_project_/service')
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/service/src/main/java/com/_company_/_project_/service')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):
@@ -49,7 +49,7 @@ def gen_service(prjinfo, minfo):
 
 
 def gen_serviceImpl(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/serviceImpl/src/main/java/com/_company_/_project_/service/impl')
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/serviceImpl/src/main/java/com/_company_/_project_/service/impl')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):

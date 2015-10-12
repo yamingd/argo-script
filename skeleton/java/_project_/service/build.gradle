@@ -1,0 +1,6 @@
+description = 'service definition'
+
+dependencies {
+    compile project(':model')
+    compile 'com.github.yamingd.argo:argo-service:2.0'
+}
