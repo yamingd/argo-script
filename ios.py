@@ -12,7 +12,7 @@ from common import *
 IOS_MAPPER_BASE_FOLDER = 'ios/_project_/_project_/Mappers'
 
 def gen_model(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo.iosfolder, 'models')
+    outfolder = os.path.join(prjinfo._root_, 'models')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):
@@ -73,7 +73,8 @@ def gen_mapper(prjinfo, minfo):
 
 def gen_mapper_init(prjinfo):
     outfolder = os.path.join(prjinfo._root_, IOS_MAPPER_BASE_FOLDER)
-
+    outfolder = format_line(outfolder, prjinfo)
+    
     kwargs = {}
     kwargs['prj'] = prjinfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
@@ -89,7 +90,7 @@ def gen_mapper_init(prjinfo):
 
 
 def gen_service(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo.iosfolder, 'ios/_project_/_project_/Services')
+    outfolder = os.path.join(prjinfo._root_, 'ios/_project_/_project_/Services')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):
@@ -114,7 +115,7 @@ def gen_service(prjinfo, minfo):
         render_template(fname, 'ios-service-m.mako', **kwargs)
 
 def gen_controller_folder(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo.iosfolder, 'ios/_project_/_project_/Controllers')
+    outfolder = os.path.join(prjinfo._root_, 'ios/_project_/_project_/Controllers')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
     if not os.path.exists(fpath):

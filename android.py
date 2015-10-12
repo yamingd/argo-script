@@ -47,6 +47,7 @@ def gen_mapper(prjinfo, minfo):
 
 def gen_mapper_init(prjinfo):
     outfolder = os.path.join(prjinfo._root_, ANDROID_MAPPER_BASE_FOLDRR)
+    outfolder = format_line(outfolder, prjinfo)
 
     kwargs = {}
     kwargs['prj'] = prjinfo
@@ -131,7 +132,8 @@ def gen_service(prjinfo, minfo):
 
 def gen_core_module(prjinfo):
     outfolder = os.path.join(prjinfo._root_, ANDROID_BASE_FOLDRR)
-
+    outfolder = format_line(outfolder, prjinfo)
+    
     kwargs = {}
     kwargs['prj'] = prjinfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')

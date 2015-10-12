@@ -96,5 +96,5 @@ def start(prjinfo):
     read_tables(prjinfo)
 
     for minfo in prjinfo._modules_:
-        gen_model(prjinfo, minfo)
+        gen_java_model(prjinfo, minfo)
         gen_convertor(prjinfo, minfo)

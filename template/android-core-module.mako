@@ -1,4 +1,4 @@
-package com.{{_prj_.company}}.{{_prj_.name}};
+package com.{{prj.company}}.{{prj.name}};
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
@@ -18,8 +18,8 @@ import dagger.Provides;
 
 {% for m in prj._modules_ %}
 {% for tb in m['tables'] %}
-import com.{{_prj_.company}}.{{_prj_.name}}.service.{{m['ns']}}.PB{{tb.entityName}}Service;
-import com.{{_prj_.company}}.{{_prj_.name}}.service.{{m['ns']}}.PB{{tb.entityName}}ServiceImpl;
+import com.{{prj.company}}.{{prj.name}}.service.{{m['ns']}}.PB{{tb.entityName}}Service;
+import com.{{prj.company}}.{{prj.name}}.service.{{m['ns']}}.PB{{tb.entityName}}ServiceImpl;
 {% endfor %}
 {% endfor %}
 

@@ -1,4 +1,4 @@
-package com.{{_prj_.company}}.{{_prj_.name}}.service.{{_tbi_.mname}};
+package com.{{prj.company}}.{{prj.name}}.service.{{_tbi_.mname}};
 
 import com.argo.sdk.ApiError;
 import com.argo.sdk.AppSession;
@@ -7,13 +7,13 @@ import com.argo.sdk.http.APIClientProvider;
 import com.argo.sdk.http.PBuilder;
 import com.argo.sdk.protobuf.PAppResponse;
 
-import com.{{_prj_.company}}.{{_prj_.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}ListResultEvent;
-import com.{{_prj_.company}}.{{_prj_.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}CreateResultEvent;
-import com.{{_prj_.company}}.{{_prj_.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}SaveResultEvent;
-import com.{{_prj_.company}}.{{_prj_.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}RemoveResultEvent;
+import com.{{prj.company}}.{{prj.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}ListResultEvent;
+import com.{{prj.company}}.{{prj.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}CreateResultEvent;
+import com.{{prj.company}}.{{prj.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}SaveResultEvent;
+import com.{{prj.company}}.{{prj.name}}.event.{{_tbi_.mname}}.{{_tbi_.entityName}}RemoveResultEvent;
 
-import com.{{_prj_.company}}.{{_prj_.name}}.protobuf.{{_tbi_.mname}}.PB{{_tbi_.entityName}};
-import com.{{_prj_.company}}.{{_prj_.name}}.mapper.{{_tbi_.mname}}.PB{{_tbi_.entityName}}Mapper;
+import com.{{prj.company}}.{{prj.name}}.protobuf.{{_tbi_.mname}}.PB{{_tbi_.entityName}};
+import com.{{prj.company}}.{{prj.name}}.mapper.{{_tbi_.mname}}.PB{{_tbi_.entityName}}Mapper;
 
 import com.squareup.okhttp.Request;
 import com.squareup.otto.Bus;
