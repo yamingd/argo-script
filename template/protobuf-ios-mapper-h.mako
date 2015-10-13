@@ -1,5 +1,5 @@
 //
-//  PB{{_tbi_.entityName}}Mapper.h
+//  {{_tbi_.pb.name}}Mapper.h
 //  {{prj._project_}}
 //
 //  Created by {{_user_}} on {{_now_}}.
@@ -7,24 +7,24 @@
 //
 
 #import "iOSBootstrap/SqliteMapper.h"
-#import "PB{{_tbi_.entityName}}Proto.pb.h"
+#import "{{_tbi_.pb.name}}Proto.pb.h"
 
-{% for c in _refms_ %}
-@class PB{{c.ref_obj.entityName}}Mapper; 
+{% for r in _tbi_.impPBs %}
+@class {{r.name}}Mapper; 
 {% endfor %}
 
-@interface PB{{_tbi_.entityName}}Mapper : SqliteMapper
+@interface {{_tbi_.pb.name}}Mapper : SqliteMapper
 
 +(instancetype)instance;
 
 #pragma mark - Wrap
 
-{% for c in _tbi_.refs %}
--(void)wrap{{c.ref_varNameC}}:(PB{{_tbi_.entityName}}Builder*)builder;
+{% for r in _tbi_.refFields %}
+-(void)wrap{{r.varNameC}}:({{_tbi_.pb.name}}Builder*)builder;
 {% endfor %} 
 
-{% for c in _tbi_.refs %}
--(void)wrap{{c.ref_varNameC}}List:(NSArray*)builders;
+{% for r in _tbi_.refFields %}
+-(void)wrap{{r.varNameC}}List:(NSArray*)builders;
 {% endfor %}
 
 

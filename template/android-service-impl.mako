@@ -1,4 +1,4 @@
-package com.{{prj._company_}}.{{prj._name_}}.service.{{_tbi_.mname}};
+package com.{{prj._company_}}.{{prj._name_}}.service.{{_tbi_.package}};
 
 import com.argo.sdk.ApiError;
 import com.argo.sdk.AppSession;
@@ -11,14 +11,14 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import com.{{prj._company_}}.{{prj._name_}}.service.PBServiceBaseImpl;
 
-import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}}.PB{{_tbi_.entityName}}ListResultEvent;
-import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}}.PB{{_tbi_.entityName}}CreateResultEvent;
-import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}}.PB{{_tbi_.entityName}}SaveResultEvent;
-import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}}.PB{{_tbi_.entityName}}RemoveResultEvent;
-import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}}.PB{{_tbi_.entityName}}DetailResultEvent;
+import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}}.{{_tbi_.pb.name}}ListResultEvent;
+import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}}.{{_tbi_.pb.name}}CreateResultEvent;
+import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}}.{{_tbi_.pb.name}}SaveResultEvent;
+import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}}.{{_tbi_.pb.name}}RemoveResultEvent;
+import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}}.{{_tbi_.pb.name}}DetailResultEvent;
 
-import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.mname}}.PB{{_tbi_.entityName}};
-import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_tbi_.mname}}.PB{{_tbi_.entityName}}Mapper;
+import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.package}}.{{_tbi_.pb.name}};
+import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_tbi_.package}}.{{_tbi_.pb.name}}Mapper;
 
 import com.squareup.okhttp.Request;
 import com.squareup.otto.Bus;
@@ -32,19 +32,19 @@ import timber.log.Timber;
 /**
  * Created by {{_user_}} on {{_now_}}.
  */
-public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl implements PB{{_tbi_.entityName}}Service {
+public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {{_tbi_.pb.name}}Service {
 
 
     @Inject
-    public PB{{_tbi_.entityName}}ServiceImpl(APIClientProvider apiClientProvider, AppSession appSession, Bus eventBus) {
+    public {{_tbi_.pb.name}}ServiceImpl(APIClientProvider apiClientProvider, AppSession appSession, Bus eventBus) {
         super(apiClientProvider, appSession, eventBus);
     }
 
     @Override
     public void findLatest(int cursorId) {
-        List<PB{{_tbi_.entityName}}> list = PB{{_tbi_.entityName}}Mapper.instance.selectLimit("{{_tbi_.pkCol.name}} > ?", "{{_tbi_.pkCol.name}} desc", new String[]{cursorId+"", PAGE_SIZE + "", "0"});
+        List<{{_tbi_.pb.name}}> list = {{_tbi_.pb.name}}Mapper.instance.selectLimit("{{_tbi_.pk.name}} > ?", "{{_tbi_.pk.name}} desc", new String[]{cursorId+"", PAGE_SIZE + "", "0"});
         if (list.size() > 0){
-            PB{{_tbi_.entityName}}ListResultEvent event = new PB{{_tbi_.entityName}}ListResultEvent(list, 1);
+            {{_tbi_.pb.name}}ListResultEvent event = new {{_tbi_.pb.name}}ListResultEvent(list, 1);
             event.setDataFromCache(true);
             eventBus.post(event);
         }
@@ -55,29 +55,29 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error){
                     error.printout();
-                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(error));
+                    eventBus.post(new {{_tbi_.pb.name}}ListResultEvent(error));
                     return;
                 }
 
                 try {
-                    final List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
+                    final List<{{_tbi_.pb.name}}> result = apiClientProvider.parseProtobufResponse(response, {{_tbi_.pb.name}}.class);
                     if (result.size() == 0){
-                        eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(result, 1));
+                        eventBus.post(new {{_tbi_.pb.name}}ListResultEvent(result, 1));
                         return;
                     }
 
                     dbUser.get().update(new SqliteBlock<SQLiteDatabase>() {
                         @Override
                         public void execute(SQLiteDatabase engine) {
-                            PB{{_tbi_.entityName}}Mapper.instance.saveWithRef(result);
+                            {{_tbi_.pb.name}}Mapper.instance.saveWithRef(result);
                         }
                     });
 
-                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(result, 1));
+                    eventBus.post(new {{_tbi_.pb.name}}ListResultEvent(result, 1));
 
                 } catch (Exception e) {
-                    Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(e));
+                    Timber.e(e, "parse Error, %s(%s)", url, {{_tbi_.pb.name}}.class);
+                    eventBus.post(new {{_tbi_.pb.name}}ListResultEvent(e));
                 }
             }
         });
@@ -85,9 +85,9 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
 
     @Override
     public void findMore(int page, int cursorId) {
-        List<PB{{_tbi_.entityName}}> list = PB{{_tbi_.entityName}}Mapper.instance.selectLimit("{{_tbi_.pkCol.name}} < ?", "{{_tbi_.pkCol.name}} desc", new String[]{cursorId+"", PAGE_SIZE + "", "0"});
+        List<{{_tbi_.pb.name}}> list = {{_tbi_.pb.name}}Mapper.instance.selectLimit("{{_tbi_.pk.name}} < ?", "{{_tbi_.pk.name}} desc", new String[]{cursorId+"", PAGE_SIZE + "", "0"});
         if (list.size() > 0){
-            PB{{_tbi_.entityName}}ListResultEvent event = new PB{{_tbi_.entityName}}ListResultEvent(list, 1);
+            {{_tbi_.pb.name}}ListResultEvent event = new {{_tbi_.pb.name}}ListResultEvent(list, 1);
             event.setDataFromCache(true);
             eventBus.post(event);
             if(list.size() == PAGE_SIZE){
@@ -101,41 +101,41 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error){
                     error.printout();
-                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(error));
+                    eventBus.post(new {{_tbi_.pb.name}}ListResultEvent(error));
                     return;
                 }
 
                 try {
-                    final List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
+                    final List<{{_tbi_.pb.name}}> result = apiClientProvider.parseProtobufResponse(response, {{_tbi_.pb.name}}.class);
                     if (result.size() == 0){
-                        eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(result, 1));
+                        eventBus.post(new {{_tbi_.pb.name}}ListResultEvent(result, 1));
                         return;
                     }
 
                     dbUser.get().update(new SqliteBlock<SQLiteDatabase>() {
                         @Override
                         public void execute(SQLiteDatabase engine) {
-                            PB{{_tbi_.entityName}}Mapper.instance.saveWithRef(result);
+                            {{_tbi_.pb.name}}Mapper.instance.saveWithRef(result);
                         }
                     });
 
-                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(result, 1));
+                    eventBus.post(new {{_tbi_.pb.name}}ListResultEvent(result, 1));
 
                 } catch (Exception e) {
-                    Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new PB{{_tbi_.entityName}}ListResultEvent(e));
+                    Timber.e(e, "parse Error, %s(%s)", url, {{_tbi_.pb.name}}.class);
+                    eventBus.post(new {{_tbi_.pb.name}}ListResultEvent(e));
                 }
             }
         });
     }
 
     @Override
-    public void findBy({{_tbi_.pkCol.valType}} itemId, boolean withRef) {
-        PB{{_tbi_.entityName}} item = null;
+    public void findBy({{_tbi_.pk.valType}} itemId, boolean withRef) {
+        {{_tbi_.pb.name}} item = null;
         if (withRef){
-            item = PB{{_tbi_.entityName}}Mapper.instance.getWithRef(itemId);
+            item = {{_tbi_.pb.name}}Mapper.instance.getWithRef(itemId);
         }else{
-            item = PB{{_tbi_.entityName}}Mapper.instance.get(itemId);
+            item = {{_tbi_.pb.name}}Mapper.instance.get(itemId);
         }
 
         this.loadBy(itemId);
@@ -143,43 +143,43 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
     }
 
     @Override
-    public void loadBy({{_tbi_.pkCol.valType}} itemId) {
+    public void loadBy({{_tbi_.pk.valType}} itemId) {
         final String url = String.format("/{{_tbi_.mvc_url()}}/%d", itemId);
         apiClientProvider.asyncGet(url, null, new APICallback() {
             @Override
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error){
                     error.printout();
-                    eventBus.post(new PB{{_tbi_.entityName}}DetailResultEvent(error));
+                    eventBus.post(new {{_tbi_.pb.name}}DetailResultEvent(error));
                     return;
                 }
 
                 try {
-                    final List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
+                    final List<{{_tbi_.pb.name}}> result = apiClientProvider.parseProtobufResponse(response, {{_tbi_.pb.name}}.class);
                     if (result.size() == 0){
-                        eventBus.post(new PB{{_tbi_.entityName}}DetailResultEvent(NO_RESULT_RETURN));
+                        eventBus.post(new {{_tbi_.pb.name}}DetailResultEvent(NO_RESULT_RETURN));
                         return;
                     }
 
                     dbUser.get().update(new SqliteBlock<SQLiteDatabase>() {
                         @Override
                         public void execute(SQLiteDatabase engine) {
-                            PB{{_tbi_.entityName}}Mapper.instance.saveWithRef(result);
+                            {{_tbi_.pb.name}}Mapper.instance.saveWithRef(result);
                         }
                     });
 
-                    eventBus.post(new PB{{_tbi_.entityName}}DetailResultEvent(result.get(0)));
+                    eventBus.post(new {{_tbi_.pb.name}}DetailResultEvent(result.get(0)));
 
                 } catch (Exception e) {
-                    Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new PB{{_tbi_.entityName}}DetailResultEvent(e));
+                    Timber.e(e, "parse Error, %s(%s)", url, {{_tbi_.pb.name}}.class);
+                    eventBus.post(new {{_tbi_.pb.name}}DetailResultEvent(e));
                 }
             }
         });
     }
 
     @Override
-    public void create(PB{{_tbi_.entityName}} item) {
+    public void create({{_tbi_.pb.name}} item) {
         final String url = "/{{_tbi_.mvc_url()}}/";
         PBuilder builder = PBuilder.i();
         //构造Http参数
@@ -188,37 +188,37 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error){
                     error.printout();
-                    eventBus.post(new PB{{_tbi_.entityName}}CreateResultEvent(error));
+                    eventBus.post(new {{_tbi_.pb.name}}CreateResultEvent(error));
                     return;
                 }
 
                 try {
-                    final List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
+                    final List<{{_tbi_.pb.name}}> result = apiClientProvider.parseProtobufResponse(response, {{_tbi_.pb.name}}.class);
                     if (result.size() == 0){
-                        eventBus.post(new PB{{_tbi_.entityName}}CreateResultEvent(NO_RESULT_RETURN));
+                        eventBus.post(new {{_tbi_.pb.name}}CreateResultEvent(NO_RESULT_RETURN));
                         return;
                     }
 
                     dbUser.get().update(new SqliteBlock<SQLiteDatabase>() {
                         @Override
                         public void execute(SQLiteDatabase engine) {
-                            PB{{_tbi_.entityName}}Mapper.instance.saveWithRef(result);
+                            {{_tbi_.pb.name}}Mapper.instance.saveWithRef(result);
                         }
                     });
 
-                    eventBus.post(new PB{{_tbi_.entityName}}CreateResultEvent(result.get(0)));
+                    eventBus.post(new {{_tbi_.pb.name}}CreateResultEvent(result.get(0)));
 
                 } catch (Exception e) {
-                    Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new PB{{_tbi_.entityName}}CreateResultEvent(e));
+                    Timber.e(e, "parse Error, %s(%s)", url, {{_tbi_.pb.name}}.class);
+                    eventBus.post(new {{_tbi_.pb.name}}CreateResultEvent(e));
                 }
             }
         });
     }
 
     @Override
-    public void save(PB{{_tbi_.entityName}} item) {
-        final String url = String.format("/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pkCol.capName}}());
+    public void save({{_tbi_.pb.name}} item) {
+        final String url = String.format("/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pk.nameC}}());
         PBuilder builder = PBuilder.i();
         //构造Http参数
         apiClientProvider.asyncPUT(url, builder.vs(), new APICallback() {
@@ -226,37 +226,37 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error) {
                     error.printout();
-                    eventBus.post(new PB{{_tbi_.entityName}}SaveResultEvent(error));
+                    eventBus.post(new {{_tbi_.pb.name}}SaveResultEvent(error));
                     return;
                 }
 
                 try {
-                    final List<PB{{_tbi_.entityName}}> result = apiClientProvider.parseProtobufResponse(response, PB{{_tbi_.entityName}}.class);
+                    final List<{{_tbi_.pb.name}}> result = apiClientProvider.parseProtobufResponse(response, {{_tbi_.pb.name}}.class);
                     if (result.size() == 0) {
-                        eventBus.post(new PB{{_tbi_.entityName}}SaveResultEvent(NO_RESULT_RETURN));
+                        eventBus.post(new {{_tbi_.pb.name}}SaveResultEvent(NO_RESULT_RETURN));
                         return;
                     }
 
                     dbUser.get().update(new SqliteBlock<SQLiteDatabase>() {
                         @Override
                         public void execute(SQLiteDatabase engine) {
-                            PB{{_tbi_.entityName}}Mapper.instance.saveWithRef(result);
+                            {{_tbi_.pb.name}}Mapper.instance.saveWithRef(result);
                         }
                     });
 
-                    eventBus.post(new PB{{_tbi_.entityName}}SaveResultEvent(result.get(0)));
+                    eventBus.post(new {{_tbi_.pb.name}}SaveResultEvent(result.get(0)));
 
                 } catch (Exception e) {
-                    Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new PB{{_tbi_.entityName}}SaveResultEvent(e));
+                    Timber.e(e, "parse Error, %s(%s)", url, {{_tbi_.pb.name}}.class);
+                    eventBus.post(new {{_tbi_.pb.name}}SaveResultEvent(e));
                 }
             }
         });
     }
 
     @Override
-    public void remove(final PB{{_tbi_.entityName}} item) {
-        final String url = String.format("/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pkCol.capName}}());
+    public void remove(final {{_tbi_.pb.name}} item) {
+        final String url = String.format("/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pk.nameC}}());
         PBuilder builder = PBuilder.i();
         //构造Http参数
         apiClientProvider.asyncDelete(url, builder.vs(), new APICallback() {
@@ -264,7 +264,7 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
             public void onResponse(PAppResponse response, Request request, ApiError error) {
                 if (null != error) {
                     error.printout();
-                    eventBus.post(new PB{{_tbi_.entityName}}RemoveResultEvent(error));
+                    eventBus.post(new {{_tbi_.pb.name}}RemoveResultEvent(error));
                     return;
                 }
 
@@ -273,15 +273,15 @@ public class PB{{_tbi_.entityName}}ServiceImpl extends PBServiceBaseImpl impleme
                     dbUser.get().update(new SqliteBlock<SQLiteDatabase>() {
                         @Override
                         public void execute(SQLiteDatabase engine) {
-                            PB{{_tbi_.entityName}}Mapper.instance.delete(item);
+                            {{_tbi_.pb.name}}Mapper.instance.delete(item);
                         }
                     });
 
-                    eventBus.post(new PB{{_tbi_.entityName}}RemoveResultEvent(item));
+                    eventBus.post(new {{_tbi_.pb.name}}RemoveResultEvent(item));
 
                 } catch (Exception e) {
-                    Timber.e(e, "parse Error, %s(%s)", url, PB{{_tbi_.entityName}}.class);
-                    eventBus.post(new PB{{_tbi_.entityName}}RemoveResultEvent(e));
+                    Timber.e(e, "parse Error, %s(%s)", url, {{_tbi_.pb.name}}.class);
+                    eventBus.post(new {{_tbi_.pb.name}}RemoveResultEvent(e));
                 }
             }
         });

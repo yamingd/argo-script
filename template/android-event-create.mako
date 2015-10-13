@@ -1,34 +1,34 @@
-package com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}};
+package com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}};
 
 import com.argo.sdk.ApiError;
 import com.argo.sdk.event.AppBaseEvent;
-import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.mname}}.PB{{_tbi_.entityName}};
+import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.package}}.{{_tbi_.pb.name}};
 
 /**
- * PB{{_tbi_.mname}}新建事件
+ * {{_tbi_.pb.name}}新建事件
  * Created by {{_user_}} on {{_now_}}.
  */
-public class PB{{_tbi_.entityName}}CreateResultEvent extends AppBaseEvent {
+public class {{_tbi_.pb.name}}CreateResultEvent extends AppBaseEvent {
 
-    private PB{{_tbi_.entityName}} item;
+    private {{_tbi_.pb.name}} item;
 
-    public PB{{_tbi_.entityName}}CreateResultEvent(ApiError apiError) {
+    public {{_tbi_.pb.name}}CreateResultEvent(ApiError apiError) {
         super(apiError);
     }
 
-    public PB{{_tbi_.entityName}}CreateResultEvent(Exception ex) {
+    public {{_tbi_.pb.name}}CreateResultEvent(Exception ex) {
         super(ex);
     }
 
-    public PB{{_tbi_.entityName}}CreateResultEvent(PB{{_tbi_.entityName}} item) {
+    public {{_tbi_.pb.name}}CreateResultEvent({{_tbi_.pb.name}} item) {
         this.item = item;
     }
 
-    public PB{{_tbi_.entityName}} getItem() {
+    public {{_tbi_.pb.name}} getItem() {
         return item;
     }
 
-    public void setItem(PB{{_tbi_.entityName}} item) {
+    public void setItem({{_tbi_.pb.name}} item) {
         this.item = item;
     }
 }

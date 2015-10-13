@@ -10,7 +10,7 @@
 
 // {{minfo['ns']}}
 {% for t in minfo['tables'] %}
-@class PB{{t.entityName}}Mapper;
+@class {{t.pb.name}}Mapper;
 {% endfor %}
 {% endfor %}
 

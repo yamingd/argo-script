@@ -6,6 +6,7 @@ import os
 import glob
 import shutil
 import string
+import dbm
 
 from common import *
 
@@ -18,56 +19,16 @@ def gen_java_model(prjinfo, minfo):
 
     kwargs = {}
     kwargs['prj'] = prjinfo
-    kwargs['emm'] = prjinfo.emm
     kwargs['minfo'] = minfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     kwargs['_module_'] = minfo['ns']
-    kwargs['_refs_'] = minfo['ref']
     
     for table in minfo['tables']:
         kwargs['_tbi_'] = table
-        kwargs['_cols_'] = table.columns
-        kwargs['_pks_'] = table.pks
-        refs = table.refs
-        if refs:
-            refs2 = [c for c in refs if c.ref_obj.entityName != table.entityName]
-            kwargs['_refms_'] = refs2
-        else:
-            kwargs['_refms_'] = []
-        fname = os.path.join(fpath, 'Abstract' + table.entityName + '.java')    
+        fname = os.path.join(fpath, 'Abstract' + table.java.name + '.java')    
         render_template(fname, 'entity-meta.mako', **kwargs)
-        fname = os.path.join(fpath, table.entityName + '.java')    
+        fname = os.path.join(fpath, table.java.name + '.java')    
         render_template(fname, 'entity.mako', **kwargs)
-
-    # protobuf files
-    outfolder = os.path.join(prjinfo._root_, 'java/_project_/model/src/resources')
-    outfolder = format_line(outfolder, prjinfo)
-    if not os.path.exists(outfolder):
-        os.makedirs(outfolder)
-    cmds = []
-    for table in minfo['tables']:
-        kwargs['_tbi_'] = table
-        refs = table.refs
-        if refs:
-            refs2 = [c.ref_obj.entityName for c in refs if c.ref_obj.entityName != table.entityName]
-            kwargs['_refms_'] = set(refs2)
-        else:
-            kwargs['_refms_'] = []
-        fpath = os.path.join(outfolder, table.entityName + "Proto.proto")
-        if os.path.exists(fpath):
-            os.remove(fpath)
-        render_template(fpath, 'protobuf_entity.mako', **kwargs)
-        cmds.append('sh gen.sh %s %s' % (table.entityName, minfo['ns']))
-
-    # gen-module.sh
-    fpath = os.path.join(outfolder, 'gen-' + minfo['ns'] + '.sh')
-    with open(fpath, 'w+') as fw:
-        fw.write('#!/usr/bin/env bash')
-        fw.write('\n\n')
-        for line in cmds:
-            fw.write(line)
-            fw.write('\n')
-    # to run sh
     
 
 def gen_convertor(prjinfo, minfo):
@@ -83,13 +44,10 @@ def gen_convertor(prjinfo, minfo):
     kwargs['minfo'] = minfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
     kwargs['_module_'] = minfo['ns']
-    kwargs['_refs_'] = minfo['ref']
     
     for table in minfo['tables']:
-        fname = os.path.join(fpath, table.entityName + 'Convertor.java')
+        fname = os.path.join(fpath, table.java.name + 'Convertor.java')
         kwargs['_tbi_'] = table
-        kwargs['_cols_'] = table.columns
-        kwargs['_pks_'] = table.pks
         render_template(fname, 'entity-convertor.mako', **kwargs)
 
 
@@ -97,7 +55,7 @@ def start(prjinfo):
     if not os.path.exists(prjinfo._root_):
         os.makedirs(prjinfo._root_)
     
-    read_tables(prjinfo)
+    dbm.read_tables(prjinfo)
 
     for minfo in prjinfo._modules_:
         gen_java_model(prjinfo, minfo)

@@ -1,34 +1,34 @@
-package com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.mname}};
+package com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}};
 
 import com.argo.sdk.event.AppBaseEvent;
 import com.argo.sdk.ApiError;
-import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.mname}}.PB{{_tbi_.entityName}};
+import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.package}}.{{_tbi_.pb.name}};
 
 /**
- * PB{{_tbi_.mname}}删除事件
+ * {{_tbi_.pb.name}}删除事件
  * Created by {{_user_}} on {{_now_}}.
  */
-public class PB{{_tbi_.entityName}}RemoveResultEvent extends AppBaseEvent {
+public class {{_tbi_.pb.name}}RemoveResultEvent extends AppBaseEvent {
 
-    private PB{{_tbi_.entityName}} item;
+    private {{_tbi_.pb.name}} item;
 
-    public PB{{_tbi_.entityName}}RemoveResultEvent(ApiError apiError) {
+    public {{_tbi_.pb.name}}RemoveResultEvent(ApiError apiError) {
         super(apiError);
     }
 
-    public PB{{_tbi_.entityName}}RemoveResultEvent(Exception ex) {
+    public {{_tbi_.pb.name}}RemoveResultEvent(Exception ex) {
         super(ex);
     }
 
-    public PB{{_tbi_.entityName}}RemoveResultEvent(PB{{_tbi_.entityName}} item) {
+    public {{_tbi_.pb.name}}RemoveResultEvent({{_tbi_.pb.name}} item) {
         this.item = item;
     }
 
-    public PB{{_tbi_.entityName}} getItem() {
+    public {{_tbi_.pb.name}} getItem() {
         return item;
     }
 
-    public void setItem(PB{{_tbi_.entityName}} item) {
+    public void setItem({{_tbi_.pb.name}} item) {
         this.item = item;
     }
 }

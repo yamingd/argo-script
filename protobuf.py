@@ -6,6 +6,7 @@ import os
 import glob
 import shutil
 import string
+import dbm
 
 from common import *
 
@@ -45,17 +46,11 @@ def gen_proto(prjinfo, minfo, base_folder, lang):
     cmds = []
     for table in minfo['tables']:
         kwargs['_tbi_'] = table
-        refs = table.refs
-        if refs:
-            refs2 = [c.ref_obj.entityName for c in refs if c.ref_obj.entityName != table.entityName]
-            kwargs['_refms_'] = set(refs2)
-        else:
-            kwargs['_refms_'] = []
-        fpath = os.path.join(outfolder, 'PB' + table.entityName + "Proto.proto")
+        fpath = os.path.join(outfolder, table.pb.name + "Proto.proto")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'protobuf_entity.mako', **kwargs)
-        cmds.append('sh gen.sh %s %s' % ('PB' + table.entityName, minfo['ns']))
+        cmds.append('sh gen.sh %s %s' % (table.pb.name, minfo['ns']))
 
     # gen-module.sh
     fpath = os.path.join(outfolder, 'gen-' + minfo['ns'] + '.sh')
@@ -81,7 +76,7 @@ def start(prjinfo):
     if not os.path.exists(prjinfo._root_):
         os.makedirs(prjinfo._root_)
     
-    read_tables(prjinfo)
+    dbm.read_tables(prjinfo)
 
     java_base = 'java/_project_/model/src/script'
     android_base = 'android/_project_/app/src/script'

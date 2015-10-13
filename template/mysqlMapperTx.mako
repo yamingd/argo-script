@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Transactional(value="{{_module_}}Tx", rollbackFor=Exception.class)
-public @interface {{_tbi_.entityName}}Tx {
+public @interface {{_tbi_.java.name}}Tx {
 }

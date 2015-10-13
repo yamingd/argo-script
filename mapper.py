@@ -38,13 +38,10 @@ def gen_mapper(prjinfo, minfo):
     kwargs['minfo'] = minfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     kwargs['_module_'] = minfo['ns']
-    kwargs['_refs_'] = minfo['ref']
 
     for table in minfo['tables']:
-        fname = os.path.join(fpath, table.entityName + 'Mapper.java')
+        fname = os.path.join(fpath, table.java.name + 'Mapper.java')
         kwargs['_tbi_'] = table
-        kwargs['_cols_'] = table.columns
-        kwargs['_pks_'] = table.pks
         render_mapper(fname, **kwargs)
 
 
@@ -64,29 +61,12 @@ def gen_mapperImpl(prjinfo, minfo):
     kwargs['_refs_'] = minfo['ref']
 
     for table in minfo['tables']:
-        fname = os.path.join(fpath, table.entityName + 'MapperImpl.java')
+        fname = os.path.join(fpath, table.java.name + 'MapperImpl.java')
         kwargs['_tbi_'] = table
-        kwargs['_cols_'] = table.columns
-        kwargs['_pks_'] = table.pks
-        refs = table.refs
-        if refs:
-            refs2 = [c for c in refs if c.ref_obj.entityName != table.entityName]
-            rs3 = []
-            for c in refs2:
-                found = False
-                for c2 in rs3:
-                    if c.ref_obj.entityName == c2.ref_obj.entityName:
-                        found = True
-                        break
-                if not found:
-                    rs3.append(c)
-
-            kwargs['_refms_'] = rs3
-        else:
-            kwargs['_refms_'] = []
         render_mapperImpl(fname, **kwargs)
-        fname = os.path.join(fpath, table.entityName + 'Tx.java')
+        fname = os.path.join(fpath, table.java.name + 'Tx.java')
         render_mapperTx(fname, **kwargs)
+
 
 def gen_config(prjinfo, target):
     kwargs = {}
@@ -106,7 +86,7 @@ def start(prjinfo):
     if not os.path.exists(prjinfo._root_):
         os.makedirs(prjinfo._root_)
 
-    read_tables(prjinfo)
+    dbm.read_tables(prjinfo)
 
     for minfo in prjinfo._modules_:
         gen_mapper(prjinfo, minfo)

@@ -1,24 +1,24 @@
 //
-//  PB{{_tbi_.entityName}}Mapper.m
+//  {{_tbi_.pb.name}}Mapper.m
 //  {{prj._project_}}
 //
 //  Created by {{_user_}} on {{_now_}}.
 //  Copyright © 2015 {{prj._company_}}. All rights reserved.
 //
 
-#import "PB{{_tbi_.entityName}}Mapper.h"
+#import "{{_tbi_.pb.name}}Mapper.h"
 
-{% for c in _refms_ %}
-#import "PB{{c.ref_obj.entityName}}Mapper.h" 
+{% for r in _tbi_.impPBs %}
+#import "{{r.name}}Mapper.h" 
 {% endfor %}
 
-@implementation PB{{_tbi_.entityName}}Mapper
+@implementation {{_tbi_.pb.name}}Mapper
 
 +(instancetype)instance{
-    static PB{{_tbi_.entityName}}Mapper *_shared = nil;
+    static {{_tbi_.pb.name}}Mapper *_shared = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _shared = [[PB{{_tbi_.entityName}}Mapper alloc] init];
+        _shared = [[{{_tbi_.pb.name}}Mapper alloc] init];
     });
     return _shared;
 }
@@ -29,10 +29,10 @@
 }
 
 -(void)prepare{
-    self.pkColumn = @"{{_tbi_.pkCol.name}}";
+    self.pkColumn = @"{{_tbi_.pk.name}}";
     self.tableName = @"{{_tbi_.name}}";
     self.tableColumns = {{_tbi_.ios.columnsInfo()}};
-    self.columns = @[{{", ".join(_tbi_.ios.columns)}}];
+    self.columns = @[{{", ".join(_tbi_.ios.columns())}}];
     
     [super prepare];
 }
@@ -45,9 +45,9 @@
 #pragma mark - ResultSet
 
 -(id)map:(FMResultSet*)rs withItem:(id)item{
-    PB{{_tbi_.entityName}}Builder* builder = [PB{{_tbi_.entityName}} builder];
+    {{_tbi_.pb.name}}Builder* builder = [{{_tbi_.pb.name}} builder];
 {% for c in _tbi_.columns %}
-    [builder set{{c.capName}}:[rs {{c.ios.rsGetter}}:{{c.index}}]];
+    [builder set{{c.java.setterName}}:[rs {{c.ios.rsGetter}}:{{c.index}}]];
 {% endfor %}
     return [builder build];
 }
@@ -56,7 +56,7 @@
 
 -(NSArray*)buildSaveParameters:(id)item{
     //TODO: nil的判断
-    PB{{_tbi_.entityName}}* pb = (PB{{_tbi_.entityName}}*)item;
+    {{_tbi_.pb.name}}* pb = ({{_tbi_.pb.name}}*)item;
     NSMutableArray* args = [NSMutableArray array];
 {% for c in _tbi_.columns %}
     [args addObject:{{c.ios.valExp("pb")}}];
@@ -65,18 +65,18 @@
 }
 
 #pragma mark - Wrap
-{% for c in _tbi_.refs %}
--(void)wrap{{c.ref_varNameC}}:(PB{{_tbi_.entityName}}Builder*)builder{
-{% if c.pbrepeated %}
-    id val = {{c.ios.valExp("builder")}};
+{% for r in _tbi_.refFields %}
+-(void)wrap{{r.varNameC}}:({{_tbi_.pb.name}}Builder*)builder{
+{% if r.repeated %}
+    id val = {{r.column.ios.valExp("builder")}};
     if(val){
-       NSArray* items = [[PB{{c.ref_obj.entityName}}Mapper instance] gets:@"wrap{{c.ref_varNameC}}" withComma:val withRef:YES];
-       [builder set{{c.ref_varNameC}}Array:items];
+       NSArray* items = [[{{ r.pb.typeName }}Mapper instance] gets:@"wrap{{ r.varNameC }}" withComma:val withRef:YES];
+       [builder set{{ r.varNameC }}Array:items];
     }
 {% else %}
-    id val = {{c.ios.valExp("builder")}};
-    id item = [[PB{{c.ref_obj.entityName}}Mapper instance] get:val withRef:YES];
-    [builder set{{c.ref_varNameC}}:item];
+    id val = {{r.column.ios.valExp("builder")}};
+    id item = [[{{ r.pb.typeName }}Mapper instance] get:val withRef:YES];
+    [builder set{{ r.varNameC }}:item];
 {% endif %}
 }
 {% endfor %} 
@@ -85,39 +85,41 @@
     if(!item){
        return;
     }
-{% if _tbi_.refs %}
-    PB{{_tbi_.entityName}}Builder* builder = [PB{{_tbi_.entityName}} builderWithPrototype:item];
-{% for c in _tbi_.refs %}
+{% if _tbi_.refFields %}
+    {{_tbi_.pb.name}}Builder* builder = [{{_tbi_.pb.name}} builderWithPrototype:item];
+{% for r in _tbi_.refFields %}
     //
-    [self wrap{{c.ref_varNameC}}:builder];
+    [self wrap{{ r.varNameC }}:builder];
 {% endfor %}    
 {% endif %}
 
 }
 
-{% for c in _tbi_.refs %}
--(void)wrap{{c.ref_varNameC}}List:(NSArray*)builders{
-{% if c.pbrepeated %}
-    for(PB{{_tbi_.entityName}}Builder* builder in builders){
-        id val = {{c.ios.valExp("builder")}};
+{% for r in _tbi_.refFields %}
+-(void)wrap{{r.varNameC}}List:(NSArray*)builders{
+{% if r.repeated %}
+    for({{_tbi_.pb.name}}Builder* builder in builders){
+        id val = {{r.column.ios.valExp("builder")}};
         if(val){
-           NSArray* items = [[PB{{c.ref_obj.entityName}}Mapper instance] gets:@"wrap{{c.ref_varNameC}}" withComma:val withRef:YES];
-           [builder set{{c.ref_varNameC}}Array:items];
+           NSArray* items = [[{{ r.pb.typeName }}Mapper instance] gets:@"wrap{{ r.varNameC }}" withComma:val withRef:YES];
+           [builder set{{ r.varNameC }}Array:items];
         }
     }
 {% else %}
     NSMutableSet* vals = [NSMutableSet set];
-    for(PB{{_tbi_.entityName}}Builder* builder in builders){
-        id val = {{c.ios.valExp("builder")}};
-        [vals addObject:val];
+    for({{ _tbi_.pb.name }}Builder* builder in builders){
+        id val = {{r.column.ios.valExp("builder")}};
+        if(val){
+            [vals addObject:val];
+        }
     }
-    NSArray* items = [[PB{{c.ref_obj.entityName}}Mapper instance] gets:@"wrap{{c.ref_varNameC}}List" withSet:vals withRef:YES];
-    for(PB{{c.ref_obj.entityName}}* item in items){
-        id val0 = @(item.{{c.ref_obj.pkCol.name}});
-        for(PB{{_tbi_.entityName}}Builder* builder in builders){
-            id val1 = {{c.ios.valExp("builder")}};
-            if([val0 isEqual:val1]){
-                [builder set{{c.ref_varNameC}}:item];
+    NSArray* items = [[{{ r.pb.typeName }}Mapper instance] gets:@"wrap{{ r.varNameC }}List" withSet:vals withRef:YES];
+    for({{ r.pb.typeName }}* item in items){
+        id val0 = @(item.{{ r.table.pk.name }});
+        for({{_tbi_.pb.name}}Builder* builder in builders){
+            id val1 = {{r.column.ios.valExp("builder")}};
+            if(val1 && [val0 isEqual:val1]){
+                [builder set{{r.varNameC}}:item];
             }
         }
     }
@@ -129,31 +131,31 @@
     if(!items || items.count == 0){
         return;
     }
-{% if _tbi_.refs %}
+{% if _tbi_.refFields %}
     NSMutableArray* builders = [NSMutableArray array];
-    for(PB{{_tbi_.entityName}}* item in items){
-        PB{{_tbi_.entityName}}Builder* builder = [PB{{_tbi_.entityName}} builderWithPrototype:item];
+    for({{_tbi_.pb.name}}* item in items){
+        {{_tbi_.pb.name}}Builder* builder = [{{_tbi_.pb.name}} builderWithPrototype:item];
         [builders addObject:builder];
     }
-{% for c in _tbi_.refs %}
+{% for r in _tbi_.refFields %}
     //
-    [self wrap{{c.ref_varNameC}}List:builders];
+    [self wrap{{ r.varNameC }}List:builders];
 {% endfor %}    
 {% endif %}
 
 }
 
 -(void)saveRef:(id)item{
-{% if _tbi_.refs %}
-    PB{{_tbi_.entityName}}* pb = (PB{{_tbi_.entityName}}*)item;
-{% for c in _tbi_.refs %}
-    // 保存 {{c.ref_varName}}
-    id {{c.ref_varName}} =  pb.{{c.ref_varName}};
-    if ({{c.ref_varName}}){
-{% if c.pbrepeated %}
-        [[PB{{c.ref_obj.entityName}}Mapper instance] save:@"{{_tbi_entityName}}SaveRef" withList:{{c.ref_varName}} withRef:YES];
+{% if _tbi_.refFields %}
+    {{_tbi_.pb.name}}* pb = ({{_tbi_.pb.name}}*)item;
+{% for r in _tbi_.refFields %}
+    // 保存 {{r.varName}}
+    id {{r.varName}} =  pb.{{r.varName}};
+    if ({{r.varName}}){
+{% if r.repeated %}
+        [[{{ r.pb.typeName }}Mapper instance] save:@"{{_tbi_.pb.name}}SaveRef" withList:{{r.varName}} withRef:YES];
 {% else %}
-        [[PB{{c.ref_obj.entityName}}Mapper instance] save:@"{{_tbi_entityName}}SaveRef" withItem:{{c.ref_varName}} withRef:YES];
+        [[{{ r.pb.typeName }}Mapper instance] save:@"{{_tbi_.pb.name}}SaveRef" withItem:{{r.varName}} withRef:YES];
 {% endif %}
     }
 
@@ -166,21 +168,21 @@
     if(!items || items.count == 0){
         return;
     }
-{% if _tbi_.refs %}
+{% if _tbi_.refFields %}
     NSMutableArray* vals = [NSMutableArray array];
-{% for c in _tbi_.refs %}
-    // 保存 {{c.ref_varName}}
-    for(PB{{_tbi_.entityName}}* pb in items){
-        id {{c.ref_varName}} =  pb.{{c.ref_varName}};
-        if ({{c.ref_varName}}){
-{% if c.pbrepeated %}
-            [vals addObjectsFromArray:{{c.ref_varName}}];
+{% for r in _tbi_.refFields %}
+    // 保存 {{r.varName}}
+    for({{_tbi_.pb.name}}* pb in items){
+        id {{r.varName}} =  pb.{{r.varName}};
+        if ({{r.varName}}){
+{% if r.repeated %}
+            [vals addObjectsFromArray:{{r.varName}}];
 {% else %}
-            [vals addObject:{{c.ref_varName}}];
+            [vals addObject:{{r.varName}}];
 {% endif %}
         }
     }
-    [[PB{{c.ref_obj.entityName}}Mapper instance] save:@"{{_tbi_entityName}}SaveRefList" withList:vals withRef:YES];
+    [[{{ r.pb.typeName }}Mapper instance] save:@"{{_tbi_.pb.name}}SaveRefList" withList:vals withRef:YES];
     [vals removeAllObjects];
 
 {% endfor %}

@@ -19,22 +19,20 @@ def gen_controller(prjinfo, minfo):
 
     kwargs = {}
     kwargs['prj'] = prjinfo
-    kwargs['emm'] = prjinfo.emm
     kwargs['minfo'] = minfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
     kwargs['_user_'] = prjinfo._user_
     kwargs['_module_'] = minfo['ns']
-    kwargs['_refs_'] = minfo['ref']
 
     for table in minfo['tables']:
         kwargs['_tbi_'] = table
         kwargs['_cols_'] = [col for col in table.columns if col.isFormField]
         kwargs['_pks_'] = table.pks
 
-        fname = os.path.join(fpath, 'Mobile' + table.entityName + 'Controller.java')
+        fname = os.path.join(fpath, 'Mobile' + table.java.name + 'Controller.java')
         render_template(fname, 'mobile-controller.mako', **kwargs)
 
-        fname = os.path.join(fpath, 'Mobile' + table.entityName + 'Form.java')
+        fname = os.path.join(fpath, 'Mobile' + table.java.name + 'Form.java')
         render_template(fname, 'mobile-form.mako', **kwargs)
 
 
@@ -42,7 +40,7 @@ def start(prjinfo):
     if not os.path.exists(prjinfo._root_):
         os.makedirs(prjinfo._root_)
 
-    read_tables(prjinfo)
+    dbm.read_tables(prjinfo)
 
     for minfo in prjinfo._modules_:
         gen_controller(prjinfo, minfo)

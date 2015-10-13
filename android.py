@@ -6,6 +6,7 @@ import os
 import glob
 import shutil
 import string
+import dbm
 
 from common import *
 
@@ -24,22 +25,14 @@ def gen_mapper(prjinfo, minfo):
 
     kwargs = {}
     kwargs['prj'] = prjinfo
-    kwargs['emm'] = prjinfo.emm
     kwargs['minfo'] = minfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
     kwargs['_module_'] = minfo['ns']
-    kwargs['_refs_'] = minfo['ref']
     
     # protobuf mapper
     for table in minfo['tables']:
         kwargs['_tbi_'] = table
-        refs = table.refs
-        if refs:
-            refs2 = [c for c in refs if c.ref_obj.entityName != table.entityName]
-            kwargs['_refms_'] = refs2
-        else:
-            kwargs['_refms_'] = []
-        fpath = os.path.join(outfolder, 'PB' + table.entityName + "Mapper.java")
+        fpath = os.path.join(outfolder, table.pb.name + "Mapper.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'protobuf-android-mapper.mako', **kwargs)
@@ -67,37 +60,35 @@ def gen_event(prjinfo, minfo):
 
     kwargs = {}
     kwargs['prj'] = prjinfo
-    kwargs['emm'] = prjinfo.emm
     kwargs['minfo'] = minfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     kwargs['_module_'] = minfo['ns']
-    kwargs['_refs_'] = minfo['ref']
-    
+
     # protobuf mapper
     for table in minfo['tables']:
         kwargs['_tbi_'] = table
         #
-        fpath = os.path.join(outfolder, 'PB' + table.entityName + "CreateResultEvent.java")
+        fpath = os.path.join(outfolder, table.pb.name + "CreateResultEvent.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-event-create.mako', **kwargs)
         #
-        fpath = os.path.join(outfolder, 'PB' + table.entityName + "DetailResultEvent.java")
+        fpath = os.path.join(outfolder, table.pb.name + "DetailResultEvent.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-event-detail.mako', **kwargs)
         #
-        fpath = os.path.join(outfolder, 'PB' + table.entityName + "ListResultEvent.java")
+        fpath = os.path.join(outfolder, table.pb.name + "ListResultEvent.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-event-list.mako', **kwargs)
         #
-        fpath = os.path.join(outfolder, 'PB' + table.entityName + "RemoveResultEvent.java")
+        fpath = os.path.join(outfolder, table.pb.name + "RemoveResultEvent.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-event-remove.mako', **kwargs)
         #
-        fpath = os.path.join(outfolder, 'PB' + table.entityName + "SaveResultEvent.java")
+        fpath = os.path.join(outfolder, table.pb.name + "SaveResultEvent.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-event-save.mako', **kwargs)
@@ -111,21 +102,19 @@ def gen_service(prjinfo, minfo):
 
     kwargs = {}
     kwargs['prj'] = prjinfo
-    kwargs['emm'] = prjinfo.emm
     kwargs['minfo'] = minfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     kwargs['_module_'] = minfo['ns']
-    kwargs['_refs_'] = minfo['ref']
-    
+
     for table in minfo['tables']:
         kwargs['_tbi_'] = table
 
-        fpath = os.path.join(outfolder, 'PB' + table.entityName + "Service.java")
+        fpath = os.path.join(outfolder, table.pb.name + "Service.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-service.mako', **kwargs)
         
-        fpath = os.path.join(outfolder, 'PB' + table.entityName + "ServiceImpl.java")
+        fpath = os.path.join(outfolder, table.pb.name + "ServiceImpl.java")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'android-service-impl.mako', **kwargs)
@@ -148,7 +137,7 @@ def start(prjinfo):
     if not os.path.exists(prjinfo._root_):
         os.makedirs(prjinfo._root_)
     
-    read_tables(prjinfo)
+    dbm.read_tables(prjinfo)
 
     for minfo in prjinfo._modules_:
         gen_mapper(prjinfo, minfo)

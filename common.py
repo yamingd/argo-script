@@ -7,6 +7,7 @@ import glob
 import shutil
 import string
 import dbm
+
 from datetime import datetime
 
 from jinja2 import Environment, FileSystemLoader
@@ -27,8 +28,7 @@ def render_template(fname, tmplname, **kwargs):
     with open(fname, 'w+') as fw:
         fw.write(serve_template(tmplname, **kwargs))
 
-
-def read_tables(prjinfo):
+def read_tables0(prjinfo):
     if prjinfo._dbload_:
         return
         

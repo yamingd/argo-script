@@ -8,8 +8,8 @@ import com.argo.web.Enums;
 import com.argo.security.UserIdentity;
 
 import com.{{prj._company_}}.{{prj._project_}}.web.home.HomeBaseController;
-import com.{{prj._company_}}.{{prj._project_}}.model.{{_module_}}.{{_tbi_.entityName}};
-import com.{{prj._company_}}.{{prj._project_}}.service.{{_module_}}.{{_tbi_.entityName}}Service;
+import com.{{prj._company_}}.{{prj._project_}}.model.{{_module_}}.{{_tbi_.java.name}};
+import com.{{prj._company_}}.{{prj._project_}}.service.{{_module_}}.{{_tbi_.java.name}}Service;
 import com.{{prj._company_}}.{{prj._project_}}.ErrorCodes;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +34,17 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/{{_tbi_.mvc_url()}}")
-public class Home{{_tbi_.entityName}}Controller extends HomeBaseController {
+public class Home{{_tbi_.java.name}}Controller extends HomeBaseController {
 	
     @Autowired
-    private {{_tbi_.entityName}}Service {{_tbi_.varName}}Service;
+    private {{_tbi_.java.name}}Service {{_tbi_.java.varName}}Service;
     
     @RequestMapping(value="{page}", method = RequestMethod.GET)
     public ModelAndView all(ModelAndView model, HttpServletRequest request, HttpServletResponse response,
                             @PathVariable Integer page) throws Exception {
 
         UserIdentity user = getCurrentUser();                    
-        Pagination<{{_tbi_.entityName}}> result = new Pagination<{{_tbi_.entityName}}>();
+        Pagination<{{_tbi_.java.name}}> result = new Pagination<{{_tbi_.java.name}}>();
         result.setIndex(page);
         result.setSize(20);
 
@@ -60,18 +60,18 @@ public class Home{{_tbi_.entityName}}Controller extends HomeBaseController {
     public ModelAndView add(ModelAndView model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         model.setViewName("/home/{{_tbi_.mvc_url()}}/add");
-        model.addObject("{{_tbi_.entityName}}", new {{_tbi_.entityName}}());
+        model.addObject("item", new {{_tbi_.java.name}}());
 
         return model;
     }
 
     @RequestMapping(value="{id}", method = RequestMethod.GET)
-    public ModelAndView view(ModelAndView model, @PathVariable {{_tbi_.pkType}} id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView view(ModelAndView model, @PathVariable {{_tbi_.pk.java.typeName}} id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         UserIdentity user = getCurrentUser();
 
         try {
-            {{_tbi_.entityName}} item = {{_tbi_.varName}}Service.find(user, id);
+            {{_tbi_.java.name}} item = {{_tbi_.java.varName}}Service.find(user, id);
             model.addObject("item", item);
             model.setViewName("/home/{{_tbi_.mvc_url()}}/view");
         } catch (EntityNotFoundException e) {
@@ -84,7 +84,7 @@ public class Home{{_tbi_.entityName}}Controller extends HomeBaseController {
 
     @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public JsonResponse postCreate(@Valid Home{{_tbi_.entityName}}Form form, BindingResult result, JsonResponse actResponse) throws Exception {
+    public JsonResponse postCreate(@Valid Home{{_tbi_.java.name}}Form form, BindingResult result, JsonResponse actResponse) throws Exception {
 
         if (result.hasErrors()){
             this.wrapError(result, actResponse);
@@ -93,8 +93,8 @@ public class Home{{_tbi_.entityName}}Controller extends HomeBaseController {
 
         UserIdentity user = getCurrentUser();
 
-        {{_tbi_.entityName}} item = form.to();
-        item = {{_tbi_.varName}}Service.create(user, item);
+        {{_tbi_.java.name}} item = form.to();
+        item = {{_tbi_.java.varName}}Service.create(user, item);
 
         actResponse.add(item);
 
@@ -103,7 +103,7 @@ public class Home{{_tbi_.entityName}}Controller extends HomeBaseController {
 
     @RequestMapping(value="{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public JsonResponse postSave(@Valid Home{{_tbi_.entityName}}Form form, BindingResult result, @PathVariable {{_tbi_.pkType}} id, JsonResponse actResponse) throws Exception {
+    public JsonResponse postSave(@Valid Home{{_tbi_.java.name}}Form form, BindingResult result, @PathVariable {{_tbi_.pk.java.typeName}} id, JsonResponse actResponse) throws Exception {
 
         if (result.hasErrors()){
             this.wrapError(result, actResponse);
@@ -112,21 +112,21 @@ public class Home{{_tbi_.entityName}}Controller extends HomeBaseController {
 
         UserIdentity user = getCurrentUser();
 
-        {{_tbi_.entityName}} item = form.to();
+        {{_tbi_.java.name}} item = form.to();
         item.setId(id);
 
-        {{_tbi_.varName}}Service.save(user, item);
+        {{_tbi_.java.varName}}Service.save(user, item);
 
         return actResponse;
     }
 
     @RequestMapping(value="{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public JsonResponse postRemove(@PathVariable {{_tbi_.pkType}} id, JsonResponse actResponse) throws Exception {
+    public JsonResponse postRemove(@PathVariable {{_tbi_.pk.java.typeName}} id, JsonResponse actResponse) throws Exception {
 
         UserIdentity user = getCurrentUser();
 
-        {{_tbi_.varName}}Service.removeBy(user, id);
+        {{_tbi_.java.varName}}Service.removeBy(user, id);
 
         return actResponse;
     }

@@ -3,24 +3,26 @@ package com.{{prj._company_}}.{{prj._name_}}.service.{{_module_}};
 import com.argo.annotation.RmiService;
 import com.argo.collection.Pagination;
 
-import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.entityName}};
+import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.java.name}};
 import com.{{prj._company_}}.{{prj._name_}}.service.ServiceBase;
 
 /**
  * Created by {{_user_}} on {{_now_}}.
  */
- @RmiService
-public interface {{_tbi_.entityName}}Service extends ServiceBase<{{_tbi_.entityName}}, {{_tbi_.pkType}}>  {
+@RmiService
+public interface {{_tbi_.java.name}}Service extends ServiceBase<{{_tbi_.java.name}}, {{_tbi_.pk.java.typeName}}>  {
 	
-{% for rc in _tbi_.refs %}
-
+{% for rc in _tbi_.refFields %}
+{% if not rc.repeated %}
     /**
      * 按{{rc.name}}读取
      * @param resultSet
-     * @param {{rc.name}}
+     * @param {{rc.column.name}}
      * @return Pagination
      */
-	Pagination<{{_tbi_.entityName}}> findBy{{rc.capName}}(Pagination<{{_tbi_.entityName}}> resultSet, {{rc.java_type}} {{rc.name}});
+	Pagination<{{_tbi_.java.name}}> findBy{{rc.column.nameC}}(Pagination<{{_tbi_.java.name}}> resultSet, {{rc.column.java.typeName}} {{rc.column.name}});
+
+{% endif %}
 {% endfor %}
 
 

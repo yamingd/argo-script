@@ -18,8 +18,8 @@ import dagger.Provides;
 
 {% for m in prj._modules_ %}
 {% for tb in m['tables'] %}
-import com.{{prj._company_}}.{{prj._name_}}.service.{{m['ns']}}.PB{{tb.entityName}}Service;
-import com.{{prj._company_}}.{{prj._name_}}.service.{{m['ns']}}.PB{{tb.entityName}}ServiceImpl;
+import com.{{prj._company_}}.{{prj._name_}}.service.{{ tb.package }}.{{tb.pb.name}}Service;
+import com.{{prj._company_}}.{{prj._name_}}.service.{{ tb.package }}.{{tb.pb.name}}ServiceImpl;
 {% endfor %}
 {% endfor %}
 
@@ -74,7 +74,7 @@ public class CoreModule {
 {% for tb in m['tables'] %}
         @AppScope
         @Provides
-        PB{{tb.entityName}}Service providePB{{tb.entityName}}Service(PB{{tb.entityName}}ServiceImpl service){
+        {{tb.pb.name}}Service provide{{tb.pb.name}}Service({{tb.pb.name}}ServiceImpl service){
                 return service;
         }
 

@@ -12,15 +12,15 @@ import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteStatement;
 import timber.log.Timber;
 
-import com.{{prj._company_}}.{{prj._project_}}.protobuf.{{_module_}}.PB{{_tbi_.entityName}};
+import com.{{prj._company_}}.{{prj._project_}}.protobuf.{{_module_}}.{{_tbi_.pb.name}};
 
-{% for c in _refms_ %}
-import com.{{prj._company_}}.{{prj._project_}}.protobuf.{{c.ref_obj.mname}}.PB{{c.ref_obj.entityName}};
-import com.{{prj._company_}}.{{prj._project_}}.mapper.{{c.ref_obj.mname}}.PB{{c.ref_obj.entityName}}Mapper; 
+{% for r in _tbi_.impJavas %}
+import com.{{prj._company_}}.{{prj._project_}}.protobuf.{{ r.package }}.PB{{ r.name }};
+import com.{{prj._company_}}.{{prj._project_}}.mapper.{{ r.package }}.PB{{ r.name }}Mapper; 
 {% endfor %}
 
 
-public class PB{{_tbi_.entityName}}Mapper extends SqliteMapper<PB{{_tbi_.entityName}}, {{_tbi_.pkType}}> {
+public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_tbi_.pk.java.typeName}}> {
 
   private static String pkColumn;
 
@@ -28,23 +28,23 @@ public class PB{{_tbi_.entityName}}Mapper extends SqliteMapper<PB{{_tbi_.entityN
 
   public static String dbContextTag;
 
-  public static PB{{_tbi_.entityName}}Mapper instance;
+  public static {{_tbi_.pb.name}}Mapper instance;
 
   static {
-    pkColumn = "{{_tbi_.pkCol.name}}";
+    pkColumn = "{{_tbi_.pk.name}}";
     tableName = "{{_tbi_.name}}";
     dbContextTag = "default"; //chang this if having different sqlite db
   }
 
-  public PB{{_tbi_.entityName}}Mapper() {
+  public {{_tbi_.pb.name}}Mapper() {
     super();
     instance = this;
   }
 
   @Override
-  protected void bindInsertStatement(SQLiteStatement statement, PB{{_tbi_.entityName}} o) {
+  protected void bindInsertStatement(SQLiteStatement statement, {{_tbi_.pb.name}} o) {
 {% for c in _tbi_.columns %}
-    statement.{{c.sqlite3.binder}}({{c.index + 1}}, {{c.sqlite3.bindValue('o')}});
+    statement.{{c.android.binder}}({{c.index + 1}}, {{c.android.bindValue('o')}});
 {% endfor %}
 
   }
@@ -62,7 +62,7 @@ public class PB{{_tbi_.entityName}}Mapper extends SqliteMapper<PB{{_tbi_.entityN
   public Map<String, String> getColumnInfo() {
     Map<String, String> columns = new ArrayMap<String, String>();
 {% for c in _tbi_.columns %}
-    columns.put("{{c.name}}", "{{c.sqlite3.typeName}}");
+    columns.put("{{c.name}}", "{{c.android.typeName}}");
 {% endfor %}
     return columns;
   }
@@ -78,8 +78,8 @@ public class PB{{_tbi_.entityName}}Mapper extends SqliteMapper<PB{{_tbi_.entityN
   }
 
   @Override
-  public Class<PB{{_tbi_.entityName}}> getClassType() {
-    return PB{{_tbi_.entityName}}.class;
+  public Class<{{_tbi_.pb.name}}> getClassType() {
+    return {{_tbi_.pb.name}}.class;
   }
 
   @Override
@@ -89,7 +89,7 @@ public class PB{{_tbi_.entityName}}Mapper extends SqliteMapper<PB{{_tbi_.entityN
 
   @Override
   public String getTableCreateSql() {
-    String sql = "{{_tbi_.sqlite3.createTableSql}}";
+    String sql = "{{_tbi_.android.createTableSql}}";
     return sql;
   }
 
@@ -100,22 +100,22 @@ public class PB{{_tbi_.entityName}}Mapper extends SqliteMapper<PB{{_tbi_.entityN
   }
 
   @Override
-  public boolean saveWithRef(PB{{_tbi_.entityName}} o) {
+  public boolean saveWithRef({{_tbi_.pb.name}} o) {
     boolean ret = super.saveWithRef(o);
     if (!ret) {
       return false;
     }
-{% for c in _tbi_.refs %}
-    // save {{c.ref_varNameC}};
-{% if c.pbrepeated %}
-    List<PB{{c.ref_obj.entityName}}> refVar{{c.index}} = o.get{{c.ref_varNameC}}List();
-    if (null != refVar{{c.index}}) {
-      PB{{c.ref_obj.entityName}}Mapper.instance.saveWithRef(refVar{{c.index}});
+{% for r in _tbi_.refFields %}
+    // save {{r.varNameC}};
+{% if r.repeated %}
+    List<{{ r.pb.typeName }}> refVar{{r.column.index}} = o.get{{ r.varNameC }}List();
+    if (null != refVar{{r.column.index}}) {
+      {{ r.pb.typeName }}Mapper.instance.saveWithRef(refVar{{r.column.index}});
     }
 {% else %}
-    PB{{c.ref_obj.entityName}} refVar{{c.index}} = o.get{{c.ref_varNameC}}();
-    if (null != refVar{{c.index}}) {
-      PB{{c.ref_obj.entityName}}Mapper.instance.saveWithRef(refVar{{c.index}});
+    {{ r.pb.typeName }} refVar{{r.column.index}} = o.get{{ r.varNameC }}();
+    if (null != refVar{{r.column.index}}) {
+      {{ r.pb.typeName }}Mapper.instance.saveWithRef(refVar{{r.column.index}});
     }
 {% endif %}
 {% endfor %}
@@ -123,25 +123,25 @@ public class PB{{_tbi_.entityName}}Mapper extends SqliteMapper<PB{{_tbi_.entityN
   }
 
   @Override
-  public boolean saveWithRef(List<PB{{_tbi_.entityName}}> list) {
+  public boolean saveWithRef(List<{{_tbi_.pb.name}}> list) {
     boolean ret = super.saveWithRef(list);
     if (!ret) {
       return false;
     }
     List vars = new ArrayList();
-{% for c in _tbi_.refs %}
-    Timber.d("{{c.ref_varNameC}}");
+{% for r in _tbi_.refFields %}
+    // save {{r.varNameC}};
     for(int i=0; i<list.size(); i++) {
-{% if c.pbrepeated %}
-      List<PB{{c.ref_obj.entityName}}> refVar{{c.index}} = list.get(i).get{{c.ref_varNameC}}List();
+{% if r.repeated %}
+      List<{{ r.pb.typeName }}> refVar{{r.column.index}} = list.get(i).get{{ r.varNameC }}List();
 {% else %}
-      PB{{c.ref_obj.entityName}} refVar{{c.index}} = list.get(i).get{{c.ref_varNameC}}();
+      {{ r.pb.typeName }} refVar{{r.column.index}} = list.get(i).get{{ r.varNameC }}();
 {% endif %}
-      if (null != refVar{{c.index}}) {
-        vars.add(refVar{{c.index}});
+      if (null != refVar{{r.column.index}}) {
+        vars.add(refVar{{r.column.index}});
       }
     }
-    PB{{c.ref_obj.entityName}}Mapper.instance.saveWithRef(vars);
+    {{ r.pb.typeName }}Mapper.instance.saveWithRef(vars);
     vars.clear();
 {% endfor %}
 
@@ -149,26 +149,26 @@ public class PB{{_tbi_.entityName}}Mapper extends SqliteMapper<PB{{_tbi_.entityN
   }
 
   @Override
-  public boolean saveWithRef(Set<PB{{_tbi_.entityName}}> set) {
+  public boolean saveWithRef(Set<{{_tbi_.pb.name}}> set) {
     boolean ret = super.saveWithRef(set);
     if (!ret) {
       return false;
     }
     List vars = new ArrayList();
-{% for c in _tbi_.refs %}
-    // save city;
-    Iterator<PB{{_tbi_.entityName}}> refVar{{c.index}} = set.iterator();
-    while (refVar{{c.index}}.hasNext()) {
-{% if c.pbrepeated %}
-      List<PB{{c.ref_obj.entityName}}> v = refVar{{c.index}}.next().get{{c.ref_varNameC}}List();
+{% for r in _tbi_.refFields %}
+    // save {{r.varNameC}};
+    Iterator<{{_tbi_.pb.name}}> refVar{{r.column.index}} = set.iterator();
+    while (refVar{{r.column.index}}.hasNext()) {
+{% if r.repeated %}
+      List<{{ r.pb.typeName }}> v = refVar{{r.column.index}}.next().get{{ r.varNameC }}List();
 {% else %}
-      PB{{c.ref_obj.entityName}} v = refVar{{c.index}}.next().get{{c.ref_varNameC}}();
+      {{ r.pb.typeName }} v = refVar{{r.column.index}}.next().get{{ r.varNameC }}();
 {% endif %}
       if (null != v) {
         vars.add(v);
       }
     }
-    PB{{c.ref_obj.entityName}}Mapper.instance.saveWithRef(vars);
+    {{ r.pb.typeName }}Mapper.instance.saveWithRef(vars);
     vars.clear();
 {% endfor %}
 
@@ -176,54 +176,54 @@ public class PB{{_tbi_.entityName}}Mapper extends SqliteMapper<PB{{_tbi_.entityN
   }
 
   @Override
-  public boolean delete(PB{{_tbi_.entityName}} o) {
+  public boolean delete({{_tbi_.pb.name}} o) {
     if (o == null) {
       return false;
     }
     if (deleteStatement == null) {
       this.compileDeleteStatement();
     }
-    deleteStatement.{{_tbi_.pkCol.sqlite3.binder}}(1, o.get{{_tbi_.pkCol.capName}}());
+    deleteStatement.{{_tbi_.pk.android.binder}}(1, o.get{{ _tbi_.pk.pb.nameC }}());
     int recs = deleteStatement.executeUpdateDelete();
     return (recs == 1);
   }
 
   @Override
-  public PB{{_tbi_.entityName}} map(Cursor cursor, PB{{_tbi_.entityName}} o) {
-    PB{{_tbi_.entityName}}.Builder builder = PB{{_tbi_.entityName}}.newBuilder();
+  public {{_tbi_.pb.name}} map(Cursor cursor, {{_tbi_.pb.name}} o) {
+    {{_tbi_.pb.name}}.Builder builder = {{_tbi_.pb.name}}.newBuilder();
 
     if (cursor.isBeforeFirst()) {
       cursor.moveToFirst();
     }
 {% for c in _tbi_.columns %}
-    builder.set{{c.capName}}(cursor.{{c.sqlite3.rsGetter()}}({{c.index}}));
+    builder.set{{c.nameC}}(cursor.{{c.android.rsGetter()}}({{c.index}}));
 {% endfor %}
 
     return builder.build();
   }
 
-{% for c in _tbi_.refs %}
-{% if c.ref_type == 'repeated' %}
-  public void wrapRef{{c.ref_varNameC}}(List<PB{{_tbi_.entityName}}.Builder> list) {
+{% for r in _tbi_.refFields %}
+{% if r.repeated %}
+  public void wrapRef{{r.varNameC}}(List<{{_tbi_.pb.name}}.Builder> list) {
     for (int i = 0; i < list.size(); i++) {
-      PB{{_tbi_.entityName}}.Builder item = list.get(i);
-      wrapRef{{c.ref_varNameC}}(item);
+      {{_tbi_.pb.name}}.Builder item = list.get(i);
+      wrapRef{{r.varNameC}}(item);
     }
   }
 {% else %}
-  public void wrapRef{{c.ref_varNameC}}(List<PB{{_tbi_.entityName}}.Builder> list) {
-    Set<{{c.ref_obj.pkType}}> ids = new HashSet<{{c.ref_obj.pkType}}>();
+  public void wrapRef{{r.varNameC}}(List<{{_tbi_.pb.name}}.Builder> list) {
+    Set<{{ r.column.java.typeName }}> ids = new HashSet<{{ r.column.java.typeName }}>();
     for (int i = 0; i < list.size(); i++) {
-      PB{{_tbi_.entityName}}.Builder item = list.get(i);
-      ids.add(item.get{{c.capName}}());
+      {{_tbi_.pb.name}}.Builder item = list.get(i);
+      ids.add(item.get{{ r.column.nameC }}());
     }
-    List<PB{{c.ref_obj.entityName}}> refList = PB{{c.ref_obj.entityName}}Mapper.instance.getsWithRef(ids);
+    List<{{ r.pb.typeName }}> refList = {{ r.pb.typeName }}Mapper.instance.getsWithRef(ids);
     for (int i = 0; i < list.size(); i++) {
-      PB{{_tbi_.entityName}}.Builder item = list.get(i);
+      {{_tbi_.pb.name}}.Builder item = list.get(i);
       for (int j = 0; j < refList.size(); j++) {
-        PB{{c.ref_obj.entityName}} targetItem = refList.get(j);
-        if (targetItem.getId() == item.get{{c.capName}}()) {
-          item.set{{c.ref_varNameC}}(targetItem);
+        {{ r.pb.typeName }} targetItem = refList.get(j);
+        if (targetItem.get{{ r.table.pk.java.getterName }}() == item.get{{ r.column.nameC }}()) {
+          item.set{{ r.java.setterName }}(targetItem);
           break;
         }
       }
@@ -233,34 +233,34 @@ public class PB{{_tbi_.entityName}}Mapper extends SqliteMapper<PB{{_tbi_.entityN
 {% endfor %}
 
   @Override
-  public void wrapRef(List<PB{{_tbi_.entityName}}> list) {
+  public void wrapRef(List<{{_tbi_.pb.name}}> list) {
     if(list == null || list.size() == 0) {
       return;
     }
 
-    List<PB{{_tbi_.entityName}}.Builder> builders = new ArrayList<PB{{_tbi_.entityName}}.Builder>();
+    List<{{_tbi_.pb.name}}.Builder> builders = new ArrayList<{{_tbi_.pb.name}}.Builder>();
     for(int i=0; i<list.size(); i++){
-        builders.add(PB{{_tbi_.entityName}}.newBuilder(list.get(i)));
+        builders.add({{_tbi_.pb.name}}.newBuilder(list.get(i)));
     }
 
-{% for c in _tbi_.refs %}
-    wrapRef{{c.ref_varNameC}}(builders);
+{% for r in _tbi_.refFields %}
+    wrapRef{{ r.varNameC}}(builders);
 {% endfor %}
 
   }
 
-{% for c in _tbi_.refs %}
-  public void wrapRef{{c.ref_varNameC}}(PB{{_tbi_.entityName}}.Builder builder) {
-    {{c.java_type}} val = builder.get{{c.capName}}();
+{% for r in _tbi_.refFields %}
+  public void wrapRef{{r.varNameC}}({{_tbi_.pb.name}}.Builder builder) {
+    {{ r.column.java.typeName }} val = builder.get{{ r.column.nameC }}();
     if (null == val) {
       return;
     }
-{% if c.ref_type == 'repeated' %}
-    List<PB{{c.ref_obj.entityName}}> refItems = PB{{c.ref_obj.entityName}}Mapper.instance.getsWithRef(val);
-    builder.addAll{{c.ref_varNameC}}(refItems);
+{% if r.repeated %}
+    List<{{ r.pb.typeName }}> refItems = {{ r.pb.typeName }}Mapper.instance.getsWithRef(val);
+    builder.addAll{{ r.varNameC }}(refItems);
 {% else %}
-    PB{{c.ref_obj.entityName}} refItem = PB{{c.ref_obj.entityName}}Mapper.instance.getWithRef(val);
-    builder.set{{c.ref_varNameC}}(refItem);
+    {{ r.pb.typeName }} refItem = {{ r.pb.typeName }}Mapper.instance.getWithRef(val);
+    builder.set{{ r.varNameC }}(refItem);
 {% endif %}
 
   }
@@ -268,13 +268,13 @@ public class PB{{_tbi_.entityName}}Mapper extends SqliteMapper<PB{{_tbi_.entityN
 {% endfor %}
 
   @Override
-  public void wrapRef(PB{{_tbi_.entityName}} o) {
+  public void wrapRef({{_tbi_.pb.name}} o) {
     if(o == null) {
       return;
     }
-    PB{{_tbi_.entityName}}.Builder builder = PB{{_tbi_.entityName}}.newBuilder(o);
-{% for c in _tbi_.refs %}
-    wrapRef{{c.ref_varNameC}}(builder);
+    {{_tbi_.pb.name}}.Builder builder = {{_tbi_.pb.name}}.newBuilder(o);
+{% for r in _tbi_.refFields %}
+    wrapRef{{ r.varNameC }}(builder);
 {% endfor %}
     
     o = builder.build();

@@ -13,6 +13,6 @@ import java.io.Serializable;
  */
 @Table("{{ _tbi_.name }}")
 @MessagePackMessage
-public class {{_tbi_.entityName}} extends Abstract{{_tbi_.entityName}} {
+public class {{_tbi_.java.name }} extends Abstract{{ _tbi_.java.name }} {
 
 }

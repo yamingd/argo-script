@@ -25,7 +25,7 @@ java_types = {
     'time': 'Date'
 }
 
-sql_setter = {
+jdbc_setter = {
     'int': 'setInt',
     'tinyint': 'setByte',
     'smallint': 'setShort',
@@ -49,14 +49,14 @@ sql_setter = {
     'time': 'setTime'
 }
 
-value_setter = {
+jdbc_value_funcs = {
     "datetime": 'new java.sql.Timestamp(%s.getTime())',
     'date': 'new java.sql.Date(%s.getTime())',
     'timestamp': 'new java.sql.Timestamp(%s.getTime())',
     'time': 'new java.sql.Time(%s.getTime())'
 }
 
-sql_getter = {
+jdbc_getter = {
     'int': 'getInt',
     'tinyint': 'getByte',
     'smallint': 'getShort',
@@ -153,7 +153,7 @@ sqlite_types = {
     'byte[]': 'blob'
 }
 
-sqlite_setter = {
+android_sqlite_setter = {
     'int': 'bindLong',
     'tinyint': 'bindLong',
     'smallint': 'bindLong',
@@ -178,7 +178,7 @@ sqlite_setter = {
     'byte[]': 'bindBlob'
 }
 
-sqlite_getter = {
+android_sqlite_getter = {
     'int': 'getInt',
     'tinyint': 'getShort',
     'smallint': 'getInt',
@@ -226,6 +226,16 @@ fmdb_getter = {
     'timestamp': 'dateForColumnIndex',
     'time': 'dateForColumnIndex',
     'byte[]': 'dataForColumnIndex'
+}
+
+pb_fmdb_getter = {
+    'int32': 'intForColumnIndex',
+    'int64': 'longForColumnIndex',
+
+    'float': 'doubleForColumnIndex',
+    'double': 'doubleForColumnIndex',
+
+    'string': 'stringForColumnIndex'
 }
 
 cpp_types = {

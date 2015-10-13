@@ -5,13 +5,13 @@ import com.argo.db.exception.EntityNotFoundException;
 import com.argo.db.mysql.TableContext;
 import com.argo.db.template.MySqlMapper;
 
-import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.entityName}};
-import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}}.{{_tbi_.entityName}}Mapper;
-import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}}.{{_tbi_.entityName}}Tx;
+import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.java.name}};
+import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}}.{{_tbi_.java.name}}Mapper;
+import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}}.{{_tbi_.java.name}}Tx;
 
-{% for col in _refms_ %}
-import com.{{prj._company_}}.{{prj._name_}}.model.{{emm[col.ref_obj.name]}}.{{col.ref_obj.entityName}};
-import com.{{prj._company_}}.{{prj._name_}}.mapper.{{emm[col.ref_obj.name]}}.{{col.ref_obj.entityName}}Mapper;
+{% for r in _tbi_.impJavas %}
+import com.{{prj._company_}}.{{prj._name_}}.model.{{ r.package }}.{{ r.name }};
+import com.{{prj._company_}}.{{prj._name_}}.mapper.{{ r.package }}.{{ r.name }}Mapper;
 {% endfor %}
 
 import com.google.common.base.Preconditions;
@@ -31,16 +31,16 @@ import java.util.List;
  * Created by {{_user_}} on {{_now_}}.
  */
 @Repository
-public class {{_tbi_.entityName}}MapperImpl extends MySqlMapper<{{_tbi_.entityName}}, {{_tbi_.pkType}}> implements {{_tbi_.entityName}}Mapper {
+public class {{_tbi_.java.name}}MapperImpl extends MySqlMapper<{{_tbi_.java.name}}, {{_tbi_.pk.java.typeName}}> implements {{_tbi_.java.name}}Mapper {
     
-    public static {{_tbi_.entityName}}Mapper instance;
+    public static {{_tbi_.java.name}}Mapper instance;
 
     public static final String N_tableName = "{{_tbi_.name}}";
-    public static final String N_pkColumnName = "{{_tbi_.pkCol.name}}";
+    public static final String N_pkColumnName = "{{_tbi_.pk.name}}";
 
-    public static final String SQL_FIELDS = "{{_tbi_.sql_fields()}}";
+    public static final String SQL_FIELDS = "{{_tbi_.java.dbFields()}}";
     public static final List<String> columnList = new ArrayList<String>();
-    public static final boolean pkAutoIncr = {{_tbi_.pkCol.pkAutoFlag()}};
+    public static final boolean pkAutoIncr = {{_tbi_.pk.java.autoIncrementMark()}};
 
     static {
 {% for col in _tbi_.columns %}
@@ -48,9 +48,9 @@ public class {{_tbi_.entityName}}MapperImpl extends MySqlMapper<{{_tbi_.entityNa
 {% endfor %}
     }
 
-{% for col in _refms_ %}
+{% for r in _tbi_.impJavas %}
     @Autowired
-    protected {{col.ref_obj.entityName}}Mapper {{col.ref_obj.varName}}Mapper;    
+    protected {{r.name}}Mapper {{ r.varName }}Mapper;    
 {% endfor %}
 
     @Override
@@ -84,18 +84,18 @@ public class {{_tbi_.entityName}}MapperImpl extends MySqlMapper<{{_tbi_.entityNa
     }
 
     @Override
-    public Class<{{_tbi_.entityName}}> getRowClass() {
-        return {{_tbi_.entityName}}.class;
+    public Class<{{_tbi_.java.name}}> getRowClass() {
+        return {{_tbi_.java.name}}.class;
     }
 
     @Override
-    protected void setPKValue({{_tbi_.entityName}} item, KeyHolder holder) {
-        item.set{{ _tbi_.pkCol.capName }}(holder.getKey().{{_tbi_.pkCol.keyHodlerFun()}});
+    protected void setPKValue({{_tbi_.java.name}} item, KeyHolder holder) {
+        item.set{{ _tbi_.pk.java.setterName }}(holder.getKey().{{_tbi_.pk.java.keyHodlerFun()}});
     }
 
     @Override
-    protected {{_tbi_.pkType}} getPkValue({{_tbi_.entityName}} item) {
-        return item.get{{ _tbi_.pkCol.capName }}();
+    protected {{_tbi_.pk.java.typeName}} getPkValue({{_tbi_.java.name}} item) {
+        return item.get{{ _tbi_.pk.java.getterName }}();
     }
 
     @Override
@@ -104,26 +104,27 @@ public class {{_tbi_.entityName}}MapperImpl extends MySqlMapper<{{_tbi_.entityNa
     }
 
     @Override
-    public {{_tbi_.pkType}}[] toPKArrays(String pkWithCommas){
+    public {{_tbi_.pk.java.typeName}}[] toPKArrays(String pkWithCommas){
         String[] tmp = pkWithCommas.split(",");
-        {{_tbi_.pkType}}[] vals = new {{_tbi_.pkType}}[tmp.length];
+        {{_tbi_.pk.java.typeName}}[] vals = new {{_tbi_.pk.java.typeName}}[tmp.length];
         for(int i=0; i<tmp.length; i++){
-            vals[i] = {{_tbi_.pkType}}.valueOf(tmp[i]);
+            vals[i] = {{_tbi_.pk.java.typeName}}.valueOf(tmp[i]);
         }
         return vals;
     }
 
     @Override
-    protected {{_tbi_.entityName}} mapRow(ResultSet rs, int rowIndex) throws SQLException {
-        {{_tbi_.entityName}} item = new {{_tbi_.entityName}}();
+    protected {{_tbi_.java.name}} mapRow(ResultSet rs, int rowIndex) throws SQLException {
+        {{_tbi_.java.name}} item = new {{_tbi_.java.name}}();
 
 {% for col in _tbi_.columns %}
-        {{col.valTypeR}} {{col.name}}0 = Values.getResultSetValue(rs, {{col.index + 1}}, {{col.valTypeR}}.class);
-{% if col.valTypeR != col.java_type %}        
-        {{col.java_type}} {{col.name}} = Values.get({{col.name}}0, {{col.java_type}}.class);
-        item.set{{col.capName}}({{col.name}});
+{% if col.java.typeDiff %}    
+        {{col.java.valType}} {{col.name}}0 = Values.getResultSetValue(rs, {{col.index + 1}}, {{col.java.valType}}.class);    
+        {{col.java.typeName}} {{col.name}} = Values.get({{col.name}}0, {{col.java.typeName}}.class);
+        item.set{{col.java.setterName}}({{col.name}});
 {% else %}
-        item.set{{col.capName}}({{col.name}}0);
+        {{col.java.typeName}} {{col.name}}0 = Values.getResultSetValue(rs, {{col.index + 1}}, {{col.java.typeName}}.class);
+        item.set{{col.java.setterName}}({{col.name}}0);
 {% endif %}
 
 {% endfor %}        
@@ -131,44 +132,46 @@ public class {{_tbi_.entityName}}MapperImpl extends MySqlMapper<{{_tbi_.entityNa
     }
 
     @Override
-    protected void setInsertStatementValues(PreparedStatement ps, {{_tbi_.entityName}} item) throws SQLException {
+    protected void setInsertStatementValues(PreparedStatement ps, {{_tbi_.java.name}} item) throws SQLException {
 
 {% set index = -1 %}
-{% for col in _tbi_.insertColumns() %}
+{% for col in _tbi_.columns %}
+{% if not col.auto_increment %}
 {% set index = index + 1 %}
-{% if col.valTypeR != col.java_type %} 
-        {{col.java_type}} {{col.name}}0 = item.get{{col.capName}}();
-        {{col.valTypeR}} {{col.name}} = Values.get({{col.name}}0, {{col.valTypeR}}.class);
-        ps.{{col.sqlSetter}}({{index + 1}}, {{col.sqlValueSetter}});
+{% if col.java.typeDiff %} 
+        {{col.java.typeName}} {{col.name}}0 = item.get{{col.java.getterName}}();
+        {{col.java.valType}} {{col.name}} = Values.get({{col.name}}0, {{col.java.valType}}.class);
+        ps.{{col.java.jdbcSetter}}({{index + 1}}, {{col.java.jdbcValueFunc}});
 {% else %}
-        {{col.java_type}} {{col.name}} = item.get{{col.capName}}();
-        ps.{{col.sqlSetter}}({{index + 1}}, {{col.sqlValueSetter}}); 
+        {{col.java.typeName}} {{col.name}} = item.get{{col.java.getterName}}();
+        ps.{{col.java.jdbcSetter}}({{index + 1}}, {{col.java.jdbcValueFunc}}); 
+{% endif %}
 {% endif %}
 
 {% endfor %} 
     }
 
     @Override
-    public List<{{_tbi_.entityName}}> selectRows(TableContext context, final List<{{_tbi_.pkType}}> args, final boolean ascending) throws DataAccessException{
+    public List<{{_tbi_.java.name}}> selectRows(TableContext context, final List<{{_tbi_.pk.java.typeName}}> args, final boolean ascending) throws DataAccessException{
         Preconditions.checkNotNull(args);
-        return super.selectRows(context, args.toArray(new {{_tbi_.pkType}}[0]), ascending);
+        return super.selectRows(context, args.toArray(new {{_tbi_.pk.java.typeName}}[0]), ascending);
     }
 
     @Override
-    @{{_tbi_.entityName}}Tx
-    public boolean insert(TableContext context, {{_tbi_.entityName}} item) throws DataAccessException {
+    @{{_tbi_.java.name}}Tx
+    public boolean insert(TableContext context, {{_tbi_.java.name}} item) throws DataAccessException {
         return super.insert(context, item);
     }
 
     @Override
-    @{{_tbi_.entityName}}Tx
-    public boolean insertBatch(TableContext context, List<{{_tbi_.entityName}}> list) throws DataAccessException {
+    @{{_tbi_.java.name}}Tx
+    public boolean insertBatch(TableContext context, List<{{_tbi_.java.name}}> list) throws DataAccessException {
         return super.insertBatch(context, list);
     }
 
     @Override
-    @{{_tbi_.entityName}}Tx
-    public boolean update(TableContext context, {{_tbi_.entityName}} item) throws DataAccessException {
+    @{{_tbi_.java.name}}Tx
+    public boolean update(TableContext context, {{_tbi_.java.name}} item) throws DataAccessException {
         Preconditions.checkNotNull(item);
 
         final StringBuilder s = new StringBuilder(128);
@@ -178,13 +181,13 @@ public class {{_tbi_.entityName}}MapperImpl extends MySqlMapper<{{_tbi_.entityNa
 
 {% for col in _tbi_.columns %}
 {% if not col.key %}
-        if (null != item.get{{col.capName}}()){
+        if (null != item.get{{col.java.getterName}}()){
             s.append("{{col.name}}=?, ");
-{% if col.valTypeR != col.java_type %}        
-            {{col.valTypeR}} {{col.name}} = Values.get(item.get{{col.capName}}(), {{col.valTypeR}}.class);
+{% if col.java.typeDiff %}        
+            {{col.java.valType}} {{col.name}} = Values.get(item.get{{col.java.getterName}}(), {{col.java.valType}}.class);
             args.add({{col.name}});
 {% else %}
-            args.add(item.get{{col.capName}}());
+            args.add(item.get{{col.java.getterName}}());
 {% endif %}
         }
 {% endif %}
@@ -207,73 +210,76 @@ public class {{_tbi_.entityName}}MapperImpl extends MySqlMapper<{{_tbi_.entityNa
     }
 
     @Override
-    @{{_tbi_.entityName}}Tx
+    @{{_tbi_.java.name}}Tx
     public boolean update(String sql, List<Object> args) {
         return super.update(sql, args);
     }
 
     @Override
-    @{{_tbi_.entityName}}Tx
+    @{{_tbi_.java.name}}Tx
     public boolean update(TableContext context, String values, String where, Object... args) throws DataAccessException {
         return super.update(context, values, where, args);
     }
 
     @Override
-    @{{_tbi_.entityName}}Tx
-    public boolean delete(TableContext context, {{_tbi_.entityName}} item) throws DataAccessException {
+    @{{_tbi_.java.name}}Tx
+    public boolean delete(TableContext context, {{_tbi_.java.name}} item) throws DataAccessException {
         return super.delete(context, item);
     }
 
     @Override
-    @{{_tbi_.entityName}}Tx
-    public boolean deleteBy(TableContext context, {{_tbi_.pkType}} id) throws DataAccessException {
+    @{{_tbi_.java.name}}Tx
+    public boolean deleteBy(TableContext context, {{_tbi_.pk.java.typeName}} id) throws DataAccessException {
         return super.deleteBy(context, id);
     }
 
     @Override
-    @{{_tbi_.entityName}}Tx
+    @{{_tbi_.java.name}}Tx
     public boolean deleteBy(TableContext context, String where, Object... args) throws DataAccessException {
         return super.deleteBy(context, where, args);
     }
 
-{% for rc in _tbi_.refs %}
+{% for rc in _tbi_.refFields %}
     @Override
-    public void wrap{{rc.ref_varNameC}}(TableContext context, {{_tbi_.entityName}} item) throws DataAccessException, EntityNotFoundException{
+    public void wrap{{rc.java.nameC}}(TableContext context, {{_tbi_.java.name}} item) throws DataAccessException, EntityNotFoundException{
         Preconditions.checkNotNull(item);
-{% if rc.pbrepeated %}
-        List<{{rc.ref_obj.entityName}}> refItem = {{rc.refJavaMapper(_tbi_.varName)}}.findRows(context, item.get{{rc.capName}}(), false);
-        item.set{{rc.ref_varNameC}}(refItem);
+{% if rc.java.repeated %}
+        {{rc.java.typeName}} refItem = {{rc.java.mapper(_tbi_.java)}}.findRows(context, item.get{{rc.column.java.getterName}}(), false);
+        item.set{{rc.java.setterName}}(refItem);
 {% else %}
-        {{rc.ref_obj.entityName}} refItem = {{rc.refJavaMapper(_tbi_.varName)}}.find(context, item.get{{rc.capName}}());
-        item.set{{rc.ref_varNameC}}(refItem);
+        {{rc.java.typeName}} refItem = {{rc.java.mapper(_tbi_.java)}}.find(context, item.get{{rc.column.java.getterName}}());
+        item.set{{rc.java.setterName}}(refItem);
 {% endif %}
     }
 
     @Override
-    public void wrap{{rc.ref_varNameC}}(TableContext context, List<{{_tbi_.entityName}}> list) throws DataAccessException{
+    public void wrap{{rc.java.nameC}}(TableContext context, List<{{_tbi_.java.name}}> list) throws DataAccessException{
         Preconditions.checkNotNull(list);
-{% if rc.pbrepeated %}
+{% if rc.repeated %}
         for(int i=0; i<list.size(); i++){
-            {{_tbi_.entityName}} item = list.get(i);
-            List<{{rc.ref_obj.entityName}}> refItems = {{rc.refJavaMapper(_tbi_.varName)}}.findRows(context, item.get{{rc.capName}}(), false);
-            item.set{{rc.ref_varNameC}}(refItems);
+            {{_tbi_.java.name}} item = list.get(i);
+            {{rc.java.typeName}} refItems = {{rc.java.mapper(_tbi_.java)}}.findRows(context, item.get{{rc.column.java.getterName}}(), false);
+            item.set{{rc.java.setterName}}(refItems);
         }
 {% else %}
-        List<{{rc.java_type}}> ids = new ArrayList<{{rc.java_type}}>();
+        List<{{rc.column.java.typeName}}> ids = new ArrayList<{{rc.column.java.typeName}}>();
         for(int i=0; i<list.size(); i++){
-            {{rc.java_type}} v0 = list.get(i).get{{rc.capName}}();
+            {{rc.column.java.typeName}} v0 = list.get(i).get{{rc.column.java.getterName}}();
+            if(null == v0){
+                continue;
+            }
             if(ids.contains(v0)){
                 continue;
             }
             ids.add(v0);
         }
-        List<{{rc.ref_obj.entityName}}> refItems = {{rc.refJavaMapper(_tbi_.varName)}}.selectRows(context, ids, false);
+        List<{{rc.java.typeName}}> refItems = {{rc.java.mapper(_tbi_.java)}}.selectRows(context, ids, false);
         for(int i=0; i<refItems.size(); i++){
-            {{rc.java_type}} v0 = refItems.get(i).getId();
+            {{rc.table.pk.java.typeName}} v0 = refItems.get(i).get{{rc.table.pk.java.getterName}}();
             for(int j=0; j<list.size(); j++){
-                {{rc.java_type}} v1 = list.get(j).get{{rc.capName}}();
-                if(v0.equals(v1)){
-                     list.get(j).set{{rc.ref_varNameC}}(refItems.get(i));
+                {{rc.column.java.typeName}} v1 = list.get(j).get{{rc.column.java.getterName}}();
+                if(null != v1 && v0.equals(v1)){
+                    list.get(j).set{{rc.java.setterName}}(refItems.get(i));
                 }
             }
         }

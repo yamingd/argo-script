@@ -12,7 +12,7 @@
 
 // {{minfo['ns']}}
 {% for t in minfo['tables'] %}
-#import "PB{{t.entityName}}Mapper.h"
+#import "{{t.pb.name}}Mapper.h"
 {% endfor %}
 {% endfor %}
 
@@ -38,7 +38,7 @@
 
 	// {{minfo['ns']}}
 {% for t in minfo['tables'] %}
-	[[PB{{t.entityName}}Mapper instance] prepare];
+	[[{{t.pb.name}}Mapper instance] prepare];
 {% endfor %}
 {% endfor %}
 

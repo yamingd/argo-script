@@ -7,30 +7,30 @@ import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
-import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.entityName}};
+import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.java.name}};
 
 /**
  * Created by {{_user_}} on {{_now_}}.
  */
-public interface {{_tbi_.entityName}}Mapper extends SqlMapper<{{_tbi_.entityName}}, {{_tbi_.pkType}}> {
+public interface {{_tbi_.java.name}}Mapper extends SqlMapper<{{_tbi_.java.name}}, {{_tbi_.pk.java.typeName}}> {
 
-{% for rc in _tbi_.refs %}
+{% for rc in _tbi_.refFields %}
 	/**
-     * 关联 {{rc.ref_varNameC}}
+     * 关联 {{rc.java.nameC}}
      * @param context
      * @param item
      * @throws DataAccessException
      * @throws EntityNotFoundException
      */    
-    void wrap{{rc.ref_varNameC}}(TableContext context, {{_tbi_.entityName}} item) throws DataAccessException, EntityNotFoundException;
+    void wrap{{rc.java.nameC}}(TableContext context, {{_tbi_.java.name}} item) throws DataAccessException, EntityNotFoundException;
 
     /**
-     * 关联 {{rc.ref_varNameC}}
+     * 关联 {{rc.java.nameC}}
      * @param context
      * @param list
      * @throws DataAccessException
      */
-    void wrap{{rc.ref_varNameC}}(TableContext context, List<{{_tbi_.entityName}}> list) throws DataAccessException;
+    void wrap{{rc.java.nameC}}(TableContext context, List<{{_tbi_.java.name}}> list) throws DataAccessException;
     
 {% endfor %}
 
