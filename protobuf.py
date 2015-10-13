@@ -51,11 +51,11 @@ def gen_proto(prjinfo, minfo, base_folder, lang):
             kwargs['_refms_'] = set(refs2)
         else:
             kwargs['_refms_'] = []
-        fpath = os.path.join(outfolder, table.entityName + "Proto.proto")
+        fpath = os.path.join(outfolder, 'PB' + table.entityName + "Proto.proto")
         if os.path.exists(fpath):
             os.remove(fpath)
         render_template(fpath, 'protobuf_entity.mako', **kwargs)
-        cmds.append('sh gen.sh %s %s' % (table.entityName, minfo['ns']))
+        cmds.append('sh gen.sh %s %s' % ('PB' + table.entityName, minfo['ns']))
 
     # gen-module.sh
     fpath = os.path.join(outfolder, 'gen-' + minfo['ns'] + '.sh')

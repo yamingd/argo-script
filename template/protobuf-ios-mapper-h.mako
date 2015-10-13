@@ -7,7 +7,7 @@
 //
 
 #import "iOSBootstrap/SqliteMapper.h"
-#import "PB{{_tbi_.entityName}}.pb.h"
+#import "PB{{_tbi_.entityName}}Proto.pb.h"
 
 {% for c in _refms_ %}
 @class PB{{c.ref_obj.entityName}}Mapper; 
@@ -18,6 +18,7 @@
 +(instancetype)instance;
 
 #pragma mark - Wrap
+
 {% for c in _tbi_.refs %}
 -(void)wrap{{c.ref_varNameC}}:(PB{{_tbi_.entityName}}Builder*)builder;
 {% endfor %} 

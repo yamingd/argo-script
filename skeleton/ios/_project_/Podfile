@@ -2,11 +2,11 @@ platform :ios, '8.0'
 
 # ignore all warnings from all pods
 inhibit_all_warnings!
+use_frameworks!
 
 pod 'iOSBootstrap', '~> 1.3.3'
 pod 'AFNetworking', '~> 2.0'
 pod 'AFNetworkActivityLogger', '~> 2.0'
-pod 'ObjectiveSugar', '~> 0.5'
 pod 'Appirater'
 pod 'PNChart', '0.8'
 pod 'SDWebImage'
@@ -14,9 +14,6 @@ pod 'SSKeychain'
 pod 'TMCache'
 pod 'UIColor+FlatColors'
 pod 'libPhoneNumber-iOS',        '~> 0.7.3'
-pod 'Realm'
-pod 'GoogleProtobuf', '2.5.0'
-pod 'ZipArchive'
 pod 'CocoaAsyncSocket'
 pod 'HTKDynamicResizingCell'
 pod 'UIImage+ImageCompress'

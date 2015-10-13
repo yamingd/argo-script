@@ -1,5 +1,5 @@
 {% for col in _refms_ %}
-import "{{col}}Proto.proto";
+import "PB{{col}}Proto.proto";
 {% endfor %}
 
 package {{emm[_tbi_.name]}};
@@ -8,6 +8,7 @@ option java_multiple_files = true;
 
 message PB{{_tbi_.entityName}} {
 {% for col in _tbi_.columns %}
+	// {{col.comment}}
     optional {{col.protobuf_type}} {{col.name}} = {{ col.index + 1}};
 {% endfor %}
 

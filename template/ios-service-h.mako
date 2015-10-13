@@ -10,7 +10,7 @@
 
 #import "APIClient.h"
 #import "ServiceBase.h"
-#import "{{_tbi_.entityName}}Proto.pb.h"
+#import "PB{{_tbi_.entityName}}Proto.pb.h"
 #import "PB{{_tbi_.entityName}}Mapper.h"
 
 @interface {{_tbi_.entityName}}Service : ServiceBase
@@ -24,10 +24,10 @@
 +(void)findMore:(int)page cursorId:(long)cursorId withCallback:(APIResponseBlock)block;
 
 // 主键查找
-+(void)findBy:(long)itemId withRef:(BOOL)withRef withCallback:(APIResponseBlock*)block;
++(void)findBy:(long)itemId withRef:(BOOL)withRef withCallback:(APIResponseBlock)block;
 
 // 从服务器读取
-+(void)loadBy:(long)itemId withCallback:(APIResponseBlock*)block;
++(void)loadBy:(long)itemId withCallback:(APIResponseBlock)block;
 
 #pragma mark - Create
 

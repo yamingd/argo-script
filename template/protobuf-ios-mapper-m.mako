@@ -7,7 +7,6 @@
 //
 
 #import "PB{{_tbi_.entityName}}Mapper.h"
-#import "iOSBootstrap/AppBootstrap.h"
 
 {% for c in _refms_ %}
 #import "PB{{c.ref_obj.entityName}}Mapper.h" 
@@ -46,11 +45,11 @@
 #pragma mark - ResultSet
 
 -(id)map:(FMResultSet*)rs withItem:(id)item{
-    PB{{_tbi_.entityName}}Builder builder = PB{{_tbi_.entityName}}.builder();
+    PB{{_tbi_.entityName}}Builder* builder = [PB{{_tbi_.entityName}} builder];
 {% for c in _tbi_.columns %}
     [builder set{{c.capName}}:[rs {{c.ios.rsGetter}}:{{c.index}}]];
 {% endfor %}
-    return builder.build();
+    return [builder build];
 }
 
 #pragma mark - Save
@@ -87,7 +86,7 @@
        return;
     }
 {% if _tbi_.refs %}
-    PB{{_tbi_.entityName}}Builder* builder = [PB{{_tbi_.entityName}}Builder builderWithPrototype:item];
+    PB{{_tbi_.entityName}}Builder* builder = [PB{{_tbi_.entityName}} builderWithPrototype:item];
 {% for c in _tbi_.refs %}
     //
     [self wrap{{c.ref_varNameC}}:builder];
@@ -107,14 +106,14 @@
         }
     }
 {% else %}
-    NSMutableSet* vals = [NSMutableSet array];
+    NSMutableSet* vals = [NSMutableSet set];
     for(PB{{_tbi_.entityName}}Builder* builder in builders){
         id val = {{c.ios.valExp("builder")}};
         [vals addObject:val];
     }
     NSArray* items = [[PB{{c.ref_obj.entityName}}Mapper instance] gets:@"wrap{{c.ref_varNameC}}List" withSet:vals withRef:YES];
-    for(PB{{_tbi_.entityName}}* item in items){
-        id val0 = {{c.ios.valExp("item")}};
+    for(PB{{c.ref_obj.entityName}}* item in items){
+        id val0 = @(item.{{c.ref_obj.pkCol.name}});
         for(PB{{_tbi_.entityName}}Builder* builder in builders){
             id val1 = {{c.ios.valExp("builder")}};
             if([val0 isEqual:val1]){
@@ -132,8 +131,8 @@
     }
 {% if _tbi_.refs %}
     NSMutableArray* builders = [NSMutableArray array];
-    for(PB{{_tbi_.entityName}}* items in items){
-        PB{{_tbi_.entityName}}Builder* builder = [PB{{_tbi_.entityName}}Builder builderWithPrototype:item];
+    for(PB{{_tbi_.entityName}}* item in items){
+        PB{{_tbi_.entityName}}Builder* builder = [PB{{_tbi_.entityName}} builderWithPrototype:item];
         [builders addObject:builder];
     }
 {% for c in _tbi_.refs %}

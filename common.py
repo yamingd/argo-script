@@ -85,3 +85,18 @@ def gen_file(src, dst, prjinfo):
             shutil.copyfile(src, dst)
             return
         copy_file(src, dst, prjinfo)
+
+
+def upper_first(name):
+    return name[0].upper() + name[1:]
+
+def lower_first(name):
+    return name[0].lower() + name[1:]
+
+def gen_name(name, suffix=[], upperFirst=True):
+    tmp = name.split('_')
+    tmp.extend(suffix)
+    tmp = [item[0].upper() + item[1:] for item in tmp]
+    if not upperFirst:
+        tmp[0] = tmp[0][0].lower() + tmp[0][1:]
+    return ''.join(tmp)

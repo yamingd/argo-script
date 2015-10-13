@@ -6,6 +6,8 @@
 //  Copyright © 2015 {{prj._company_}}. All rights reserved.
 //
 
+#import "PBMapperInit.h"
+
 {% for minfo in prj._modules_ %}
 
 // {{minfo['ns']}}

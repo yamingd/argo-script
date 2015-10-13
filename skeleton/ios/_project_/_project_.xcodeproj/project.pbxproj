@@ -16,10 +16,6 @@
 		CE5A6CC91BC0C05B00A05C97 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE5A6CC71BC0C05B00A05C97 /* LaunchScreen.storyboard */; };
 		CE5A6CD41BC0C05B00A05C97 /* _project_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6CD31BC0C05B00A05C97 /* _project_Tests.m */; };
 		CE5A6CDF1BC0C05B00A05C97 /* _project_UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5A6CDE1BC0C05B00A05C97 /* _project_UITests.m */; };
-		CEC78D3F1BC178D4005ADCF4 /* AppBootstrap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC78D3E1BC178D4005ADCF4 /* AppBootstrap.framework */; settings = {ASSET_TAGS = (); }; };
-		CEC78D401BC178D4005ADCF4 /* AppBootstrap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC78D3E1BC178D4005ADCF4 /* AppBootstrap.framework */; settings = {ASSET_TAGS = (); }; };
-		CEC78D411BC178D4005ADCF4 /* AppBootstrap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC78D3E1BC178D4005ADCF4 /* AppBootstrap.framework */; settings = {ASSET_TAGS = (); }; };
-		CEC78D4C1BC185C6005ADCF4 /* TSServiceBase.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC78D4B1BC185C6005ADCF4 /* TSServiceBase.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,11 +55,8 @@
 		CE5A6CDA1BC0C05B00A05C97 /* _project_UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = _project_UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE5A6CDE1BC0C05B00A05C97 /* _project_UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _project_UITests.m; sourceTree = "<group>"; };
 		CE5A6CE01BC0C05B00A05C97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CEC78D3E1BC178D4005ADCF4 /* AppBootstrap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppBootstrap.framework; sourceTree = "<group>"; };
 		CEC78D421BC1794F005ADCF4 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		CEC78D431BC17A93005ADCF4 /* AppConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppConfig.h; sourceTree = "<group>"; };
-		CEC78D4A1BC185C6005ADCF4 /* TSServiceBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSServiceBase.h; sourceTree = "<group>"; };
-		CEC78D4B1BC185C6005ADCF4 /* TSServiceBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSServiceBase.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +64,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEC78D3F1BC178D4005ADCF4 /* AppBootstrap.framework in Frameworks */,
 				223CB99F31D783F3D5F9A6AE /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,7 +72,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEC78D401BC178D4005ADCF4 /* AppBootstrap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +79,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEC78D411BC178D4005ADCF4 /* AppBootstrap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,7 +105,6 @@
 		CE5A6CAD1BC0C05B00A05C97 = {
 			isa = PBXGroup;
 			children = (
-				CEC78D3E1BC178D4005ADCF4 /* AppBootstrap.framework */,
 				CE5A6CB81BC0C05B00A05C97 /* _project_ */,
 				CE5A6CD21BC0C05B00A05C97 /* _project_Tests */,
 				CE5A6CDD1BC0C05B00A05C97 /* _project_UITests */,
@@ -140,7 +129,6 @@
 			children = (
 				CE5A6CEC1BC0D6FE00A05C97 /* Controllers */,
 				CE5A6CED1BC0D6FE00A05C97 /* Global */,
-				CE5A6CEE1BC0D6FE00A05C97 /* Models */,
 				CE5A6CEF1BC0D6FE00A05C97 /* Resources */,
 				CE5A6CF01BC0D6FE00A05C97 /* Services */,
 				CE5A6CF11BC0D6FE00A05C97 /* Tools */,
@@ -200,13 +188,6 @@
 			path = Global;
 			sourceTree = "<group>";
 		};
-		CE5A6CEE1BC0D6FE00A05C97 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		CE5A6CEF1BC0D6FE00A05C97 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,8 +198,6 @@
 		CE5A6CF01BC0D6FE00A05C97 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				CEC78D4A1BC185C6005ADCF4 /* TSServiceBase.h */,
-				CEC78D4B1BC185C6005ADCF4 /* TSServiceBase.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -419,7 +398,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE5A6CC11BC0C05B00A05C97 /* ViewController.m in Sources */,
-				CEC78D4C1BC185C6005ADCF4 /* TSServiceBase.m in Sources */,
 				CE5A6CBE1BC0C05B00A05C97 /* AppDelegate.m in Sources */,
 				CE5A6CBB1BC0C05B00A05C97 /* main.m in Sources */,
 			);
@@ -480,6 +458,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -515,6 +494,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -524,6 +504,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -552,6 +533,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

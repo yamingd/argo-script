@@ -204,12 +204,12 @@ sqlite_getter = {
 }
 
 fmdb_getter = {
-    'int': 'intForColumn',
-    'tinyint': 'intForColumn',
-    'smallint': 'intForColumn',
-    'mediumint': 'intForColumn',
+    'int': 'intForColumnIndex',
+    'tinyint': 'intForColumnIndex',
+    'smallint': 'intForColumnIndex',
+    'mediumint': 'intForColumnIndex',
     'bigint': 'longForColumnIndex',
-    'bit': 'intForColumn',
+    'bit': 'intForColumnIndex',
 
     'float': 'doubleForColumnIndex',
     'decimal': 'doubleForColumnIndex',

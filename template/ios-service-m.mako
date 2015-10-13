@@ -13,7 +13,7 @@
 #pragma mark - Query/Find
 
 +(void)findLatest:(long)cursorId withCallback:(APIResponseBlock)block{
-    NSArray* list = [[PB{{_tbi_.entityName}}Mapper instance] selectLimit:@"findLatest" where:@"id > ?" order:@"id desc" withArgs:@[@(cursorId), kListPageSize, @(0)] withRef:YES];
+    NSArray* list = [[PB{{_tbi_.entityName}}Mapper instance] selectLimit:@"findLatest" where:@"id > ?" order:@"id desc" withArgs:@[@(cursorId), @(kListPageSize), @(0)] withRef:YES];
     if (list.count > 0) {
         block(list, nil, YES);
         if (list.count == kListPageSize) {
@@ -38,7 +38,7 @@
 // 读取更多的(page从2开始)
 +(void)findMore:(int)page cursorId:(long)cursorId withCallback:(APIResponseBlock)block{
     
-    NSArray* list = [[PB{{_tbi_.entityName}}Mapper instance] selectLimit:@"findMore" where:@"id < ?" order:@"id desc" withArgs:@[@(cursorId), kListPageSize, @(0)] withRef:YES];
+    NSArray* list = [[PB{{_tbi_.entityName}}Mapper instance] selectLimit:@"findMore" where:@"id < ?" order:@"id desc" withArgs:@[@(cursorId), @(kListPageSize), @(0)] withRef:YES];
     if (list.count > 0) {
         block(list, nil, YES);
         if (list.count == kListPageSize) {
@@ -61,9 +61,9 @@
 }
 
 // 主键查找
-+(void)findBy:(long)itemId withRef:(BOOL)withRef withCallback:(APIResponseBlock*)block{
++(void)findBy:(long)itemId withRef:(BOOL)withRef withCallback:(APIResponseBlock)block{
     //1. 从本地读
-    PB{{_tbi_.entityName}}* item = [[PB{{_tbi_.entityName}}Mapper instance] get:itemId withRef:withRef];
+    PB{{_tbi_.entityName}}* item = [[PB{{_tbi_.entityName}}Mapper instance] get:@(itemId) withRef:withRef];
     if (item) {
         block(item, nil, YES);
         return;
@@ -73,7 +73,7 @@
 }
 
 // 从服务器读取
-+(void)loadBy:(long)itemId withCallback:(APIResponseBlock*)block{
++(void)loadBy:(long)itemId withCallback:(APIResponseBlock)block{
     
     //2. 从服务器读
     NSString* url = [NSString stringWithFormat:@"/{{_tbi_.mvc_url()}}/%ld", itemId];
@@ -115,7 +115,7 @@
     }
 }
 
-+(void)parseCreateReponse:(id)response error:(NSError*)error withCallback:(APIResponseBlock)block{
++(void)parseCreateReponse:(PAppResponse*)response error:(NSError*)error withCallback:(APIResponseBlock)block{
     if (error) {
         block(nil, error, NO);
     }else{
@@ -162,7 +162,7 @@
             block(nil, error, NO);
         }else{
             if (response.code == 200) {
-                [[PB{{_tbi_.entityName}}Mapper instance] removeBy:item.id];
+                [[PB{{_tbi_.entityName}}Mapper instance] removeBy:@(item.id)];
             }
             block(response, error, NO);
         }
