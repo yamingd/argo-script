@@ -1,0 +1,30 @@
+
+task mergeAllDocClasses << {
+    copy{
+        into 'build/classes'
+        from '../model/build/classes'
+        from '../service/build/classes'
+        from '../serviceImpl/build/classes'
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from sourceSets.main.allSource
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+javadoc{
+    options.encoding = 'UTF-8'
+    options.charSet = 'UTF-8'
+}

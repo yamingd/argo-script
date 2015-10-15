@@ -12,6 +12,7 @@
        ">
 
     <bean class="com.argo.db.beans.MySqlMSDataSourceBeanFactoryPostProcessor" />
+    <bean class="com.argo.service.beans.RedisBucketBeanFactory" />
 
     <context:annotation-config />
     <aop:aspectj-autoproxy />
@@ -19,7 +20,7 @@
 
     <context:component-scan base-package="com.argo">
         <context:include-filter type="regex" expression="com.argo.service.common.*"/>
-        <context:include-filter type="regex" expression="com.argo.redis.*"/>
+        <context:include-filter type="regex" expression="com.argo.security.password.*"/>
     </context:component-scan>
 
     <context:component-scan base-package="com._company_._project_">

@@ -203,6 +203,14 @@ android_sqlite_getter = {
     'byte[]': 'getBlob'
 }
 
+pb_sqlite_getter = {
+    'int32': 'getInt',
+    'int64': 'getLong',
+    'float': 'getFloat',
+    'double': 'getDouble',
+    'string': 'getString'
+}
+
 fmdb_getter = {
     'int': 'intForColumnIndex',
     'tinyint': 'intForColumnIndex',

@@ -22,7 +22,7 @@ public abstract class Abstract{{_tbi_.java.name}} implements Serializable {
     
 {% for col in _tbi_.columns %}
     /**
-     * {{col.comment}}
+     * {{col.docComment}}
      * {{col.typeName}} {{col.defaultTips}}
      */
     {{col.columnMark}}private {{col.java.typeName}} {{col.name}};
@@ -30,7 +30,7 @@ public abstract class Abstract{{_tbi_.java.name}} implements Serializable {
 
 {% for col in _tbi_.columns %}
     /**
-     * {{col.comment}}
+     * {{col.docComment}}
      * {{col.defaultTips}}
      */
     public {{col.java.typeName}} get{{ col.java.getterName }}(){
@@ -43,7 +43,10 @@ public abstract class Abstract{{_tbi_.java.name}} implements Serializable {
 
     /****引用实体****/
 {% for ref in _tbi_.refFields %}
-
+    /**
+     *
+     * {{ref.docComment}}
+     */
     private {{ref.java.typeName}} {{ref.varName}};
     public {{ref.java.typeName}} get{{ ref.java.getterName }}(){
         return this.{{ ref.varName }};

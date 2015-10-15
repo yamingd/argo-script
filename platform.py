@@ -213,6 +213,7 @@ class MySqlRef(object):
         self.varNameC = common.upper_first(self.varName)
         self.repeated = column.name.endswith('s')
         self.package = column.package
+        self.docComment = '@see %s. %s' % (self.table.java.name, self.comment[i+1:])
 
         #self.varNameC = upper_first(self.varName)
         #self.mark = 'optional'  # single
@@ -255,7 +256,8 @@ class MySqlColumn(object):
         if self.default == 'CURRENT_TIMESTAMP':
             self.default = None
         self.valType = self.typeName.split('(')[0]
-    
+        self.docComment = self.comment.replace('@', '#')
+
     @property
     def defaultTips(self):
         if self.default:

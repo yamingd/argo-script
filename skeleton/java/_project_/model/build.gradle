@@ -1,5 +1,5 @@
 description = 'model, protobuf'
 
-//dependencies {
-//    compile 'com.github.yamingd.argo:argo-core:1.0'
-//}
+dependencies {
+    compile 'com.google.protobuf:protobuf-java:2.6.0'
+}

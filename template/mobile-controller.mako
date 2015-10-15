@@ -33,9 +33,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * <h1>{{ _tbi_.java.name }} HTTP接口 </h1>
+ *
  * Created by {{_user_}} on {{_now_}}.
  */
-
 @Controller
 @RequestMapping("/m/{{_tbi_.mvc_url()}}")
 public class Mobile{{_tbi_.java.name}}Controller extends MobileBaseController {
@@ -43,6 +44,20 @@ public class Mobile{{_tbi_.java.name}}Controller extends MobileBaseController {
     @Autowired
     private {{_tbi_.java.name}}Service {{_tbi_.java.varName}}Service;
     
+    /**
+     * <p>读取{{ _tbi_.java.name }}列表
+     * <p>
+     * <p>Http Url: /m/{{_tbi_.mvc_url()}}/{page}/{ts}
+     * <p>Http Method: GET
+     * <p>
+     * @param actResponse 默认参数. {@link ProtobufResponse}
+     * @see com.argo.web.protobuf.ProtobufResponse
+     * @param page 页码(从1开始). Integer
+     * @param ts 用于分页, 记录时间游标或主键游标. Long
+     * @return 返回实体. {@link PB{{_tbi_.java.name}}}
+     * @see PB{{_tbi_.java.name}}
+     * @throws Exception 这里抛出无法预测的异常. 业务异常都要处理，把异常的业务代号发回移动端
+     */
     @RequestMapping(value="{page}/{ts}", method=RequestMethod.GET, produces = Enums.PROTOBUF_VALUE)
     @ResponseBody
     public PAppResponse list(ProtobufResponse actResponse, @PathVariable Integer page, @PathVariable Long ts) throws Exception {
@@ -62,6 +77,19 @@ public class Mobile{{_tbi_.java.name}}Controller extends MobileBaseController {
         return actResponse.build();
     }
 
+    /**
+     * <p>读取{{ _tbi_.java.name }}详情
+     * <p>
+     * <p>Http Url: /m/{{_tbi_.mvc_url()}}/{id}
+     * <p>Http Method: GET
+     * <p>
+     * @param actResponse 默认参数. {@link ProtobufResponse}
+     * @see ProtobufResponse
+     * @param id 记录主键id. {{_tbi_.pk.java.typeName}}
+     * @return 返回 {@link PB{{_tbi_.java.name}}}
+     * @see PB{{_tbi_.java.name}}
+     * @throws Exception 这里抛出无法预测的异常. 业务异常都要处理，把异常的业务代号发回移动端
+     */
     @RequestMapping(value="{id}", method=RequestMethod.GET, produces = Enums.PROTOBUF_VALUE)
     @ResponseBody
     public PAppResponse view(ProtobufResponse actResponse, @PathVariable {{_tbi_.pk.java.typeName}} id) throws Exception {
@@ -81,6 +109,24 @@ public class Mobile{{_tbi_.java.name}}Controller extends MobileBaseController {
         return actResponse.build();
     }
 
+    /**
+     * <p>新建{{ _tbi_.java.name }}记录
+     * <p>
+     * <p>提交的参数结构. {@link Mobile{{ _tbi_.java.name }}Form}
+     * @see Mobile{{ _tbi_.java.name }}Form
+     * <p>Http Url: /m/{{_tbi_.mvc_url()}}/
+     * <p>Http Method: POST
+     * <p>
+     * @param form 默认参数, 有传入的参数自动构造. 
+     * @see Mobile{{ _tbi_.java.name }}Form
+     * @param result 默认参数, 传入参数的自动校验结果. 
+     * @see BindingResult
+     * @param actResponse 默认参数 
+     * @see ProtobufResponse
+     * @return 返回 {@link PB{{_tbi_.java.name}}}
+     * @see PB{{_tbi_.java.name}}
+     * @throws Exception 这里抛出无法预测的异常. 业务异常都要处理，把异常的业务代号发回移动端
+     */
     @RequestMapping(value="/", method = RequestMethod.POST, produces = Enums.PROTOBUF_VALUE)
     @ResponseBody
     public PAppResponse postCreate(@Valid Mobile{{_tbi_.java.name}}Form form, BindingResult result, ProtobufResponse actResponse) throws Exception {
@@ -106,6 +152,25 @@ public class Mobile{{_tbi_.java.name}}Controller extends MobileBaseController {
         return actResponse.build();
     }
 
+    /**
+     * <p>修改{{ _tbi_.java.name }}记录
+     * <p>
+     * <p>提交的参数结构. Mobile{{ _tbi_.java.name }}Form
+     * @see Mobile{{ _tbi_.java.name }}Form
+     * <p>Http Url: /m/{{_tbi_.mvc_url()}}/{id}
+     * <p>Http Method: PUT
+     * <p>
+     * @param form 默认参数, 由传入的参数自动构造. 
+     * @see Mobile{{ _tbi_.java.name }}Form
+     * @param result 默认参数, 传入参数的自动校验结果. 
+     * @see BindingResult
+     * @param id 记录主键, {{_tbi_.pk.java.typeName}}
+     * @param actResponse 默认参数 {@link ProtobufResponse}
+     * @see ProtobufResponse
+     * @return 返回{@link PB{{_tbi_.java.name}}}
+     * @see PB{{_tbi_.java.name}}
+     * @throws Exception 这里抛出无法预测的异常. 业务异常都要处理，把异常的业务代号发回移动端
+     */
     @RequestMapping(value="{id}", method = RequestMethod.PUT, produces = Enums.PROTOBUF_VALUE)
     @ResponseBody
     public PAppResponse postSave(@Valid Mobile{{_tbi_.java.name}}Form form, BindingResult result, @PathVariable {{_tbi_.pk.java.typeName}} id, ProtobufResponse actResponse) throws Exception {
@@ -132,6 +197,19 @@ public class Mobile{{_tbi_.java.name}}Controller extends MobileBaseController {
         return actResponse.build();
     }
 
+    /**
+     * <p>删除{{ _tbi_.java.name }}记录
+     * <p>
+     * <p>Http Url: /m/{{_tbi_.mvc_url()}}/{id}
+     * <p>Http Method: DELETE
+     * <p>
+     * @param id 记录主键, {{_tbi_.pk.java.typeName}}
+     * @param actResponse 默认参数. {@link ProtobufResponse} 
+     * @see ProtobufResponse
+     * @return 返回{@link PAppResponse}. 
+     * @see PAppResponse
+     * @throws Exception 这里抛出无法预测的异常. 业务异常都要处理，把异常的业务代号发回移动端
+     */
     @RequestMapping(value="{id}", method = RequestMethod.DELETE, produces = Enums.PROTOBUF_VALUE)
     @ResponseBody
     public PAppResponse postRemove(@PathVariable {{_tbi_.pk.java.typeName}} id, ProtobufResponse actResponse) throws Exception {

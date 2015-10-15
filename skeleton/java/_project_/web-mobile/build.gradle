@@ -9,10 +9,18 @@ dependencies {
     compile project(':common')
     compile project(':service')
     compile project(':serviceImpl')
-    compile 'com.github.yamingd.argo:argo-web:2.1'
+    compile 'com.github.yamingd.argo:argo-web:2.2.1'
 }
 
 jettyRun {
+    httpPort=8380
+    stopPort=8381
+    contextPath ="/"
+    reload ="automatic"
+    scanIntervalSeconds = 1
+}
+
+jettyRunWar {
     httpPort=8380
     stopPort=8381
     contextPath ="/"
