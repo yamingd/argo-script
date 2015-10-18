@@ -58,7 +58,6 @@ def gen_mapperImpl(prjinfo, minfo):
     kwargs['minfo'] = minfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     kwargs['_module_'] = minfo['ns']
-    kwargs['_refs_'] = minfo['ref']
 
     for table in minfo['tables']:
         fname = os.path.join(fpath, table.java.name + 'MapperImpl.java')

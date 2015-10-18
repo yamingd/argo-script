@@ -36,7 +36,6 @@ def gen_proto(prjinfo, minfo, base_folder, lang):
     kwargs['minfo'] = minfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     kwargs['_module_'] = minfo['ns']
-    kwargs['_refs_'] = minfo['ref']
 
     # protobuf files
     outfolder = os.path.join(prjinfo._root_, base_folder)

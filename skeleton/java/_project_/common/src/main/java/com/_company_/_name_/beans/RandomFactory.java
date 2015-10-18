@@ -41,7 +41,7 @@ public class RandomFactory {
     /**
      *
      * @param max
-     * @return
+     * @return int
      */
     public int any(int max){
         return random.nextInt(max);
@@ -50,7 +50,7 @@ public class RandomFactory {
     /**
      *
      * @param count
-     * @return
+     * @return String
      */
     public String anyString(int count){
         char[] ret = new char[count];
@@ -65,7 +65,7 @@ public class RandomFactory {
      *
      * @param type
      * @param pkId
-     * @return
+     * @return long
      */
     public long seq(Class<?> type, long pkId){
         String key = String.format(RND_CACHE_KEY, type.getName(), pkId);

@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import org.springframework.context.annotation.Scope;
+import com.argo.annotation.ApiParameterDoc;
 
 @Scope("prototype")
 public class Admin{{_tbi_.java.name}}Form {

@@ -12,7 +12,7 @@ public class EpochTime {
     /**
      * 返回日期
      * @param ts
-     * @return
+     * @return Date
      */
     public static Date create(int ts){
         long ts0 = ts + epoch;
@@ -31,7 +31,7 @@ public class EpochTime {
     /**
      * 返回时间戳
      * @param date
-     * @return
+     * @return Long
      */
     public static Long create(Date date){
         return date.getTime()/1000 - epoch;

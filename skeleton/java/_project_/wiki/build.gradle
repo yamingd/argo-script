@@ -1,0 +1,22 @@
+
+description = 'Web All'
+
+dependencies {
+    compile project(':web-mobile')
+    compile 'com.github.yamingd.argo:argo-web:2.2.1'
+    apt 'com.github.yamingd.argo:argo-doclet:2.0.0'
+}
+
+task genApiDoc(dependsOn: build){
+    copy {
+        into './apidoc'
+        from '../web-mobile/build/classes/main/apidoc'
+    }
+
+    copy {
+        into './apidoc/proto'
+        from('../model/src/script') {
+            include "*.proto"
+        }
+    }
+}

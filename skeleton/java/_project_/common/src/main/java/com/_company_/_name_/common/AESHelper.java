@@ -15,7 +15,7 @@ public final class AESHelper {
      * 加密
      *
      * @param content 需要加密的内容
-     * @return
+     * @return String
      */
     public static String encrypt(String content) {
         return aesProvider.encrypt(content);
@@ -23,7 +23,7 @@ public final class AESHelper {
 
     /**解密
      * @param content  待解密内容
-     * @return
+     * @return String
      */
     public static String decrypt(String content) {
         return aesProvider.decrypt(content);

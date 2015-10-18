@@ -213,7 +213,7 @@ class MySqlRef(object):
         self.varNameC = common.upper_first(self.varName)
         self.repeated = column.name.endswith('s')
         self.package = column.package
-        self.docComment = '@see %s. %s' % (self.table.java.name, self.comment[i+1:])
+        self.docComment = '#see %s. %s' % (self.table.java.name, self.comment[i+1:])
 
         #self.varNameC = upper_first(self.varName)
         #self.mark = 'optional'  # single
@@ -296,9 +296,7 @@ class MySqlColumn(object):
 
     @property
     def validate(self):
-        if self.null and self.max is None:
-            return u''
-        hint = []
+        hint = ["@ApiParameterDoc(\"%s\")" % (self.docComment, )]
         name = common.gen_name(self.name, upperFirst=False)
         if self.max:
             hint.append(u'@Length(min=0, max=%s, message="%s_too_long")' % (

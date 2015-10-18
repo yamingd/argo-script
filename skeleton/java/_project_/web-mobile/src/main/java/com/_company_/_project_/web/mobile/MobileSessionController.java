@@ -1,5 +1,8 @@
 package com._company_._project_.web.mobile;
 
+import com.argo.annotation.ApiDoc;
+import com.argo.annotation.ApiMethodDoc;
+import com.argo.annotation.ApiParameterDoc;
 import com.argo.security.UserIdentity;
 import com.argo.security.exception.PasswordInvalidException;
 import com.argo.security.exception.UnauthorizedException;
@@ -18,18 +21,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.validation.Valid;
 
 /**
- * Created by yamingd on 9/8/15.
+ * Created by _user_.
  */
+@ApiDoc("用户会话")
 @Controller
-@RequestMapping("/m/sessions")
+@RequestMapping("/m/sessions/")
 public class MobileSessionController extends MobileBaseController {
 
     @Autowired
     private AuthorizationService<UserIdentity> authorizationService;
 
-    @RequestMapping(value="/", method = RequestMethod.POST, produces = Enums.PROTOBUF_VALUE)
+    @ApiMethodDoc(value = "密码登录", returnClass = UserIdentity.class)
+    @RequestMapping(method = RequestMethod.POST, produces = Enums.PROTOBUF_VALUE)
     @ResponseBody
-    public PAppResponse login(@Valid MobileSessionForm form, BindingResult result,
+    public PAppResponse login(@ApiParameterDoc("登录表单") @Valid MobileSessionForm form, BindingResult result,
                                    ProtobufResponse actResponse) throws Exception {
 
         if (result.hasErrors()){
@@ -53,9 +58,10 @@ public class MobileSessionController extends MobileBaseController {
         return actResponse.build();
     }
 
+    @ApiMethodDoc(value = "自动登录", returnClass = UserIdentity.class)
     @RequestMapping(value="{id}", method = RequestMethod.PUT, produces = Enums.PROTOBUF_VALUE)
     @ResponseBody
-    public PAppResponse autologin(@PathVariable Long id,
+    public PAppResponse autologin(@ApiParameterDoc("用户id") @PathVariable Long id,
                               ProtobufResponse actResponse) throws Exception {
 
         try{
@@ -73,9 +79,10 @@ public class MobileSessionController extends MobileBaseController {
         return actResponse.build();
     }
 
+    @ApiMethodDoc(value = "退出登录", returnClass = PAppResponse.class)
     @RequestMapping(value="{id}", method = RequestMethod.DELETE, produces = Enums.PROTOBUF_VALUE)
     @ResponseBody
-    public PAppResponse signout(@PathVariable Long id,
+    public PAppResponse signout(@ApiParameterDoc("用户id") @PathVariable Long id,
                                   ProtobufResponse actResponse) throws Exception {
 
         try{
