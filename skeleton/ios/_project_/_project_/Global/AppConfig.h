@@ -12,6 +12,8 @@
 #define kListPageSize 20
 #define kAppName @"_project_"
 
+#define kAesSeed @"_project_"
+
 #define kQQKey @""
 #define kQQSecret @""
 

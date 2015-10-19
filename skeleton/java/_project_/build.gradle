@@ -45,11 +45,11 @@ subprojects {
 
 
     dependencies {
-        compile 'com.github.yamingd.argo:argo-security:2.2.1'
+        compile 'com.github.yamingd.argo:argo-security:2.2.2'
         compile 'com.github.yamingd.argo:argo-util:2.0'
         compile 'com.github.yamingd.argo:argo-redis:2.1'
         compile 'com.github.yamingd.argo:argo-db:2.2.0'
-        compile 'com.github.yamingd.argo:annotations:2.1'
+        compile 'com.github.yamingd.argo:annotations:2.1.1'
 
         //compile 'com.github.yamingd.qpush:client:1.2'
 

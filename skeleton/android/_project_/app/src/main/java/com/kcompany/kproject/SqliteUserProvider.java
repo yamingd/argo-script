@@ -30,13 +30,13 @@ public class SqliteUserProvider implements Provider<SqliteContext> {
     public synchronized SqliteContext get() {
 
         if (null == sqliteContext){
-            sqliteContext = new SqliteContext(this.context, appSession.getSalt());
+            sqliteContext = new SqliteContext(this.context, "_project_", appSession.getSalt());
             sqliteContext.setTag("default");
-
             SqliteEngine.add(sqliteContext);
+            PBMapperInit.prepare();
         }
 
-        sqliteContext.setUserId(appSession.get().getUserId() + "");
+        //sqliteContext.setUserId(appSession.get().getUserId() + "");
 
         Timber.d("%s SqliteUserProvider, %s", this, sqliteContext);
 
@@ -51,8 +51,8 @@ public class SqliteUserProvider implements Provider<SqliteContext> {
         close();
         if (signIn) {
             get();
-            PBMapperInit.prepare();
-            sqliteContext.clearTables();
+            //PBMapperInit.prepare();
+            //sqliteContext.clearTables();
         }
     }
 

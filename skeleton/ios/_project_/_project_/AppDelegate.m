@@ -51,8 +51,9 @@
 
 - (void)application:(UIApplication *)application prepareAppSession:(NSDictionary *)launchOptions{
     [super application:application prepareAppSession:launchOptions];
-    [[AppSecurity instance] config:kAppCookieId salt:kAppCookieSalt];
-    [[APIClient shared] initWithApiBase:kAppAPIBaseUrl];
+    [[AppSecurity instance] config:kAppCookieId salt:kAppCookieSalt aesSeed:kAesSeed];
+    APIClient* client = [[APIClient shared] initWithApiBase:kAppAPIBaseUrl];
+    [client test];
 }
 - (void)application:(UIApplication *)application prepareComponents:(NSDictionary *)launchOptions{
     
@@ -63,9 +64,7 @@
 }
 - (void)application:(UIApplication *)application prepareDatabase:(NSDictionary *)launchOptions{
     [super application:application prepareDatabase:launchOptions];
-    if ([AppSession current].isSignIn) {
-        [[PBMapperInit instance] start];
-    }
+    [[PBMapperInit instance] start];
 }
 - (void)application:(UIApplication *)application prepareOpenControllers:(NSDictionary *)launchOptions{
     [super application:application prepareOpenControllers:launchOptions];
@@ -87,7 +86,6 @@
 
 -(void)onAccountSignin:(NSNotification*)notification{
     //NSDictionary *dictionary = [notification userInfo];
-    [[PBMapperInit instance] start];
 }
 
 -(void)onAccountSignout:(NSNotification*)notification{

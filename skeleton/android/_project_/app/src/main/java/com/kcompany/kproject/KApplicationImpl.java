@@ -155,7 +155,7 @@ public class KApplicationImpl extends BootstrapApplication {
         boolean crashUpload = false;
         try {
             ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-            crashUpload = appInfo.metaData.getBoolean("com.inno.k12.crashUpload");
+            crashUpload = appInfo.metaData.getBoolean(".crashUpload");
             Timber.d("%s crashUpload: %s", this, crashUpload);
         } catch (PackageManager.NameNotFoundException e) {
 
@@ -167,7 +167,7 @@ public class KApplicationImpl extends BootstrapApplication {
         BootConstants.DEBUG = BuildConfig.DEBUG;
         BootConstants.pringHttpTS = !crashUpload;
         SQLiteDatabase.printSQLTS = !crashUpload;
-        BootConstants.setAppName("k12");
+        BootConstants.setAppName("_project_");
         SDCardUtils.ensureRootFolder(getApplicationContext());
         CrashUploadService.uploadUrl = "/m/crash/collect/android";
 

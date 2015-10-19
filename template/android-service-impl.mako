@@ -49,7 +49,7 @@ public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {
             eventBus.post(event);
         }
 
-        final String url = String.format("/{{_tbi_.mvc_url()}}/1/%d", cursorId);
+        final String url = String.format("/m/{{_tbi_.mvc_url()}}/1/%d", cursorId);
         apiClientProvider.asyncGet(url, null, new APICallback() {
             @Override
             public void onResponse(PAppResponse response, Request request, ApiError error) {
@@ -95,7 +95,7 @@ public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {
             }
         }
 
-        final String url = String.format("/{{_tbi_.mvc_url()}}/%d/%d", page, cursorId);
+        final String url = String.format("/m/{{_tbi_.mvc_url()}}/%d/%d", page, cursorId);
         apiClientProvider.asyncGet(url, null, new APICallback() {
             @Override
             public void onResponse(PAppResponse response, Request request, ApiError error) {
@@ -144,7 +144,7 @@ public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {
 
     @Override
     public void loadBy({{_tbi_.pk.valType}} itemId) {
-        final String url = String.format("/{{_tbi_.mvc_url()}}/%d", itemId);
+        final String url = String.format("/m/{{_tbi_.mvc_url()}}/%d", itemId);
         apiClientProvider.asyncGet(url, null, new APICallback() {
             @Override
             public void onResponse(PAppResponse response, Request request, ApiError error) {
@@ -180,7 +180,7 @@ public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {
 
     @Override
     public void create({{_tbi_.pb.name}} item) {
-        final String url = "/{{_tbi_.mvc_url()}}/";
+        final String url = "/m/{{_tbi_.mvc_url()}}/";
         PBuilder builder = PBuilder.i();
         //构造Http参数
         apiClientProvider.asyncPOST(url, builder.vs(), new APICallback() {
@@ -218,7 +218,7 @@ public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {
 
     @Override
     public void save({{_tbi_.pb.name}} item) {
-        final String url = String.format("/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pk.nameC}}());
+        final String url = String.format("/m/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pk.nameC}}());
         PBuilder builder = PBuilder.i();
         //构造Http参数
         apiClientProvider.asyncPUT(url, builder.vs(), new APICallback() {
@@ -256,7 +256,7 @@ public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {
 
     @Override
     public void remove(final {{_tbi_.pb.name}} item) {
-        final String url = String.format("/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pk.nameC}}());
+        final String url = String.format("/m/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pk.nameC}}());
         PBuilder builder = PBuilder.i();
         //构造Http参数
         apiClientProvider.asyncDelete(url, builder.vs(), new APICallback() {

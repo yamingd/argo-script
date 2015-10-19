@@ -1,18 +1,20 @@
 package com.{{prj._company_}}.{{prj._name_}}.service.impl.{{_module_}};
 
+import com.argo.collection.Pagination;
 import com.argo.db.exception.EntityNotFoundException;
 import com.argo.security.UserIdentity;
 import com.argo.service.ServiceException;
-import com.argo.collection.Pagination;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}}.{{_tbi_.java.name}}Mapper;
 import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.java.name}};
 import com.{{prj._company_}}.{{prj._name_}}.service.{{_module_}}.{{_tbi_.java.name}}Service;
 import com.{{prj._company_}}.{{prj._name_}}.service.impl.ServiceBaseImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by {{_user_}} on {{_now_}}.
@@ -58,8 +60,25 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
 {% for rc in _tbi_.refFields %}
 {% if not rc.repeated %}
     @Override
-    public Pagination<{{_tbi_.java.name}}> findBy{{rc.column.nameC}}(Pagination<{{_tbi_.java.name}}> resultSet, {{rc.column.java.typeName}} {{rc.column.name}}){
-
+    public Pagination<{{_tbi_.java.name}}> findBy{{rc.column.nameC}}(UserIdentity user, Pagination<{{_tbi_.java.name}}> resultSet, {{rc.column.java.typeName}} {{rc.column.name}}) throws ServiceException {
+        Object[] params = new Object[]{ {{rc.column.name}}, resultSet.getStart()};
+        List<{{_tbi_.pk.java.typeName}}> ids = null;
+        try {
+            if (1 == resultSet.getIndex()){
+                if (0 == resultSet.getStart()){
+                    ids = {{_tbi_.java.varName}}Mapper.selectPks(null, "{{rc.column.name}}=? and {{_tbi_.pk.name}} > ?", "{{_tbi_.pk.name}} desc", resultSet.getSize(), params);
+                }else {
+                    ids = {{_tbi_.java.varName}}Mapper.selectPks(null, "{{rc.column.name}}=? and {{_tbi_.pk.name}} > ?", "{{_tbi_.pk.name}} asc", resultSet.getSize(), params);
+                    Collections.reverse(ids);
+                }
+            }else {
+                ids = {{_tbi_.java.varName}}Mapper.selectPks(null, "{{rc.column.name}}=? and {{_tbi_.pk.name}} < ?", "{{_tbi_.pk.name}} desc", resultSet.getSize(), params);
+            }
+            List<{{_tbi_.java.name}}> list = {{_tbi_.java.varName}}Mapper.selectRows(null, ids, false);
+            resultSet.setItems(list);
+        } catch (DataAccessException e) {
+            throw new ServiceException(e, 60500); // 业务错误代号
+        }
         return resultSet;
     }
 

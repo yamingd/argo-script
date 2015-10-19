@@ -12,7 +12,7 @@ public class Home{{_tbi_.java.name}}Form {
     
 {% for col in _cols_ %}
     /**
-     * {{col.comment}}
+     * {{col.docComment}}
      * {{col.typeName}}
      */
     {{col.validate}}private {{col.java.typeName}} {{col.name}};
@@ -20,7 +20,7 @@ public class Home{{_tbi_.java.name}}Form {
 
 {% for col in _cols_ %}
     /**
-     * {{col.comment}}
+     * {{col.docComment}}
      */
     public {{col.java.typeName}} get{{ col.java.getterName }}(){
         return this.{{ col.name }};

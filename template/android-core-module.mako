@@ -16,6 +16,8 @@ import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
 
+import com.{{prj._company_}}.{{prj._name_}}.KSessionImpl;
+
 {% for m in prj._modules_ %}
 {% for tb in m['tables'] %}
 import com.{{prj._company_}}.{{prj._name_}}.service.{{ tb.package }}.{{tb.pb.name}}Service;
@@ -50,7 +52,7 @@ public class CoreModule {
 
         @AppScope
         @Provides
-        AppSession provideAppSession(AppSessionSqliteImpl appSessionImpl) {
+        AppSession provideAppSession(KSessionImpl appSessionImpl) {
                 return appSessionImpl;
         }
 

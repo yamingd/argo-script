@@ -4,7 +4,7 @@ platform :ios, '8.0'
 inhibit_all_warnings!
 use_frameworks!
 
-pod 'iOSBootstrap', '~> 1.3.3'
+pod 'iOSBootstrap', '~> 1.3.6'
 pod 'AFNetworking', '~> 2.0'
 pod 'AFNetworkActivityLogger', '~> 2.0'
 pod 'Appirater'

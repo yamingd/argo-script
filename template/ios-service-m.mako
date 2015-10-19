@@ -21,7 +21,7 @@
         }
     }
     
-    NSString* url = [NSString stringWithFormat:@"/{{_tbi_.mvc_url()}}/1/%ld", cursorId];
+    NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/1/%ld", cursorId];
     [[APIClient shared] getPath:url params:nil withCallback:^(PAppResponse* response, NSError *error) {
         if (error) {
             block(nil, error, NO);
@@ -46,7 +46,7 @@
         }
     }
     
-    NSString* url = [NSString stringWithFormat:@"/{{_tbi_.mvc_url()}}/%d/%ld", page, cursorId];
+    NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/%d/%ld", page, cursorId];
     [[APIClient shared] getPath:url params:nil withCallback:^(PAppResponse* response, NSError *error) {
         if (error) {
             block(nil, error, NO);
@@ -76,7 +76,7 @@
 +(void)loadBy:( {{ _tbi_.pk.ios.typeName }})itemId withCallback:(APIResponseBlock)block{
     
     //2. 从服务器读
-    NSString* url = [NSString stringWithFormat:@"/{{_tbi_.mvc_url()}}/%ld", itemId];
+    NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/%ld", itemId];
     [[APIClient shared] getPath:url params:nil withCallback:^(PAppResponse* response, NSError *error) {
         if (error) {
             block(nil, error, NO);
@@ -99,7 +99,7 @@
 +(void)create:({{_tbi_.pb.name}}*)item withCallback:(APIResponseBlock)block{
     
     //1. 写入服务器，并返回
-    NSString* url = @"/{{_tbi_.mvc_url()}}/";
+    NSString* url = @"/m/{{_tbi_.mvc_url()}}/";
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     //TODO: 构造参数
     BOOL hasFile = NO;
@@ -134,7 +134,7 @@
 +(void)save:({{_tbi_.pb.name}}*)item withCallback:(APIResponseBlock)block{
     
     //1. 写入服务器，并返回
-    NSString* url = [NSString stringWithFormat:@"/{{_tbi_.mvc_url()}}/%ld", item.id];
+    NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/%ld", item.id];
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     //TODO: 构造参数
     BOOL hasFile = NO;
@@ -157,7 +157,7 @@
 +(void)remove:({{_tbi_.pb.name}}*)item withCallback:(APIResponseBlock)block{
     
     //1. 写入服务器，并返回
-    NSString* url = [NSString stringWithFormat:@"/{{_tbi_.mvc_url()}}/%ld", item.id];
+    NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/%ld", item.id];
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [[APIClient shared] deletePath:url params:params withCallback:^(PAppResponse* response, NSError *error) {
         if (error) {
