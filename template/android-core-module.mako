@@ -72,8 +72,9 @@ public class CoreModule {
                 return new UmengTrackProvider(context, appSession);
         }
 
-{% for m in prj._modules_ %}
-{% for tb in m['tables'] %}
+{% for m in prj.mobile %}
+{% for name in m['tables'] %}
+{% set tb = prj._tbrefs_[name] %}
         @AppScope
         @Provides
         {{tb.pb.name}}Service provide{{tb.pb.name}}Service({{tb.pb.name}}ServiceImpl service){

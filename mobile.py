@@ -24,7 +24,8 @@ def gen_controller(prjinfo, minfo):
     kwargs['_user_'] = prjinfo._user_
     kwargs['_module_'] = minfo['ns']
 
-    for table in minfo['tables']:
+    for name in minfo['tables']:
+        table = prjinfo._tbrefs_[name]
         kwargs['_tbi_'] = table
         kwargs['_cols_'] = [col for col in table.columns if col.isFormField]
         kwargs['_pks_'] = table.pks
@@ -42,5 +43,5 @@ def start(prjinfo):
 
     dbm.read_tables(prjinfo)
 
-    for minfo in prjinfo._modules_:
+    for minfo in prjinfo.mobile:
         gen_controller(prjinfo, minfo)

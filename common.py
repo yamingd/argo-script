@@ -28,29 +28,6 @@ def render_template(fname, tmplname, **kwargs):
     with open(fname, 'w+') as fw:
         fw.write(serve_template(tmplname, **kwargs))
 
-def read_tables0(prjinfo):
-    if prjinfo._dbload_:
-        return
-        
-    dbm.open(prjinfo._dburl_)
-    dburl = prjinfo._dburl_.split('@')[-1]
-    tbrefs = {}
-    for minfo in prjinfo._modules_:
-        tbs = []
-        for name in minfo['tables']:
-            table = dbm.get_mysql_table(minfo['db'], name)
-            table.mname=minfo['ns']
-            tbs.append(table)
-            tbrefs[name] = table
-        minfo['tables'] = tbs
-        minfo['dburl'] = dburl
-    
-    for name in tbrefs:
-        tb = tbrefs[name]
-        for c in tb.refs:
-            c.ref_obj = tbrefs[c.ref_obj.name]
-    prjinfo._dbload_ = True
-
 def format_line(line, prjinfo):
     try:
         line = line.decode('utf-8')

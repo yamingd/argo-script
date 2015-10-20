@@ -65,7 +65,8 @@ def gen_event(prjinfo, minfo):
     kwargs['_module_'] = minfo['ns']
 
     # protobuf mapper
-    for table in minfo['tables']:
+    for name in minfo['tables']:
+        table = prjinfo._tbrefs_[name]
         kwargs['_tbi_'] = table
         #
         fpath = os.path.join(outfolder, table.pb.name + "CreateResultEvent.java")
@@ -106,7 +107,8 @@ def gen_service(prjinfo, minfo):
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     kwargs['_module_'] = minfo['ns']
 
-    for table in minfo['tables']:
+    for name in minfo['tables']:
+        table = prjinfo._tbrefs_[name]
         kwargs['_tbi_'] = table
 
         fpath = os.path.join(outfolder, table.pb.name + "Service.java")
@@ -141,6 +143,8 @@ def start(prjinfo):
 
     for minfo in prjinfo._modules_:
         gen_mapper(prjinfo, minfo)
+
+    for minfo in prjinfo.mobile:
         gen_event(prjinfo, minfo)
         gen_service(prjinfo, minfo)
         

@@ -24,7 +24,8 @@ def gen_controller(prjinfo, minfo):
     kwargs['_user_'] = prjinfo._user_
     kwargs['_module_'] = minfo['ns']
 
-    for table in minfo['tables']:
+    for name in minfo['tables']:
+        table = prjinfo._tbrefs_[name]
         kwargs['_tbi_'] = table
         kwargs['_cols_'] = [col for col in table.columns if col.isFormField]
 
@@ -43,7 +44,8 @@ def gen_views(prjinfo, minfo):
         os.makedirs(fpath)
 
     # views
-    for table in minfo['tables']:
+    for name in minfo['tables']:
+        table = prjinfo._tbrefs_[name]
         folder2 = os.path.join(outfolder, table.mvc_url())
         if not os.path.exists(folder2):
             os.makedirs(folder2)
@@ -61,6 +63,6 @@ def start(prjinfo):
 
     dbm.read_tables(prjinfo)
 
-    for minfo in prjinfo._modules_:
+    for minfo in prjinfo.home:
         gen_controller(prjinfo, minfo)
         gen_views(prjinfo, minfo)

@@ -3,7 +3,7 @@ package com._company_._project_;
 /**
  * Created by _user_.
  */
-public final class Devivces {
+public final class Devices {
 
     public static final int iOSApp = 1;
 

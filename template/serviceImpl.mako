@@ -57,22 +57,38 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
         return {{_tbi_.java.varName}}Mapper.delete(null, item);
     }
 
-{% for rc in _tbi_.refFields %}
-{% if not rc.repeated %}
+{% for qf in _tbi_.funcs %}
+{% if qf.unique %}
     @Override
-    public Pagination<{{_tbi_.java.name}}> findBy{{rc.column.nameC}}(UserIdentity user, Pagination<{{_tbi_.java.name}}> resultSet, {{rc.column.java.typeName}} {{rc.column.name}}) throws ServiceException {
-        Object[] params = new Object[]{ {{rc.column.name}}, resultSet.getStart()};
+    public {{_tbi_.java.name}} findBy{{ qf.name }}(UserIdentity user, {{ qf.arglist }}) throws ServiceException {
+        Object[] params = new Object[]{ {{ qf.varlist }} };
+        List<{{_tbi_.pk.java.typeName}}> ids = null;
+        try {
+            ids = {{_tbi_.java.varName}}Mapper.selectPks(null, "{{ qf.sql_where }}", "{{_tbi_.pk.name}} desc", 1, params);
+        } catch (DataAccessException e) {
+            throw new ServiceException(e, 60500); // 业务错误代号
+        }
+        if (ids.size() == 0){
+            return null;
+        }
+        List<{{_tbi_.java.name}}> list = {{_tbi_.java.varName}}Mapper.selectRows(null, ids, false);
+        return list.get(0);
+    }
+{% else %}
+    @Override
+    public Pagination<{{_tbi_.java.name}}> findBy{{ qf.name }}(UserIdentity user, Pagination<{{_tbi_.java.name}}> resultSet, {{ qf.arglist }}) throws ServiceException {
+        Object[] params = new Object[]{ {{ qf.varlist }}, resultSet.getStart()};
         List<{{_tbi_.pk.java.typeName}}> ids = null;
         try {
             if (1 == resultSet.getIndex()){
                 if (0 == resultSet.getStart()){
-                    ids = {{_tbi_.java.varName}}Mapper.selectPks(null, "{{rc.column.name}}=? and {{_tbi_.pk.name}} > ?", "{{_tbi_.pk.name}} desc", resultSet.getSize(), params);
+                    ids = {{_tbi_.java.varName}}Mapper.selectPks(null, "{{ qf.sql_where }} and {{_tbi_.pk.name}} > ?", "{{_tbi_.pk.name}} desc", resultSet.getSize(), params);
                 }else {
-                    ids = {{_tbi_.java.varName}}Mapper.selectPks(null, "{{rc.column.name}}=? and {{_tbi_.pk.name}} > ?", "{{_tbi_.pk.name}} asc", resultSet.getSize(), params);
+                    ids = {{_tbi_.java.varName}}Mapper.selectPks(null, "{{ qf.sql_where }} and {{_tbi_.pk.name}} > ?", "{{_tbi_.pk.name}} asc", resultSet.getSize(), params);
                     Collections.reverse(ids);
                 }
             }else {
-                ids = {{_tbi_.java.varName}}Mapper.selectPks(null, "{{rc.column.name}}=? and {{_tbi_.pk.name}} < ?", "{{_tbi_.pk.name}} desc", resultSet.getSize(), params);
+                ids = {{_tbi_.java.varName}}Mapper.selectPks(null, "{{ qf.sql_where }} and {{_tbi_.pk.name}} < ?", "{{_tbi_.pk.name}} desc", resultSet.getSize(), params);
             }
             List<{{_tbi_.java.name}}> list = {{_tbi_.java.varName}}Mapper.selectRows(null, ids, false);
             resultSet.setItems(list);
@@ -81,8 +97,8 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
         }
         return resultSet;
     }
-
 {% endif %}
+
 {% endfor %}
 
 }

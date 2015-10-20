@@ -95,7 +95,8 @@ def gen_service(prjinfo, minfo):
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
     kwargs['_module_'] = minfo['ns']
     
-    for table in minfo['tables']:
+    for name in minfo['tables']:
+        table = prjinfo._tbrefs_[name]
         kwargs['_tbi_'] = table
         fname = os.path.join(fpath, table.pb.name + 'Service.h')
         render_template(fname, 'ios-service-h.mako', **kwargs)
@@ -119,8 +120,10 @@ def start(prjinfo):
 
     for minfo in prjinfo._modules_:
         gen_mapper(prjinfo, minfo)
-        gen_service(prjinfo, minfo)
-        gen_controller_folder(prjinfo, minfo)
 
     gen_mapper_init(prjinfo)
+
+    for minfo in prjinfo.mobile:
+        gen_service(prjinfo, minfo)
+        gen_controller_folder(prjinfo, minfo)
 

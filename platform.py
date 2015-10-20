@@ -136,6 +136,37 @@ class JavaRefField(object):
         else:
             return self.refJava.varName + 'Mapper'
 
+class MySqlQueryFunc(object):
+    """docstring for MySqlQueryFunc"""
+    def __init__(self, cols):
+        self.cols = cols
+        self.unique = False
+
+    @property
+    def name(self):
+        s = [common.upper_first(c.name) for c in self.cols]
+        return ''.join(s)
+    
+    @property
+    def nameWithDot(self):
+        s = [common.upper_first(c.name) for c in self.cols]
+        return ', '.join(s)
+
+    @property
+    def arglist(self):
+        s = ['%s %s' % (c.java.typeName, c.name) for c in self.cols]
+        return ', '.join(s)
+    
+    @property
+    def varlist(self):
+        s = [c.name for c in self.cols]
+        return ', '.join(s)
+    
+    @property
+    def sql_where(self):
+        s = ['%s = ?' % (c.name, ) for c in self.cols]
+        return ' and '.join(s)
+
 
 class MySqlTable(object):
     """docstring for MySqlTable"""
@@ -148,6 +179,8 @@ class MySqlTable(object):
         self.refFields = []  # MySqlRef
         self.impJavas = []   # JavaRefField
         self.impPBs = []     # PBRefField
+        self.cmaps = {}
+        self.cindex = {}
 
     def initJava(self):
         self.java = JavaClass(self)
@@ -181,6 +214,25 @@ class MySqlTable(object):
         for r in self.impPBs:
             tmp[r.pb.typeName] = r.pb.refpb
         self.impPBs = tmp.values()
+    
+    def initQueryFuncs(self):
+        vals = self.cindex.values()
+        fs = {}
+        for v in vals:
+            j = 1
+            unique = v[0]
+            for i in range(1, len(v)):
+                if i > 1:
+                    qf = MySqlQueryFunc([v[i]])
+                    qf.unique = False
+                    fs[qf.name] = qf
+                j += 1
+                qf = MySqlQueryFunc(v[1:j])
+                #print i, j, qf, qf.cols
+                qf.unique = unique if len(v) == j else False
+                fs[qf.name] = qf
+        self.funcs = fs.values()
+        #print fs
 
     def mvc_url(self):
         if hasattr(self, 'url'):
@@ -257,6 +309,7 @@ class MySqlColumn(object):
             self.default = None
         self.valType = self.typeName.split('(')[0]
         self.docComment = self.comment.replace('@', '#')
+        self.unique = None
 
     @property
     def defaultTips(self):
@@ -313,9 +366,18 @@ class MySqlColumn(object):
         get java, protobuf ready before initRef
         """
         if self.comment and self.comment.startswith('@'):
-            self.ref = MySqlRef(self, obj_pkgs)
+            i = self.comment.index('.')
+            name = self.comment[1:i]
+            table = obj_pkgs.get(name, None)
+            if table:
+                self.ref = MySqlRef(self, obj_pkgs)
+                self.query = True
+            else:
+                self.ref = None
+                self.query = True
         else:
             self.ref = None
+            self.query = False
     
     def initJava(self):
         self.java = JavaField(self)
