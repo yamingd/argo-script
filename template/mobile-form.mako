@@ -17,9 +17,9 @@ public class Mobile{{_tbi_.java.name}}Form {
 {% for col in _cols_ %}
     /**
      * {{col.docComment}}
-     * {{col.typeName}}
+     * {{col.typeName}} 
      */
-    {{col.validate}}private {{col.java.typeName}} {{col.name}};
+    {{ col.annotationMark() }}private {{col.java.typeName}} {{col.name}};
 {% endfor %}
 
 {% for col in _cols_ %}

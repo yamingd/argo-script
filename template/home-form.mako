@@ -15,7 +15,7 @@ public class Home{{_tbi_.java.name}}Form {
      * {{col.docComment}}
      * {{col.typeName}}
      */
-    {{col.validate}}private {{col.java.typeName}} {{col.name}};
+    {{ col.annotationMark() }}private {{col.java.typeName}} {{col.name}};
 {% endfor %}
 
 {% for col in _cols_ %}

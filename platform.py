@@ -341,23 +341,23 @@ class MySqlColumn(object):
     
     @property
     def isNumber(self):
-        return self.java_type in ['Integer', 'Byte', 'Short', 'Long']
+        return self.java.typeName in ['Integer', 'Byte', 'Short', 'Long']
     
     @property
     def isFormField(self):
         return self.isString or self.ref is not None
 
-    @property
-    def validate(self):
-        hint = ["@ApiParameterDoc(\"%s\")" % (self.docComment, )]
+    def annotationMark(self):
+        hint = []
+        hint.append(u"@ApiParameterDoc(\"%s\")" % (self.docComment, ))
         name = common.gen_name(self.name, upperFirst=False)
         if self.max:
             hint.append(u'@Length(min=0, max=%s, message="%s_too_long")' % (
                 self.max, name))
         if not self.null and self.isString:
-            hint.append('@NotEmpty(message="%s_empty")' % (name, ))
+            hint.append(u'@NotEmpty(message="%s_empty")' % (name, ))
         if not self.null and self.isNumber:
-            hint.append('@NotNull(message = "%s_empty")' % name)
+            hint.append(u'@NotNull(message = "%s_empty")' % name)
         hint.append('')
         return '\n\t'.join(hint)
 
