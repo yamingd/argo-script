@@ -95,28 +95,33 @@ android {
         }
 
         storeSTest {
-            manifest.srcFile 'src/main/storeTest/AndroidManifest.xml'
-            assets.srcDirs = ['src/storeTest/assets']
+            manifest.srcFile 'src/main/dev/AndroidManifest.xml'
+            assets.srcDirs = ['src/dev/assets']
         }
 
         storeSHome {
-            manifest.srcFile 'src/main/storeHome/AndroidManifest.xml'
-            assets.srcDirs = ['src/storeHome/assets']
+            manifest.srcFile 'src/main/release/AndroidManifest.xml'
+            assets.srcDirs = ['src/release/assets']
         }
 
         storeSQQ {
-            manifest.srcFile 'src/main/storeQQ/AndroidManifest.xml'
-            assets.srcDirs = ['src/storeQQ/assets']
+            manifest.srcFile 'src/main/release/AndroidManifest.xml'
+            assets.srcDirs = ['src/release/assets']
         }
 
         storeSBaidu {
-            manifest.srcFile 'src/main/storeBaidu/AndroidManifest.xml'
-            assets.srcDirs = ['src/storeBaidu/assets']
+            manifest.srcFile 'src/main/release/AndroidManifest.xml'
+            assets.srcDirs = ['src/release/assets']
         }
 
         storeS360 {
-            manifest.srcFile 'src/main/store360/AndroidManifest.xml'
-            assets.srcDirs = ['src/store360/assets']
+            manifest.srcFile 'src/main/release/AndroidManifest.xml'
+            assets.srcDirs = ['src/release/assets']
+        }
+
+        storeSMI {
+            manifest.srcFile 'src/main/release/AndroidManifest.xml'
+            assets.srcDirs = ['src/release/assets']
         }
     }
 
@@ -125,38 +130,44 @@ android {
         storeDev {
             signingConfig signingConfigs.release
             versionName defaultConfig.versionName
-            manifestPlaceholders = [lbsAPIKey: "6105ca2732b45a174a68b48025e23da9", "crashUpload": false]
+            manifestPlaceholders = [lbsAPIKey: "6105ca2732b45a174a68b48025e23da9", crashUpload: false, channel: "dev"]
         }
 
         storeSTest {
             signingConfig signingConfigs.release
             versionName defaultConfig.versionName
             applicationId 'com.inno.k12'
-            manifestPlaceholders = [lbsAPIKey: "f343664eee2f003b10aa016f3250e357", "crashUpload": true]
+            manifestPlaceholders = [lbsAPIKey: "f343664eee2f003b10aa016f3250e357", crashUpload: true, channel: "test"]
         }
 
         storeSHome {
             signingConfig signingConfigs.release
             versionName defaultConfig.versionName
-            manifestPlaceholders = [lbsAPIKey: "f343664eee2f003b10aa016f3250e357", "crashUpload": true]
+            manifestPlaceholders = [lbsAPIKey: "f343664eee2f003b10aa016f3250e357", crashUpload: true, channel: "home"]
         }
 
         storeSQQ {
             signingConfig signingConfigs.release
             versionName defaultConfig.versionName
-            manifestPlaceholders = [lbsAPIKey: "f343664eee2f003b10aa016f3250e357", "crashUpload": true]
+            manifestPlaceholders = [lbsAPIKey: "f343664eee2f003b10aa016f3250e357", crashUpload: true, channel: "qq"]
         }
 
         storeSBaidu {
             signingConfig signingConfigs.release
             versionName defaultConfig.versionName
-            manifestPlaceholders = [lbsAPIKey: "f343664eee2f003b10aa016f3250e357", "crashUpload": true]
+            manifestPlaceholders = [lbsAPIKey: "f343664eee2f003b10aa016f3250e357", crashUpload: true, channel: "baidu"]
         }
 
         storeS360 {
             signingConfig signingConfigs.release
             versionName defaultConfig.versionName
-            manifestPlaceholders = [lbsAPIKey: "f343664eee2f003b10aa016f3250e357", "crashUpload": true]
+            manifestPlaceholders = [lbsAPIKey: "f343664eee2f003b10aa016f3250e357", crashUpload: true, channel: "360"]
+        }
+
+        storeSMI {
+            signingConfig signingConfigs.release
+            versionName defaultConfig.versionName
+            manifestPlaceholders = [lbsAPIKey: "f343664eee2f003b10aa016f3250e357", crashUpload: true, channel: "mi"]
         }
     }
 }

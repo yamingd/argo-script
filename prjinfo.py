@@ -14,6 +14,7 @@ _output_ = 'output'
 _dbtype_ = 'mysql'
 _dburl_ = 'devtest:123456@127.0.0.1:3306'
 _dbload_ = False
+_tbrefs_ = {}
 
 _apps_ = ['mobile', 'home', 'wx', 'admin']
 
@@ -29,21 +30,30 @@ _modules_ = [
 	}
 ]
 
-_apps_ = [
+mobile = [
 	{
-	    'name': 'mobile',
-	    'modules': []
-	},
+	    'ns': 'account',
+	    'tables': []
+	}
+]
+
+admin = [
 	{
-		'name': 'home',
-		'modules': []
-	},
+	    'ns': 'account',
+	    'tables': []
+	}
+]
+
+home = [
 	{
-		'name': 'wx',
-		'modules': []
-	},
+	    'ns': 'account',
+	    'tables': []
+	}
+]
+
+wx = [
 	{
-		'name': 'admin',
-		'modules': []
+	    'ns': 'account',
+	    'tables': []
 	}
 ]
