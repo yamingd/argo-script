@@ -95,33 +95,33 @@ android {
         }
 
         storeSTest {
-            manifest.srcFile 'src/main/dev/AndroidManifest.xml'
-            assets.srcDirs = ['src/dev/assets']
+            manifest.srcFile 'src/devtest/AndroidManifest.xml'
+            assets.srcDirs = ['src/devtest/assets']
         }
 
         storeSHome {
-            manifest.srcFile 'src/main/release/AndroidManifest.xml'
-            assets.srcDirs = ['src/release/assets']
+            manifest.srcFile 'src/prod/AndroidManifest.xml'
+            assets.srcDirs = ['src/prod/assets']
         }
 
         storeSQQ {
-            manifest.srcFile 'src/main/release/AndroidManifest.xml'
-            assets.srcDirs = ['src/release/assets']
+            manifest.srcFile 'src/prod/AndroidManifest.xml'
+            assets.srcDirs = ['src/prod/assets']
         }
 
         storeSBaidu {
-            manifest.srcFile 'src/main/release/AndroidManifest.xml'
-            assets.srcDirs = ['src/release/assets']
+            manifest.srcFile 'src/prod/AndroidManifest.xml'
+            assets.srcDirs = ['src/prod/assets']
         }
 
         storeS360 {
-            manifest.srcFile 'src/main/release/AndroidManifest.xml'
-            assets.srcDirs = ['src/release/assets']
+            manifest.srcFile 'src/prod/AndroidManifest.xml'
+            assets.srcDirs = ['src/prod/assets']
         }
 
         storeSMI {
-            manifest.srcFile 'src/main/release/AndroidManifest.xml'
-            assets.srcDirs = ['src/release/assets']
+            manifest.srcFile 'src/prod/AndroidManifest.xml'
+            assets.srcDirs = ['src/prod/assets']
         }
     }
 
