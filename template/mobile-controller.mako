@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * 调用业务逻辑实现(service)，获取得到业务代号或业务数据
  * 业务代号存放在model模块 ErrorCodes. 通过返回值或异常代号来抓取
  * 业务数据通常为列表或单体详细
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 @ApiDoc("{{ _tbi_.java.name }} HTTP接口")
 @Controller

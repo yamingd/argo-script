@@ -27,11 +27,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 
 @Controller
-@RequestMapping("/a/{{_tbi_.mvc_url()}}")
+@RequestMapping("/a/{{_tbi_.mvc_url()}}/")
 public class Admin{{_tbi_.java.name}}Controller extends AdminBaseController {
 	
 	@Autowired
@@ -54,7 +54,7 @@ public class Admin{{_tbi_.java.name}}Controller extends AdminBaseController {
         return model;
     }
 
-	@RequestMapping(value="/", method = RequestMethod.GET)
+	@RequestMapping(value="0", method = RequestMethod.GET)
     public ModelAndView add(ModelAndView model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         model.setViewName("/admin/{{_tbi_.mvc_url()}}/add");
@@ -80,7 +80,7 @@ public class Admin{{_tbi_.java.name}}Controller extends AdminBaseController {
         return model;
     }
 
-    @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="0", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public JsonResponse postCreate(@Valid Admin{{_tbi_.java.name}}Form form, BindingResult result, JsonResponse actResponse) throws Exception {
 

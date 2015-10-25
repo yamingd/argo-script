@@ -4,6 +4,7 @@
 import string
 import mapping
 import common
+import names
 
 SQLITE3_CREATE_SQL_0 = u'create table if not exists %s(%s) WITHOUT ROWID;'
 
@@ -238,18 +239,20 @@ class MySqlTable(object):
         if hasattr(self, 'url'):
             return self.url
         url = self.name
-        if url.startswith(self.package):
+        if '_' in url and url.startswith(self.package):
             url = url[len(self.package) + 1:]
         if url.endswith('_'):
             url = url[0:-1]
-        url = '/'.join(url.split('_'))
+        url = url.split('_')
+        url[-1] = names.pluralize(url[-1])
+        url = '/'.join(url)
         if url.endswith('/'):
             url = url[0:-1]
         if len(url) > 0:
             url = self.package + '/' + url
         else:
             url = self.package
-        self.url = url + "s"
+        self.url = url
         return self.url
 
 
