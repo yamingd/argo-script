@@ -15,6 +15,7 @@
     <context:component-scan base-package="com._company_._project_.web">
         <context:include-filter type="regex" expression=".*.*Controller"/>
         <context:include-filter type="regex" expression=".*.*Handler"/>
+        <context:exclude-filter type="regex" expression=".*.*Form"/>
     </context:component-scan>
 
 </beans>

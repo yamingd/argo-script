@@ -15,7 +15,7 @@ public class Home{{_tbi_.java.name}}Form {
      * {{col.docComment}}
      * {{col.typeName}}
      */
-    {{ col.annotationMark() }}private {{col.java.typeName}} {{col.name}};
+    {{ col.annotationMark() }}private {{col.java.typeName}} {{col.java.name}};
 {% endfor %}
 
 {% for col in _cols_ %}
@@ -23,10 +23,10 @@ public class Home{{_tbi_.java.name}}Form {
      * {{col.docComment}}
      */
     public {{col.java.typeName}} get{{ col.java.getterName }}(){
-        return this.{{ col.name }};
+        return this.{{ col.java.name }};
     }
-    public void set{{col.java.setterName}}({{col.java.typeName}} {{col.name}}){
-        this.{{col.name}} = {{col.name}};
+    public void set{{col.java.setterName}}({{col.java.typeName}} {{col.java.name}}){
+        this.{{col.java.name}} = {{col.java.name}};
     }
 {% endfor %}
 

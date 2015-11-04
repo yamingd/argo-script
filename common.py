@@ -71,6 +71,12 @@ def lower_first(name):
     return name[0].lower() + name[1:]
 
 def gen_name(name, suffix=[], upperFirst=True):
+    if not '_' in name:
+        if upperFirst:
+            return name[0].upper() + name[1:]
+        else:
+            return name[0].lower() + name[1:]
+
     tmp = name.split('_')
     tmp.extend(suffix)
     tmp = [item[0].upper() + item[1:] for item in tmp]

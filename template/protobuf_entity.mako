@@ -9,7 +9,7 @@ option java_multiple_files = true;
 message {{_tbi_.pb.name}} {
 {% for col in _tbi_.columns %}
 	// {{col.comment}}
-    optional {{col.pb.typeName}} {{col.name}} = {{ col.index + 1}};
+    optional {{col.pb.typeName}} {{col.java.name}} = {{ col.index + 1}};
 {% endfor %}
 
 {% set count = _tbi_.columns | length %}

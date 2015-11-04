@@ -63,7 +63,7 @@ class JavaField(object):
     """docstring for JavaField"""
     def __init__(self, column):
         self.column = column
-        self.name = column.name
+        self.name = common.gen_name(column.name, upperFirst=False)
         self.valType = mapping.java_types.get(column.valType)
         self.setterName = common.upper_first(self.name)
         self.getterName = common.upper_first(self.name)
@@ -123,7 +123,7 @@ class JavaRefField(object):
         self.refJava = ojava
         self.typeName = ojava.name
         self.package = ojava.package
-        self.name = ref.varName
+        self.name = common.gen_name(ref.varName, upperFirst=False)
         self.nameC = common.upper_first(self.name)
         self.setterName = common.upper_first(self.name)
         self.getterName = common.upper_first(self.name)
@@ -323,6 +323,8 @@ class MySqlColumn(object):
     @property
     def columnMark(self):
         vals = []
+        if self.name != self.java.name:
+            vals.append('name=\"%s\"' % self.name)
         if self.key:
             vals.append('pk = true')
             if self.auto_increment:

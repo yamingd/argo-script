@@ -85,8 +85,8 @@ public class {{_tbi_.java.name}}Convertor extends ConvertorBase{
 
 {% for col in _tbi_.columns %}
 		if(pb.has{{col.java.setterName}}()){
-			{{col.java.typeName}} {{col.name}} = Values.get(pb.get{{col.java.setterName}}(), {{col.java.typeName}}.class);
-	    	item.set{{col.java.setterName}}({{col.name}});
+			{{col.java.typeName}} {{col.java.name}} = Values.get(pb.get{{col.java.setterName}}(), {{col.java.typeName}}.class);
+	    	item.set{{col.java.setterName}}({{col.java.name}});
 	    }
 {% endfor %}
 

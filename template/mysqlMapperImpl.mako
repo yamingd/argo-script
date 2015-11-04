@@ -119,12 +119,12 @@ public class {{_tbi_.java.name}}MapperImpl extends MySqlMapper<{{_tbi_.java.name
 
 {% for col in _tbi_.columns %}
 {% if col.java.typeDiff %}    
-        {{col.java.valType}} {{col.name}}0 = Values.getResultSetValue(rs, {{col.index + 1}}, {{col.java.valType}}.class);    
-        {{col.java.typeName}} {{col.name}} = Values.get({{col.name}}0, {{col.java.typeName}}.class);
-        item.set{{col.java.setterName}}({{col.name}});
+        {{col.java.valType}} {{col.java.name}}0 = Values.getResultSetValue(rs, {{col.index + 1}}, {{col.java.valType}}.class);    
+        {{col.java.typeName}} {{col.java.name}} = Values.get({{col.java.name}}0, {{col.java.typeName}}.class);
+        item.set{{col.java.setterName}}({{col.java.name}});
 {% else %}
-        {{col.java.typeName}} {{col.name}}0 = Values.getResultSetValue(rs, {{col.index + 1}}, {{col.java.typeName}}.class);
-        item.set{{col.java.setterName}}({{col.name}}0);
+        {{col.java.typeName}} {{col.java.name}}0 = Values.getResultSetValue(rs, {{col.index + 1}}, {{col.java.typeName}}.class);
+        item.set{{col.java.setterName}}({{col.java.name}}0);
 {% endif %}
 
 {% endfor %}        
@@ -139,11 +139,11 @@ public class {{_tbi_.java.name}}MapperImpl extends MySqlMapper<{{_tbi_.java.name
 {% if not col.auto_increment %}
 {% set index = index + 1 %}
 {% if col.java.typeDiff %} 
-        {{col.java.typeName}} {{col.name}}0 = item.get{{col.java.getterName}}();
-        {{col.java.valType}} {{col.name}} = Values.get({{col.name}}0, {{col.java.valType}}.class);
+        {{col.java.typeName}} {{col.java.name}}0 = item.get{{col.java.getterName}}();
+        {{col.java.valType}} {{col.java.name}} = Values.get({{col.java.name}}0, {{col.java.valType}}.class);
         ps.{{col.java.jdbcSetter}}({{index + 1}}, {{col.java.jdbcValueFunc}});
 {% else %}
-        {{col.java.typeName}} {{col.name}} = item.get{{col.java.getterName}}();
+        {{col.java.typeName}} {{col.java.name}} = item.get{{col.java.getterName}}();
         ps.{{col.java.jdbcSetter}}({{index + 1}}, {{col.java.jdbcValueFunc}}); 
 {% endif %}
 {% endif %}
@@ -184,8 +184,8 @@ public class {{_tbi_.java.name}}MapperImpl extends MySqlMapper<{{_tbi_.java.name
         if (null != item.get{{col.java.getterName}}()){
             s.append("{{col.name}}=?, ");
 {% if col.java.typeDiff %}        
-            {{col.java.valType}} {{col.name}} = Values.get(item.get{{col.java.getterName}}(), {{col.java.valType}}.class);
-            args.add({{col.name}});
+            {{col.java.valType}} {{col.java.name}} = Values.get(item.get{{col.java.getterName}}(), {{col.java.valType}}.class);
+            args.add({{col.java.name}});
 {% else %}
             args.add(item.get{{col.java.getterName}}());
 {% endif %}
