@@ -31,7 +31,7 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
   public static {{_tbi_.pb.name}}Mapper instance;
 
   static {
-    pkColumn = "{{_tbi_.pk.name}}";
+    pkColumn = "{{_tbi_.pk.pb.name}}";
     tableName = "{{_tbi_.name}}";
     dbContextTag = "default"; //chang this if having different sqlite db
   }
@@ -53,7 +53,7 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
   public List<String> getColumns() {
     List<String> columns = new ArrayList<String>();
 {% for c in _tbi_.columns %}
-    columns.add("{{c.name}}");
+    columns.add("{{c.pb.name}}");
 {% endfor %}
     return columns;
   }
@@ -62,7 +62,7 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
   public Map<String, String> getColumnInfo() {
     Map<String, String> columns = new ArrayMap<String, String>();
 {% for c in _tbi_.columns %}
-    columns.put("{{c.name}}", "{{c.android.typeName}}");
+    columns.put("{{c.pb.name}}", "{{c.android.typeName}}");
 {% endfor %}
     return columns;
   }

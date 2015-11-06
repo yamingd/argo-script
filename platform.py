@@ -22,7 +22,7 @@ class PBField(object):
     """docstring for PBField"""
     def __init__(self, column):
         self.column = column
-        self.name = column.name
+        self.name = common.gen_name(column.name, upperFirst=False)
         self.nameC = common.upper_first(self.name)
         self.typeName = mapping.protobuf_types.get(column.valType)
         self.mark = 'optional'
@@ -479,9 +479,9 @@ class iOSField(object):
         self.rsGetter = mapping.pb_fmdb_getter.get(self.pbType, '')
     
     def valExp(self, tag):
-        e = '@(%s.%s)' % (tag, self.column.name)
+        e = '@(%s.%s)' % (tag, self.column.pb.name)
         if self.pbType == 'string':
-            e = '%s.%s' % (tag, self.column.name)
+            e = '%s.%s' % (tag, self.column.pb.name)
         return e
 
 
@@ -491,9 +491,9 @@ class iOSClass(object):
         self.table = table
     
     def columns(self):
-        return ["@\"%s\"" % c.name for c in self.table.columns]
+        return ["@\"%s\"" % c.pb.name for c in self.table.columns]
     
     def columnsInfo(self):
-        tmp = ["@\"%s\": @\"%s\"" % (c.name, c.ios.typeName) for c in self.table.columns]
+        tmp = ["@\"%s\": @\"%s\"" % (c.pb.name, c.ios.typeName) for c in self.table.columns]
         tmp = ", ".join(tmp)
         return "@{%s}" % tmp

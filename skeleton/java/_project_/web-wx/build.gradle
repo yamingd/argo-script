@@ -9,11 +9,11 @@ dependencies {
     compile project(':common')
     compile project(':service')
     compile project(':serviceImpl')
-    compile 'com.github.yamingd.argo:argo-web:2.2.1'
-    compile 'com.github.yamingd.argo:wx-model:2.1.0'
-    compile 'com.github.yamingd.argo:wx-service:2.1.0'
-    compile 'com.github.yamingd.argo:wx-serviceImpl:2.1.0'
-    compile 'com.github.yamingd.argo:wx-controllers:2.1.0'
+    compile 'com.github.yamingd.argo:argo-web:2.3.0'
+    compile 'com.github.yamingd.argo:wx-model:2.2.0'
+    compile 'com.github.yamingd.argo:wx-service:2.2.0'
+    compile 'com.github.yamingd.argo:wx-serviceImpl:2.2.0'
+    compile 'com.github.yamingd.argo:wx-controllers:2.2.0'
 }
 
 jettyRun {

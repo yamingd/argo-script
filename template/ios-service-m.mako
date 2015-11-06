@@ -13,7 +13,7 @@
 #pragma mark - Query/Find
 
 +(void)findLatest:(long)cursorId withCallback:(APIResponseBlock)block{
-    NSArray* list = [[{{_tbi_.pb.name}}Mapper instance] selectLimit:@"findLatest" where:@"{{ _tbi_.pk.name}} > ?" order:@"{{ _tbi_.pk.name }} desc" withArgs:@[@(cursorId), @(kListPageSize), @(0)] withRef:YES];
+    NSArray* list = [[{{_tbi_.pb.name}}Mapper instance] selectLimit:@"findLatest" where:@"{{ _tbi_.pk.pb.name}} > ?" order:@"{{ _tbi_.pk.pb.name }} desc" withArgs:@[@(cursorId), @(kListPageSize), @(0)] withRef:YES];
     if (list.count > 0) {
         block(list, nil, YES);
         if (list.count == kListPageSize) {
@@ -38,7 +38,7 @@
 // 读取更多的(page从2开始)
 +(void)findMore:(int)page cursorId:(long)cursorId withCallback:(APIResponseBlock)block{
     
-    NSArray* list = [[{{_tbi_.pb.name}}Mapper instance] selectLimit:@"findMore" where:@"{{ _tbi_.pk.name }} < ?" order:@"{{ _tbi_.pk.name }} desc" withArgs:@[@(cursorId), @(kListPageSize), @(0)] withRef:YES];
+    NSArray* list = [[{{_tbi_.pb.name}}Mapper instance] selectLimit:@"findMore" where:@"{{ _tbi_.pk.pb.name }} < ?" order:@"{{ _tbi_.pk.pb.name }} desc" withArgs:@[@(cursorId), @(kListPageSize), @(0)] withRef:YES];
     if (list.count > 0) {
         block(list, nil, YES);
         if (list.count == kListPageSize) {

@@ -23,14 +23,14 @@ buildscript {
 subprojects {
 
     compileJava {
-        sourceCompatibility = 1.7
-        targetCompatibility = 1.7
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
         options.encoding = 'UTF-8'
     }
 
     compileTestJava {
-        sourceCompatibility = 1.7
-        targetCompatibility = 1.7
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
         options.encoding = 'UTF-8'
     }
 
@@ -38,6 +38,7 @@ subprojects {
 
         mavenLocal()
 
+        maven { url 'https://oss.sonatype.org/content/groups/public/' }
         maven { url 'http://maven.oschina.net/content/groups/public/' }
 
         mavenCentral()
@@ -45,11 +46,11 @@ subprojects {
 
 
     dependencies {
-        compile 'com.github.yamingd.argo:argo-security:2.2.2'
-        compile 'com.github.yamingd.argo:argo-util:2.0'
-        compile 'com.github.yamingd.argo:argo-redis:2.1'
-        compile 'com.github.yamingd.argo:argo-db:2.2.0'
-        compile 'com.github.yamingd.argo:annotations:2.1.1'
+        compile 'com.github.yamingd.argo:argo-security:2.3.0'
+        compile 'com.github.yamingd.argo:argo-util:2.1'
+        compile 'com.github.yamingd.argo:argo-redis:2.2.0'
+        compile 'com.github.yamingd.argo:argo-db:2.2.1'
+        compile 'com.github.yamingd.argo:annotations:2.2.0'
 
         //compile 'com.github.yamingd.qpush:client:1.2'
 

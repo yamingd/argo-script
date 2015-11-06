@@ -29,7 +29,7 @@
 }
 
 -(void)prepare{
-    self.pkColumn = @"{{_tbi_.pk.name}}";
+    self.pkColumn = @"{{_tbi_.pk.pb.name}}";
     self.tableName = @"{{_tbi_.name}}";
     self.tableColumns = {{_tbi_.ios.columnsInfo()}};
     self.columns = @[{{", ".join(_tbi_.ios.columns())}}];
@@ -115,7 +115,7 @@
     }
     NSArray* items = [[{{ r.pb.typeName }}Mapper instance] gets:@"wrap{{ r.varNameC }}List" withSet:vals withRef:YES];
     for({{ r.pb.typeName }}* item in items){
-        id val0 = @(item.{{ r.table.pk.name }});
+        id val0 = @(item.{{ r.table.pk.pb.name }});
         for({{_tbi_.pb.name}}Builder* builder in builders){
             id val1 = {{r.column.ios.valExp("builder")}};
             if(val1 && [val0 isEqual:val1]){

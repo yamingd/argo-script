@@ -5,12 +5,12 @@ apply plugin: 'jetty'
 description = 'Web Mobile API'
 
 dependencies {
-    apt 'com.github.yamingd.argo:argo-doclet:2.0.0'
+    apt 'com.github.yamingd.argo:argo-doclet:2.1.0'
     compile project(':model')
     compile project(':common')
     compile project(':service')
     compile project(':serviceImpl')
-    compile 'com.github.yamingd.argo:argo-web:2.2.1'
+    compile 'com.github.yamingd.argo:argo-web:2.3.0'
 }
 
 jettyRun {

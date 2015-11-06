@@ -42,7 +42,7 @@ public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {
 
     @Override
     public void findLatest(int cursorId) {
-        List<{{_tbi_.pb.name}}> list = {{_tbi_.pb.name}}Mapper.instance.selectLimit("{{_tbi_.pk.name}} > ?", "{{_tbi_.pk.name}} desc", new String[]{cursorId+"", PAGE_SIZE + "", "0"});
+        List<{{_tbi_.pb.name}}> list = {{_tbi_.pb.name}}Mapper.instance.selectLimit("{{_tbi_.pk.pb.name}} > ?", "{{_tbi_.pk.pb.name}} desc", new String[]{cursorId+"", PAGE_SIZE + "", "0"});
         if (list.size() > 0){
             {{_tbi_.pb.name}}ListResultEvent event = new {{_tbi_.pb.name}}ListResultEvent(list, 1);
             event.setDataFromCache(true);
@@ -85,7 +85,7 @@ public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {
 
     @Override
     public void findMore(int page, int cursorId) {
-        List<{{_tbi_.pb.name}}> list = {{_tbi_.pb.name}}Mapper.instance.selectLimit("{{_tbi_.pk.name}} < ?", "{{_tbi_.pk.name}} desc", new String[]{cursorId+"", PAGE_SIZE + "", "0"});
+        List<{{_tbi_.pb.name}}> list = {{_tbi_.pb.name}}Mapper.instance.selectLimit("{{_tbi_.pk.pb.name}} < ?", "{{_tbi_.pk.pb.name}} desc", new String[]{cursorId+"", PAGE_SIZE + "", "0"});
         if (list.size() > 0){
             {{_tbi_.pb.name}}ListResultEvent event = new {{_tbi_.pb.name}}ListResultEvent(list, 1);
             event.setDataFromCache(true);
@@ -218,7 +218,7 @@ public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {
 
     @Override
     public void save({{_tbi_.pb.name}} item) {
-        final String url = String.format("/m/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pk.nameC}}());
+        final String url = String.format("/m/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pk.java.getterName}}());
         PBuilder builder = PBuilder.i();
         //构造Http参数
         apiClientProvider.asyncPUT(url, builder.vs(), new APICallback() {
@@ -256,7 +256,7 @@ public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {
 
     @Override
     public void remove(final {{_tbi_.pb.name}} item) {
-        final String url = String.format("/m/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pk.nameC}}());
+        final String url = String.format("/m/{{_tbi_.mvc_url()}}/%d", item.get{{_tbi_.pk.java.getterName}}());
         PBuilder builder = PBuilder.i();
         //构造Http参数
         apiClientProvider.asyncDelete(url, builder.vs(), new APICallback() {
