@@ -196,6 +196,7 @@ class MySqlTable(object):
         self.ios = iOSClass(self)
 
     def initRef(self, obj_pkgs):
+        #print self.name, 'pks:', self.pks
         self.pk = self.pks[0]
 
         for c in self.columns:
@@ -264,7 +265,10 @@ class MySqlRef(object):
         i = self.comment.index('.')
         self.name = self.comment[1:i]
         self.table = obj_pkgs[self.name]
-        self.varName = column.name.replace('Id', '')
+        if '_id' in column.name:
+            self.varName = column.name.replace('_id', '')
+        else:
+            self.varName = column.name.replace('Id', '')
         self.varNameC = common.upper_first(self.varName)
         self.repeated = column.name.endswith('s')
         self.package = column.package

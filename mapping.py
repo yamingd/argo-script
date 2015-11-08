@@ -18,6 +18,7 @@ java_types = {
     'nvarchar': 'String',
     'char': 'String',
     'nchar': 'String',
+    'enum': 'String',
 
     'datetime': 'Date',
     'date': 'Date',
@@ -42,6 +43,7 @@ jdbc_setter = {
     'nvarchar': 'setString',
     'char': 'setString',
     'nchar': 'setString',
+    'enum': 'setString',
 
     'datetime': 'setTimestamp',
     'date': 'setDate',
@@ -73,6 +75,7 @@ jdbc_getter = {
     'nvarchar': 'getString',
     'char': 'getString',
     'nchar': 'getString',
+    'enum': 'getString',
 
     'datetime': 'getDate',
     'date': 'getDate',
@@ -97,6 +100,7 @@ protobuf_types = {
     'nvarchar': 'string',
     'char': 'string',
     'nchar': 'string',
+    'enum': 'string',
 
     'datetime': 'int64',
     'date': 'int64',
@@ -121,6 +125,7 @@ ios_types = {
     'nvarchar': 'NSString',
     'char': 'NSString',
     'nchar': 'NSString',
+    'enum': 'NSString',
 
     'datetime': 'NSDate',
     'date': 'NSDate',
@@ -145,6 +150,7 @@ sqlite_types = {
     'nvarchar': 'text',
     'char': 'text',
     'nchar': 'text',
+    'enum': 'text',
 
     'datetime': 'integer',
     'date': 'integer',
@@ -170,6 +176,7 @@ android_sqlite_setter = {
     'nvarchar': 'bindString',
     'char': 'bindString',
     'nchar': 'bindString',
+    'enum': 'bindString',
 
     'datetime': 'bindLong',
     'date': 'bindLong',
@@ -195,6 +202,7 @@ android_sqlite_getter = {
     'nvarchar': 'getString',
     'char': 'getString',
     'nchar': 'getString',
+    'enum': 'getString',
 
     'datetime': 'getLong',
     'date': 'getLong',
@@ -228,6 +236,7 @@ fmdb_getter = {
     'nvarchar': 'stringForColumnIndex',
     'char': 'stringForColumnIndex',
     'nchar': 'stringForColumnIndex',
+    'enum': 'stringForColumnIndex',
 
     'datetime': 'dateForColumnIndex',
     'date': 'dateForColumnIndex',
@@ -263,6 +272,7 @@ cpp_types = {
     'nvarchar': 'std::string',
     'char': 'std::string',
     'nchar': 'std::string',
+    'enum': 'std::string',
 
     'datetime': 'uint64_t',
     'date': 'uint64_t',
@@ -286,6 +296,7 @@ cpp_objcs = {
     'nvarchar': 'cppStringToObjc',
     'char': 'cppStringToObjc',
     'nchar': 'cppStringToObjc',
+    'enum': 'cppStringToObjc',
     
     'datetime': 'cppDateToObjc',
     'date': 'cppDateToObjc',
@@ -310,6 +321,7 @@ objc_cpps = {
     'nvarchar': 'objcStringToCpp',
     'char': 'objcStringToCpp',
     'nchar': 'objcStringToCpp',
+    'enum': 'objcStringToCpp',
 
     'datetime': 'objcDateToCpp',
     'date': 'objcDateToCpp',
