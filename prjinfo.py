@@ -15,6 +15,7 @@ _dbtype_ = 'mysql'
 _dburl_ = 'devtest:123456@127.0.0.1:3306'
 _dbload_ = False
 _tbrefs_ = {}
+_tbprefix_ = ''
 
 _apps_ = ['mobile', 'home', 'wx', 'admin']
 

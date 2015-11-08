@@ -113,7 +113,7 @@ public class Home{{_tbi_.java.name}}Controller extends HomeBaseController {
         UserIdentity user = getCurrentUser();
 
         {{_tbi_.java.name}} item = form.to();
-        item.setId(id);
+        item.set{{_tbi_.pk.java.setterName}}(id);
 
         {{_tbi_.java.varName}}Service.save(user, item);
 

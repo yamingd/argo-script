@@ -162,7 +162,7 @@ public class Mobile{{_tbi_.java.name}}Controller extends MobileBaseController {
         UserIdentity user = getCurrentUser();
 
         {{_tbi_.java.name}} item = form.to();
-        item.setId(id);
+        item.set{{_tbi_.pk.java.setterName}}(id);
 
         try{
             item = {{_tbi_.java.varName}}Service.save(user, item);

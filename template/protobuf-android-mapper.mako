@@ -32,7 +32,7 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
 
   static {
     pkColumn = "{{_tbi_.pk.pb.name}}";
-    tableName = "{{_tbi_.name}}";
+    tableName = "{{_tbi_.pb.name}}";
     dbContextTag = "default"; //chang this if having different sqlite db
   }
 
@@ -196,7 +196,7 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
       cursor.moveToFirst();
     }
 {% for c in _tbi_.columns %}
-    builder.set{{c.nameC}}(cursor.{{c.android.rsGetter()}}({{c.index}}));
+    builder.set{{c.pb.nameC}}(cursor.{{c.android.rsGetter()}}({{c.index}}));
 {% endfor %}
 
     return builder.build();
@@ -215,14 +215,14 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
     Set<{{ r.column.java.typeName }}> ids = new HashSet<{{ r.column.java.typeName }}>();
     for (int i = 0; i < list.size(); i++) {
       {{_tbi_.pb.name}}.Builder item = list.get(i);
-      ids.add(item.get{{ r.column.nameC }}());
+      ids.add(item.get{{ r.column.pb.nameC }}());
     }
     List<{{ r.pb.typeName }}> refList = {{ r.pb.typeName }}Mapper.instance.getsWithRef(ids);
     for (int i = 0; i < list.size(); i++) {
       {{_tbi_.pb.name}}.Builder item = list.get(i);
       for (int j = 0; j < refList.size(); j++) {
         {{ r.pb.typeName }} targetItem = refList.get(j);
-        if (targetItem.get{{ r.table.pk.java.getterName }}() == item.get{{ r.column.nameC }}()) {
+        if (targetItem.get{{ r.table.pk.java.getterName }}() == item.get{{ r.column.pb.nameC }}()) {
           item.set{{ r.java.setterName }}(targetItem);
           break;
         }
@@ -251,7 +251,7 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
 
 {% for r in _tbi_.refFields %}
   public void wrapRef{{r.varNameC}}({{_tbi_.pb.name}}.Builder builder) {
-    {{ r.column.java.typeName }} val = builder.get{{ r.column.nameC }}();
+    {{ r.column.java.typeName }} val = builder.get{{ r.column.pb.nameC }}();
     if (null == val) {
       return;
     }

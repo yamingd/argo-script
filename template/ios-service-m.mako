@@ -134,7 +134,7 @@
 +(void)save:({{_tbi_.pb.name}}*)item withCallback:(APIResponseBlock)block{
     
     //1. 写入服务器，并返回
-    NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/%ld", item.id];
+    NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/%ld", item.{{_tbi_.pk.pb.name}}];
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     //TODO: 构造参数
     BOOL hasFile = NO;
@@ -157,14 +157,14 @@
 +(void)remove:({{_tbi_.pb.name}}*)item withCallback:(APIResponseBlock)block{
     
     //1. 写入服务器，并返回
-    NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/%ld", item.id];
+    NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/%ld", item.{{_tbi_.pk.pb.name}}];
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [[APIClient shared] deletePath:url params:params withCallback:^(PAppResponse* response, NSError *error) {
         if (error) {
             block(nil, error, NO);
         }else{
             if (response.code == 200) {
-                [[{{_tbi_.pb.name}}Mapper instance] removeBy:@(item.id)];
+                [[{{_tbi_.pb.name}}Mapper instance] removeBy:@(item.{{_tbi_.pk.pb.name}})];
             }
             block(response, error, NO);
         }

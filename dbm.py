@@ -22,14 +22,14 @@ def open(dburl):
     db = engine.connect()
     return db
 
-def get_mysql_table_new(pkg_name, db_name, tbl_name):
+def get_mysql_table_new(pkg_name, db_name, tbl_name, prefix):
     global db
     sql = text(
         "SELECT table_name, table_comment FROM INFORMATION_SCHEMA.tables t WHERE table_schema=:x and table_name=:y")
     rows = db.execute(sql, x=db_name, y=tbl_name).fetchall()
     tbl = None
     for row in rows:
-        tbl = platform.MySqlTable(pkg_name, tbl_name, row[1])
+        tbl = platform.MySqlTable(pkg_name, tbl_name, row[1], prefix)
         tbl.initJava()
         tbl.initProtobuf()
         tbl.initAndroid()
@@ -84,7 +84,7 @@ def read_tables(prjinfo):
     for minfo in prjinfo._modules_:
         tbs = []
         for name in minfo['tables']:
-            table = get_mysql_table_new(minfo['ns'], minfo['db'], name)
+            table = get_mysql_table_new(minfo['ns'], minfo['db'], name, prjinfo._tbprefix_)
             tbs.append(table)
             tbrefs[name] = table
         minfo['tables'] = tbs

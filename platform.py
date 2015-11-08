@@ -14,7 +14,10 @@ class PBClass(object):
         self.table = table
         self.comment = table.hint
         self.package = table.package
-        self.name = 'PB' + common.gen_name(table.name)
+        if table.prefix and len(table.prefix) > 0:
+            self.name = 'PB' + common.gen_name(table.name.replace(table.prefix, ''))
+        else:
+            self.name = 'PB' + common.gen_name(table.name)
         self.varName = common.lower_first(common.gen_name(table.name))
 
 
@@ -48,7 +51,10 @@ class JavaClass(object):
         self.table = table
         self.comment = table.hint
         self.package = table.package
-        self.name = common.gen_name(table.name)
+        if table.prefix and len(table.prefix) > 0:
+            self.name = common.gen_name(table.name.replace(table.prefix, ''))
+        else:
+            self.name = common.gen_name(table.name)
         self.varName = common.lower_first(self.name)
         self.absName = 'Abstract' + self.name
     
@@ -94,6 +100,8 @@ class JavaField(object):
         if self.column.default:
             if self.column.default.startswith('0.0'):
                 return self.column.default + "f"
+            if self.valType == 'String':
+                return '"%s"' % self.column.default
             return self.column.default
         else:
             return 'null'
@@ -171,7 +179,7 @@ class MySqlQueryFunc(object):
 
 class MySqlTable(object):
     """docstring for MySqlTable"""
-    def __init__(self, package, name, hint):
+    def __init__(self, package, name, hint, prefix):
         self.package = package
         self.name = name
         self.hint = hint
@@ -182,6 +190,7 @@ class MySqlTable(object):
         self.impPBs = []     # PBRefField
         self.cmaps = {}
         self.cindex = {}
+        self.prefix = prefix
 
     def initJava(self):
         self.java = JavaClass(self)
@@ -240,6 +249,8 @@ class MySqlTable(object):
         if hasattr(self, 'url'):
             return self.url
         url = self.name
+        if self.prefix and len(self.prefix) > 0:
+            url = self.name.replace(self.prefix, '')
         if '_' in url and url.startswith(self.package):
             url = url[len(self.package) + 1:]
         if url.endswith('_'):
@@ -431,10 +442,10 @@ class AndroidClass(object):
         cols = []
         for c in self.table.columns:
             if c.key:
-                cols.append('%s %s PRIMARY KEY' % (c.name, c.android.typeName))
+                cols.append('%s %s PRIMARY KEY' % (c.pb.name, c.android.typeName))
             else:
-                cols.append('%s %s' % (c.name, c.android.typeName))
-        s = SQLITE3_CREATE_SQL_0 % (self.table.name, ', '.join(cols))
+                cols.append('%s %s' % (c.pb.name, c.android.typeName))
+        s = SQLITE3_CREATE_SQL_0 % (self.table.pb.name, ', '.join(cols))
         return s
 
 

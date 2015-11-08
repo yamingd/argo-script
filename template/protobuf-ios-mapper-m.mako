@@ -30,7 +30,7 @@
 
 -(void)prepare{
     self.pkColumn = @"{{_tbi_.pk.pb.name}}";
-    self.tableName = @"{{_tbi_.name}}";
+    self.tableName = @"{{_tbi_.pb.name}}";
     self.tableColumns = {{_tbi_.ios.columnsInfo()}};
     self.columns = @[{{", ".join(_tbi_.ios.columns())}}];
     
