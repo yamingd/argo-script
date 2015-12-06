@@ -1,4 +1,5 @@
 printsql: true
+memcache: true
 
 ms:
 {% for m in _modules_ %}

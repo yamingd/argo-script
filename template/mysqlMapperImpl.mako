@@ -16,19 +16,21 @@ import com.{{prj._company_}}.{{prj._name_}}.mapper.{{ r.package }}.{{ r.name }}M
 
 import com.google.common.base.Preconditions;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 @Repository
 public class {{_tbi_.java.name}}MapperImpl extends MySqlMapper<{{_tbi_.java.name}}, {{_tbi_.pk.java.typeName}}> implements {{_tbi_.java.name}}Mapper {
@@ -41,6 +43,10 @@ public class {{_tbi_.java.name}}MapperImpl extends MySqlMapper<{{_tbi_.java.name
     public static final String SQL_FIELDS = "{{_tbi_.java.dbFields()}}";
     public static final List<String> columnList = new ArrayList<String>();
     public static final boolean pkAutoIncr = {{_tbi_.pk.java.autoIncrementMark()}};
+
+    private static final Map<String, Method> setterMethods = new HashMap<String, Method>();
+    private static final Map<String, Class> columnTypes = new HashMap<String, Class>();
+    private static final Map<String, Class> fieldTypes = new HashMap<String, Class>();
 
     static {
 {% for col in _tbi_.columns %}
@@ -56,6 +62,35 @@ public class {{_tbi_.java.name}}MapperImpl extends MySqlMapper<{{_tbi_.java.name
     @Override
     public void prepare() {
         instance = this;
+        this.cacheSetterMethods();
+        this.cacheColumnTypes();
+        this.cacheFieldTypes();
+    }
+
+    protected void cacheSetterMethods(){
+        Class<{{_tbi_.java.name}}> clazz = this.getRowClass();
+        try {
+{% for col in _tbi_.columns %}
+            setterMethods.put("{{ col.name }}", clazz.getMethod("set{{col.java.setterName}}", {{col.java.typeName}}.class));
+{% endfor %}
+
+        } catch (NoSuchMethodException e) {
+            logger.error(e.getMessage(), e);
+        } catch (SecurityException e){
+            logger.error(e.getMessage(), e);
+        }
+    }
+
+    protected void cacheColumnTypes(){
+{% for col in _tbi_.columns %}
+            columnTypes.put("{{ col.name }}", {{col.java.valType}}.class);
+{% endfor %}
+    }
+
+    protected void cacheFieldTypes(){
+{% for col in _tbi_.columns %}
+            fieldTypes.put("{{ col.name }}", {{col.java.typeName}}.class);
+{% endfor %}
     }
 
     @Override
@@ -117,17 +152,8 @@ public class {{_tbi_.java.name}}MapperImpl extends MySqlMapper<{{_tbi_.java.name
     protected {{_tbi_.java.name}} mapRow(ResultSet rs, int rowIndex) throws SQLException {
         {{_tbi_.java.name}} item = new {{_tbi_.java.name}}();
 
-{% for col in _tbi_.columns %}
-{% if col.java.typeDiff %}    
-        {{col.java.valType}} {{col.java.name}}0 = Values.getResultSetValue(rs, {{col.index + 1}}, {{col.java.valType}}.class);    
-        {{col.java.typeName}} {{col.java.name}} = Values.get({{col.java.name}}0, {{col.java.typeName}}.class);
-        item.set{{col.java.setterName}}({{col.java.name}});
-{% else %}
-        {{col.java.typeName}} {{col.java.name}}0 = Values.getResultSetValue(rs, {{col.index + 1}}, {{col.java.typeName}}.class);
-        item.set{{col.java.setterName}}({{col.java.name}}0);
-{% endif %}
-
-{% endfor %}        
+        super.mapResultSetToBean(rs, item, setterMethods, fieldTypes, columnTypes);
+       
         return item;
     }
 
@@ -141,10 +167,10 @@ public class {{_tbi_.java.name}}MapperImpl extends MySqlMapper<{{_tbi_.java.name
 {% if col.java.typeDiff %} 
         {{col.java.typeName}} {{col.java.name}}0 = item.get{{col.java.getterName}}();
         {{col.java.valType}} {{col.java.name}} = Values.get({{col.java.name}}0, {{col.java.valType}}.class);
-        ps.{{col.java.jdbcSetter}}({{index + 1}}, {{col.java.jdbcValueFunc}});
+        ps.setObject({{index + 1}}, {{col.java.jdbcValueFunc}});
 {% else %}
         {{col.java.typeName}} {{col.java.name}} = item.get{{col.java.getterName}}();
-        ps.{{col.java.jdbcSetter}}({{index + 1}}, {{col.java.jdbcValueFunc}}); 
+        ps.setObject({{index + 1}}, {{col.java.jdbcValueFunc}}); 
 {% endif %}
 {% endif %}
 
@@ -265,7 +291,7 @@ public class {{_tbi_.java.name}}MapperImpl extends MySqlMapper<{{_tbi_.java.name
         List<{{rc.column.java.typeName}}> ids = new ArrayList<{{rc.column.java.typeName}}>();
         for(int i=0; i<list.size(); i++){
             {{rc.column.java.typeName}} v0 = list.get(i).get{{rc.column.java.getterName}}();
-            if(null == v0){
+            if(null == v0 || v0 <= 0){
                 continue;
             }
             if(ids.contains(v0)){

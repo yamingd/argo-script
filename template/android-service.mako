@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * {{_tbi_.pb.name}} API 服务
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 public interface {{_tbi_.pb.name}}Service extends PBServiceBase {
 	

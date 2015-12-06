@@ -17,7 +17,7 @@ import com.{{prj._company_}}.{{prj._name_}}.service.{{_module_}}.{{_tbi_.java.na
 import com.{{prj._company_}}.{{prj._name_}}.service.impl.ServiceBaseImpl;
 
 /**
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 @Service
 public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {{_tbi_.java.name}}Service {

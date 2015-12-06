@@ -28,6 +28,8 @@ class PBField(object):
         self.name = common.gen_name(column.name, upperFirst=False)
         self.nameC = common.upper_first(self.name)
         self.typeName = mapping.protobuf_types.get(column.valType)
+        if self.name.lower().endswith('date') or self.name.lower().endswith('time'):
+            self.typeName = 'int64'
         self.mark = 'optional'
         self.package = column.package
 
@@ -37,7 +39,8 @@ class PBRefField(object):
     def __init__(self, ref, opb):
         self.ref = ref
         self.refpb = opb
-        self.name = ref.varName
+        self.name = common.gen_name(ref.varName, upperFirst=False)
+        self.nameC = common.upper_first(self.name)
         self.typeName = opb.name
         self.mark = 'optional'
         if ref.repeated:
@@ -74,7 +77,7 @@ class JavaField(object):
         self.setterName = common.upper_first(self.name)
         self.getterName = common.upper_first(self.name)
         self.typeName = self.valType
-        if self.name.lower().endswith('date'):
+        if self.name.lower().endswith('date') or self.name.lower().endswith('time'):
             self.typeName = 'Date'
 
         if self.typeName != self.valType:
@@ -416,6 +419,8 @@ class AndroidField(object):
 
     def __init__(self, column):
         self.column = column
+        self.pbType = column.pb.typeName
+        self.sqliteType = mapping.pb_sqlite_types.get(self.pbType, '')
         self.typeName = mapping.sqlite_types.get(column.valType, 'text')
         self.binder = mapping.android_sqlite_setter.get(column.valType, 'NULL')
         
@@ -442,9 +447,9 @@ class AndroidClass(object):
         cols = []
         for c in self.table.columns:
             if c.key:
-                cols.append('%s %s PRIMARY KEY' % (c.pb.name, c.android.typeName))
+                cols.append('%s %s PRIMARY KEY' % (c.pb.name, c.android.sqliteType))
             else:
-                cols.append('%s %s' % (c.pb.name, c.android.typeName))
+                cols.append('%s %s' % (c.pb.name, c.android.sqliteType))
         s = SQLITE3_CREATE_SQL_0 % (self.table.pb.name, ', '.join(cols))
         return s
 
@@ -486,8 +491,9 @@ class iOSField(object):
 
     def __init__(self, column):
         self.column = column
-        self.typeName = mapping.ios_types.get(column.valType, '')
-        self.pbType = mapping.protobuf_types.get(column.valType, '')
+        self.pbType = column.pb.typeName
+        self.sqliteType = mapping.pb_sqlite_types.get(self.pbType, '')
+        self.typeName = mapping.pb_ios_types.get(self.pbType, '')
         self.typeRef = self.typeName
         if self.typeName.startswith('NS'):
         	self.typeRef = self.typeName + "*"
@@ -498,6 +504,10 @@ class iOSField(object):
         if self.pbType == 'string':
             e = '%s.%s' % (tag, self.column.pb.name)
         return e
+    
+    @property
+    def pointer(self):
+        return self.typeRef.endswith("*")
 
 
 class iOSClass(object):
@@ -509,6 +519,6 @@ class iOSClass(object):
         return ["@\"%s\"" % c.pb.name for c in self.table.columns]
     
     def columnsInfo(self):
-        tmp = ["@\"%s\": @\"%s\"" % (c.pb.name, c.ios.typeName) for c in self.table.columns]
+        tmp = ["@\"%s\": @\"%s\"" % (c.pb.name, c.ios.sqliteType) for c in self.table.columns]
         tmp = ", ".join(tmp)
         return "@{%s}" % tmp

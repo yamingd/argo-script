@@ -9,7 +9,7 @@ import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.java.name
 import com.{{prj._company_}}.{{prj._name_}}.service.ServiceBase;
 
 /**
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 @RmiService
 public interface {{_tbi_.java.name}}Service extends ServiceBase<{{_tbi_.java.name}}, {{_tbi_.pk.java.typeName}}>  {

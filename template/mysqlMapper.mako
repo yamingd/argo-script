@@ -10,7 +10,7 @@ import java.util.List;
 import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.java.name}};
 
 /**
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 public interface {{_tbi_.java.name}}Mapper extends SqlMapper<{{_tbi_.java.name}}, {{_tbi_.pk.java.typeName}}> {
 

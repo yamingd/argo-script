@@ -106,14 +106,14 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
       return false;
     }
 {% for r in _tbi_.refFields %}
-    // save {{r.varNameC}};
+    // save {{r.pb.nameC}};
 {% if r.repeated %}
-    List<{{ r.pb.typeName }}> refVar{{r.column.index}} = o.get{{ r.varNameC }}List();
+    List<{{ r.pb.typeName }}> refVar{{r.column.index}} = o.get{{ r.pb.nameC }}List();
     if (null != refVar{{r.column.index}}) {
       {{ r.pb.typeName }}Mapper.instance.saveWithRef(refVar{{r.column.index}});
     }
 {% else %}
-    {{ r.pb.typeName }} refVar{{r.column.index}} = o.get{{ r.varNameC }}();
+    {{ r.pb.typeName }} refVar{{r.column.index}} = o.get{{ r.pb.nameC }}();
     if (null != refVar{{r.column.index}}) {
       {{ r.pb.typeName }}Mapper.instance.saveWithRef(refVar{{r.column.index}});
     }
@@ -130,12 +130,12 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
     }
     List vars = new ArrayList();
 {% for r in _tbi_.refFields %}
-    // save {{r.varNameC}};
+    // save {{r.pb.nameC}};
     for(int i=0; i<list.size(); i++) {
 {% if r.repeated %}
-      List<{{ r.pb.typeName }}> refVar{{r.column.index}} = list.get(i).get{{ r.varNameC }}List();
+      List<{{ r.pb.typeName }}> refVar{{r.column.index}} = list.get(i).get{{ r.pb.nameC }}List();
 {% else %}
-      {{ r.pb.typeName }} refVar{{r.column.index}} = list.get(i).get{{ r.varNameC }}();
+      {{ r.pb.typeName }} refVar{{r.column.index}} = list.get(i).get{{ r.pb.nameC }}();
 {% endif %}
       if (null != refVar{{r.column.index}}) {
         vars.add(refVar{{r.column.index}});
@@ -156,13 +156,13 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
     }
     List vars = new ArrayList();
 {% for r in _tbi_.refFields %}
-    // save {{r.varNameC}};
+    // save {{r.pb.nameC}};
     Iterator<{{_tbi_.pb.name}}> refVar{{r.column.index}} = set.iterator();
     while (refVar{{r.column.index}}.hasNext()) {
 {% if r.repeated %}
-      List<{{ r.pb.typeName }}> v = refVar{{r.column.index}}.next().get{{ r.varNameC }}List();
+      List<{{ r.pb.typeName }}> v = refVar{{r.column.index}}.next().get{{ r.pb.nameC }}List();
 {% else %}
-      {{ r.pb.typeName }} v = refVar{{r.column.index}}.next().get{{ r.varNameC }}();
+      {{ r.pb.typeName }} v = refVar{{r.column.index}}.next().get{{ r.pb.nameC }}();
 {% endif %}
       if (null != v) {
         vars.add(v);
@@ -204,22 +204,30 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
 
 {% for r in _tbi_.refFields %}
 {% if r.repeated %}
-  public void wrapRef{{r.varNameC}}(List<{{_tbi_.pb.name}}.Builder> list) {
+  public void wrapRef{{r.pb.nameC}}(List<{{_tbi_.pb.name}}.Builder> list) {
     for (int i = 0; i < list.size(); i++) {
       {{_tbi_.pb.name}}.Builder item = list.get(i);
-      wrapRef{{r.varNameC}}(item);
+      wrapRef{{r.pb.nameC}}(item);
     }
   }
 {% else %}
-  public void wrapRef{{r.varNameC}}(List<{{_tbi_.pb.name}}.Builder> list) {
+  public void wrapRef{{r.pb.nameC}}(List<{{_tbi_.pb.name}}.Builder> list) {
     Set<{{ r.column.java.typeName }}> ids = new HashSet<{{ r.column.java.typeName }}>();
     for (int i = 0; i < list.size(); i++) {
       {{_tbi_.pb.name}}.Builder item = list.get(i);
-      ids.add(item.get{{ r.column.pb.nameC }}());
+      {{ r.column.java.typeName }} val = item.get{{ r.column.pb.nameC }}();
+      if (null == val || val <= 0) {
+        continue;
+      }
+      ids.add(val);
     }
     List<{{ r.pb.typeName }}> refList = {{ r.pb.typeName }}Mapper.instance.getsWithRef(ids);
     for (int i = 0; i < list.size(); i++) {
       {{_tbi_.pb.name}}.Builder item = list.get(i);
+      {{ r.column.java.typeName }} val = item.get{{ r.column.pb.nameC }}();
+      if (null == val || val <= 0) {
+        continue;
+      }
       for (int j = 0; j < refList.size(); j++) {
         {{ r.pb.typeName }} targetItem = refList.get(j);
         if (targetItem.get{{ r.table.pk.java.getterName }}() == item.get{{ r.column.pb.nameC }}()) {
@@ -244,23 +252,27 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
     }
 
 {% for r in _tbi_.refFields %}
-    wrapRef{{ r.varNameC}}(builders);
+    wrapRef{{ r.pb.nameC}}(builders);
 {% endfor %}
+
+    for(int i=0; i<list.size(); i++){
+        list.set(i, builders.get(i).build());
+    }
 
   }
 
 {% for r in _tbi_.refFields %}
-  public void wrapRef{{r.varNameC}}({{_tbi_.pb.name}}.Builder builder) {
+  public void wrapRef{{r.pb.nameC}}({{_tbi_.pb.name}}.Builder builder) {
     {{ r.column.java.typeName }} val = builder.get{{ r.column.pb.nameC }}();
-    if (null == val) {
+    if (null == val || val <= 0) {
       return;
     }
 {% if r.repeated %}
     List<{{ r.pb.typeName }}> refItems = {{ r.pb.typeName }}Mapper.instance.getsWithRef(val);
-    builder.addAll{{ r.varNameC }}(refItems);
+    builder.addAll{{ r.pb.nameC }}(refItems);
 {% else %}
     {{ r.pb.typeName }} refItem = {{ r.pb.typeName }}Mapper.instance.getWithRef(val);
-    builder.set{{ r.varNameC }}(refItem);
+    builder.set{{ r.pb.nameC }}(refItem);
 {% endif %}
 
   }
@@ -274,7 +286,7 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
     }
     {{_tbi_.pb.name}}.Builder builder = {{_tbi_.pb.name}}.newBuilder(o);
 {% for r in _tbi_.refFields %}
-    wrapRef{{ r.varNameC }}(builder);
+    wrapRef{{ r.pb.nameC }}(builder);
 {% endfor %}
     
     o = builder.build();

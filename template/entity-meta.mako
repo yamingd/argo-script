@@ -15,7 +15,7 @@ import com.{{prj._company_}}.{{prj._name_}}.model.{{r.package}}.{{r.name}};
 
 /**
  * {{ _tbi_.hint }}
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 @Generated("Generate from mysql table")
 public abstract class Abstract{{_tbi_.java.name}} implements Serializable {
@@ -47,12 +47,12 @@ public abstract class Abstract{{_tbi_.java.name}} implements Serializable {
      *
      * {{ref.docComment}}
      */
-    private {{ref.java.typeName}} {{ref.varName}};
+    private {{ref.java.typeName}} {{ref.java.name}};
     public {{ref.java.typeName}} get{{ ref.java.getterName }}(){
-        return this.{{ ref.varName }};
+        return this.{{ ref.java.name }};
     }
-    public void set{{ ref.java.setterName }}({{ ref.java.typeName }} {{ ref.varName }}){
-        this.{{ ref.varName }} = {{ ref.varName }};
+    public void set{{ ref.java.setterName }}({{ ref.java.typeName }} {{ ref.java.name }}){
+        this.{{ ref.java.name }} = {{ ref.java.name }};
     }
 
 {% endfor %}    

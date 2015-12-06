@@ -2,7 +2,7 @@
 //  {{_tbi_.pb.name}}Service.h
 //  com.{{prj._company_}}.{{prj._name_}}
 //
-//  Created by {{_user_}} on {{_now_}}.
+//  Created by {{_user_}}.
 //  Copyright (c). All rights reserved.
 //
 

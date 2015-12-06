@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * {{_tbi_.pb.name}}列表读取事件
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 public class {{_tbi_.pb.name}}ListResultEvent extends AppBaseEvent {
 

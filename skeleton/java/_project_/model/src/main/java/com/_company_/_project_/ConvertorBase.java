@@ -12,7 +12,7 @@ public class ConvertorBase {
             return null;
         }
 
-        return (int)date.getTime() / 1000;
+        return (int)(date.getTime() / 1000);
     }
 
 }

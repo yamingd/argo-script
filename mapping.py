@@ -133,6 +133,22 @@ ios_types = {
     'time': 'NSDate'
 }
 
+pb_ios_types = {
+    'int32': 'int',
+    'int64': 'long',
+    'float': 'float',
+    'double': 'double',
+    'string': 'NSString'
+}
+
+pb_sqlite_types = {
+    'int32': 'integer',
+    'int64': 'integer',
+    'float': 'real',
+    'double': 'real',
+    'string': 'text'
+}
+
 sqlite_types = {
     'int': 'integer',
     'tinyint': 'integer',

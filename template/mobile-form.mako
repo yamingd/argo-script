@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Scope;
 
 /**
  * {{ _tbi_.java.name }} 表单
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 @Scope("prototype")
 public class Mobile{{_tbi_.java.name}}Form {

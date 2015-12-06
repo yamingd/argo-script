@@ -6,7 +6,7 @@ import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.package}}.{{_tbi_.p
 
 /**
  * {{_tbi_.pb.name}}保存事件
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 public class {{_tbi_.pb.name}}SaveResultEvent extends AppBaseEvent {
 

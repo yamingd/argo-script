@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  * {{ _tbi_.hint }}
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 @Table("{{ _tbi_.name }}")
 @MessagePackMessage

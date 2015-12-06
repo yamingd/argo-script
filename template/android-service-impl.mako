@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import timber.log.Timber;
 
 /**
- * Created by {{_user_}} on {{_now_}}.
+ * Created by {{_user_}}.
  */
 public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {{_tbi_.pb.name}}Service {
 
