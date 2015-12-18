@@ -8,7 +8,7 @@ settings = {
     'company': 'inno',
     'Company': 'Inno',
     '_output_': '../gen',
-    '_dburl_': 'mysql://career:career@123@120.24.225.106:33060/%s?charset=utf8',
+    '_dburl_': 'mysql://career:career@123@127.0.0.1:33060/%s?charset=utf8',
     '_order_': ['catalog', 'system', 'member', 'activity', 'article', 'survey', 'wx'],
     '_modules_': {
         'catalog': {

@@ -101,7 +101,7 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
 
   @Override
   public boolean saveWithRef({{_tbi_.pb.name}} o) {
-    boolean ret = super.saveWithRef(o);
+    boolean ret = super.save(o);
     if (!ret) {
       return false;
     }
@@ -109,13 +109,12 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
     // save {{r.pb.nameC}};
 {% if r.repeated %}
     List<{{ r.pb.typeName }}> refVar{{r.column.index}} = o.get{{ r.pb.nameC }}List();
-    if (null != refVar{{r.column.index}}) {
+    if (null != refVar{{r.column.index}} && refVar{{r.column.index}}.size() > 0) {
       {{ r.pb.typeName }}Mapper.instance.saveWithRef(refVar{{r.column.index}});
     }
 {% else %}
-    {{ r.pb.typeName }} refVar{{r.column.index}} = o.get{{ r.pb.nameC }}();
-    if (null != refVar{{r.column.index}}) {
-      {{ r.pb.typeName }}Mapper.instance.saveWithRef(refVar{{r.column.index}});
+    if (o.has{{ r.pb.nameC }}()) {
+      {{ r.pb.typeName }}Mapper.instance.saveWithRef(o.get{{ r.pb.nameC }}());
     }
 {% endif %}
 {% endfor %}
@@ -124,7 +123,7 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
 
   @Override
   public boolean saveWithRef(List<{{_tbi_.pb.name}}> list) {
-    boolean ret = super.saveWithRef(list);
+    boolean ret = super.save(list);
     if (!ret) {
       return false;
     }
@@ -132,16 +131,21 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
 {% for r in _tbi_.refFields %}
     // save {{r.pb.nameC}};
     for(int i=0; i<list.size(); i++) {
+      {{_tbi_.pb.name}} o = list.get(i);
 {% if r.repeated %}
-      List<{{ r.pb.typeName }}> refVar{{r.column.index}} = list.get(i).get{{ r.pb.nameC }}List();
-{% else %}
-      {{ r.pb.typeName }} refVar{{r.column.index}} = list.get(i).get{{ r.pb.nameC }}();
-{% endif %}
-      if (null != refVar{{r.column.index}}) {
+      List<{{ r.pb.typeName }}> refVar{{r.column.index}} = o.get{{ r.pb.nameC }}List();
+      if(refVar{{r.column.index}}.size() > 0){
         vars.add(refVar{{r.column.index}});
       }
+{% else %}
+      if(o.has{{ r.pb.nameC }}()){
+        vars.add(o.get{{ r.pb.nameC }}());
+      }
+{% endif %}
     }
-    {{ r.pb.typeName }}Mapper.instance.saveWithRef(vars);
+    if(vars.size() > 0){
+      {{ r.pb.typeName }}Mapper.instance.saveWithRef(vars);
+    }
     vars.clear();
 {% endfor %}
 
@@ -150,7 +154,7 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
 
   @Override
   public boolean saveWithRef(Set<{{_tbi_.pb.name}}> set) {
-    boolean ret = super.saveWithRef(set);
+    boolean ret = super.save(new ArrayList<{{_tbi_.pb.name}}>(set));
     if (!ret) {
       return false;
     }
@@ -159,16 +163,21 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
     // save {{r.pb.nameC}};
     Iterator<{{_tbi_.pb.name}}> refVar{{r.column.index}} = set.iterator();
     while (refVar{{r.column.index}}.hasNext()) {
+       {{_tbi_.pb.name}} o = refVar{{r.column.index}}.next();
 {% if r.repeated %}
-      List<{{ r.pb.typeName }}> v = refVar{{r.column.index}}.next().get{{ r.pb.nameC }}List();
-{% else %}
-      {{ r.pb.typeName }} v = refVar{{r.column.index}}.next().get{{ r.pb.nameC }}();
-{% endif %}
-      if (null != v) {
+      List<{{ r.pb.typeName }}> v = o.get{{ r.pb.nameC }}List();
+      if(v.size() > 0){
         vars.add(v);
       }
+{% else %}
+      if(o.has{{ r.pb.nameC }}()){
+        vars.add(o.get{{ r.pb.nameC }}());
+      }
+{% endif %}
     }
-    {{ r.pb.typeName }}Mapper.instance.saveWithRef(vars);
+    if(vars.size() > 0){
+      {{ r.pb.typeName }}Mapper.instance.saveWithRef(vars);
+    }
     vars.clear();
 {% endfor %}
 

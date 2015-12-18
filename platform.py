@@ -16,9 +16,10 @@ class PBClass(object):
         self.package = table.package
         if table.prefix and len(table.prefix) > 0:
             self.name = 'PB' + common.gen_name(table.name.replace(table.prefix, ''))
+            self.varName = 'pb' + common.gen_name(table.name.replace(table.prefix, ''))
         else:
             self.name = 'PB' + common.gen_name(table.name)
-        self.varName = common.lower_first(common.gen_name(table.name))
+            self.varName = 'pb' + common.gen_name(table.name)
 
 
 class PBField(object):

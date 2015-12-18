@@ -232,7 +232,7 @@ public class {{_tbi_.java.name}}MapperImpl extends MySqlMapper<{{_tbi_.java.name
 
         super.afterUpdate(context, item);
 
-        return false;
+        return ret;
     }
 
     @Override
