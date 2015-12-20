@@ -230,20 +230,22 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
       }
       ids.add(val);
     }
+    if (ids.size() == 0){
+      return;
+    }
     List<{{ r.pb.typeName }}> refList = {{ r.pb.typeName }}Mapper.instance.getsWithRef(ids);
-    for (int i = 0; i < list.size(); i++) {
-      {{_tbi_.pb.name}}.Builder item = list.get(i);
-      {{ r.column.java.typeName }} val = item.get{{ r.column.pb.nameC }}();
-      if (null == val || val <= 0) {
-        continue;
-      }
-      for (int j = 0; j < refList.size(); j++) {
+    for (int j = 0; j < refList.size(); j++) {
         {{ r.pb.typeName }} targetItem = refList.get(j);
-        if (targetItem.get{{ r.table.pk.java.getterName }}() == item.get{{ r.column.pb.nameC }}()) {
-          item.set{{ r.java.setterName }}(targetItem);
-          break;
+        for (int i = 0; i < list.size(); i++) {
+          {{_tbi_.pb.name}}.Builder item = list.get(i);
+          {{ r.column.java.typeName }} val = item.get{{ r.column.pb.nameC }}();
+          if (null == val || val <= 0) {
+            continue;
+          }
+          if (targetItem.get{{ r.table.pk.java.getterName }}() == item.get{{ r.column.pb.nameC }}()) {
+            item.set{{ r.java.setterName }}(targetItem);
+          }
         }
-      }
     }
   }
 {% endif %}
