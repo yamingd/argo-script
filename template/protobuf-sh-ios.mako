@@ -20,4 +20,4 @@ else
   mkdir -p $_out
 fi
 
-protoc --proto_path=${path} --plugin=/usr/local/bin/protoc-gen-objc $defile --objc_out=${_out}
+protoc --proto_path=${path} --plugin=/usr/local/Cellar/protobuf/protoc-gen-objc $defile --objc_out=${_out}
