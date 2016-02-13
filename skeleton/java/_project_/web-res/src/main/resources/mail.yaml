@@ -1,11 +1,15 @@
-host: "smtp.example.com"
-user: "test"
-passwd: "test12345"
+host: "smtp.exmail.qq.com"
+port: 465
+user: "test@qq.com"
+passwd: "test123"
+nickname: "test"
 feedback: "feedback@example.com"
 failedLimit: 1
-domain: "@example.com"
+domain: "@qq.com"
 batch: 100
 auth: true
 timeout: 25000
-interval: 1000
+interval: 1000000
 enabled: false
+props:
+  mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory

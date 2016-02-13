@@ -60,9 +60,14 @@ def gen_mapperImpl(prjinfo, minfo):
     kwargs['_module_'] = minfo['ns']
 
     for table in minfo['tables']:
+        fname = os.path.join(fpath, 'Abstract' + table.java.name + 'MapperImpl.java')
+        kwargs['_tbi_'] = table
+        render_template(fname, 'mysqlMapperImplAb.mako', **kwargs)
+
         fname = os.path.join(fpath, table.java.name + 'MapperImpl.java')
         kwargs['_tbi_'] = table
         render_mapperImpl(fname, **kwargs)
+
         fname = os.path.join(fpath, table.java.name + 'Tx.java')
         render_mapperTx(fname, **kwargs)
 

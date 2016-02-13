@@ -131,6 +131,7 @@ class JavaField(object):
 class JavaRefField(object):
     """docstring for JavaField"""
     def __init__(self, ref, ojava):
+        print ojava.name, ojava.table.name, ref.varName
         self.ref = ref
         self.refJava = ojava
         self.typeName = ojava.name
@@ -209,7 +210,7 @@ class MySqlTable(object):
         self.ios = iOSClass(self)
 
     def initRef(self, obj_pkgs):
-        #print self.name, 'pks:', self.pks
+        print 'initRef:', self.name, 'pks:', self.pks
         self.pk = self.pks[0]
 
         for c in self.columns:
@@ -222,8 +223,9 @@ class MySqlTable(object):
 
         tmp = {}
         for r in self.impJavas:
-            tmp[r.java.typeName] = r.java.refJava
+            tmp[r.java.refJava.name] = r.java.refJava
         self.impJavas = tmp.values()
+        #print tmp.keys()
 
         tmp = {}
         for r in self.impPBs:
@@ -297,6 +299,7 @@ class MySqlRef(object):
         #    self.mark = 'repeated'  # many
         #    self.ref_javatype = 'List<%s>' % self.ref_obj.entityName
         
+        print 'MySqlRef: ', column.name, column.comment, self.table.name
         self.initJava()
         self.initProtobuf()
 

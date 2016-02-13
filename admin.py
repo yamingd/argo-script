@@ -11,6 +11,7 @@ import dbm
 from common import *
 
 def gen_controller(prjinfo, minfo):
+    #print minfo
     outfolder = os.path.join(prjinfo._root_, 'java/_project_/web-admin/src/main/java/com/_company_/_project_/web/admin')
     outfolder = format_line(outfolder, prjinfo)
     fpath = os.path.join(outfolder, minfo['ns'])
@@ -26,6 +27,7 @@ def gen_controller(prjinfo, minfo):
     kwargs['_module_'] = minfo['ns']
 
     for name in minfo['tables']:
+        print 'gen admin Controller', name
         table = prjinfo._tbrefs_[name]
         kwargs['_tbi_'] = table
         kwargs['_cols_'] = [col for col in table.columns if col.isFormField]

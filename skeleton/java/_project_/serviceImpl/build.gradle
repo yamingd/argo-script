@@ -4,5 +4,6 @@ dependencies {
     compile project(':model')
     compile project(':service')
     compile project(':common')
-    compile 'com.github.yamingd.argo:argo-service:2.1.0'
+    compile 'com.github.yamingd.argo:argo-service:2.1.2'
+    compile 'com.github.yamingd.argo:mail-serviceImpl:2.1.6'
 }

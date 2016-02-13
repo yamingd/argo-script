@@ -1,7 +1,7 @@
-passwdSalt: a123456
+passwdSalt: e72d9a5ef72d4668bad0d6965681fcb7
 
 aes:
-  seed: a123456
+  seed: 1ec9f71b36af0f1ec11b53b7fe319fa0
 
 #session cookie
 cookie:
@@ -10,4 +10,4 @@ cookie:
   sessionid : x-sess
   secure : false
   age : 30
-  secret: a123456
+  secret: 82d6fff9102bf4031e93eb0049a466d8

@@ -13,7 +13,6 @@ dependencies {
     compile project(':web-admin')
     compile project(':web-wx')
     compile project(':web-mobile')
-    compile 'com.github.yamingd.argo:argo-web:2.3.0'
 }
 
 jettyRun {

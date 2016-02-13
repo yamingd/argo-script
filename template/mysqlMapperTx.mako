@@ -1,4 +1,4 @@
-package com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}};
+package com.{{prj._company_}}.{{prj._name_}}.mapper.impl.{{_module_}};
 
 import org.springframework.transaction.annotation.Transactional;
 
