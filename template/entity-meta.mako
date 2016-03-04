@@ -3,6 +3,7 @@ package com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}};
 import com.argo.annotation.Column;
 import com.argo.annotation.Table;
 import com.google.common.base.Objects;
+import com.google.gson.annotations.Expose;
 import org.msgpack.annotation.MessagePackMessage;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ public abstract class Abstract{{_tbi_.java.name}} implements Serializable {
      * {{col.docComment}}
      * {{col.typeName}} {{col.defaultTips}}
      */
-    {{col.columnMark}}private {{col.java.typeName}} {{col.java.name}};
+    {{col.columnMark}} @Expose private {{col.java.typeName}} {{col.java.name}};
 {% endfor %}
 
 {% for col in _tbi_.columns %}

@@ -359,8 +359,8 @@ class MySqlColumn(object):
             if self.default and len(self.default) > 0:
                 vals.append("defaultVal = \"%s\"" % self.default)
         if len(vals) > 0:
-            return '@Column(%s)\n\t' % (', '.join(vals), )
-        return '@Column\n\t'
+            return '@Column(%s)' % (', '.join(vals), )
+        return '@Column'
     
     @property
     def isString(self):
