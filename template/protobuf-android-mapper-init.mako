@@ -2,7 +2,7 @@ package com.{{prj._company_}}.{{prj._project_}}.mapper;
 
 {% for minfo in prj._modules_ %}
 {% for t in minfo['tables'] %}
-import com.{{prj._company_}}.{{prj._project_}}.mapper.{{ t.package }}.{{t.pb.name}}Mapper;
+import {{ t.android.mapper_ns }}.{{t.pb.name}}Mapper;
 {% endfor %}
 {% endfor %}
 

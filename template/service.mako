@@ -1,11 +1,11 @@
-package com.{{prj._company_}}.{{prj._name_}}.service.{{_module_}};
+package {{ _tbi_.java.service_ns }};
 
 import com.argo.annotation.RmiService;
 import com.argo.collection.Pagination;
 import com.argo.security.UserIdentity;
 import com.argo.service.ServiceException;
 
-import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.java.name}};
+import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
 import com.{{prj._company_}}.{{prj._name_}}.service.ServiceBase;
 
 /**

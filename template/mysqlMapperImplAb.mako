@@ -1,16 +1,16 @@
-package com.{{prj._company_}}.{{prj._name_}}.mapper.impl.{{_module_}};
+package {{ _tbi_.java.mapper_impl_ns }};
 
 import com.argo.db.Values;
 import com.argo.db.exception.EntityNotFoundException;
 import com.argo.db.mysql.TableContext;
 import com.argo.db.template.MySqlMapper;
 
-import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.java.name}};
-import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}}.{{_tbi_.java.name}}Mapper;
+import {{ _tbi_.java.model_ns}}.{{_tbi_.java.name}};
+import {{ _tbi_.java.mapper_ns}}.{{_tbi_.java.name}}Mapper;
 
 {% for r in _tbi_.impJavas %}
-import com.{{prj._company_}}.{{prj._name_}}.model.{{ r.package }}.{{ r.name }};
-import com.{{prj._company_}}.{{prj._name_}}.mapper.{{ r.package }}.{{ r.name }}Mapper;
+import {{ r.model_ns }}.{{ r.name }};
+import {{ r.mapper_ns }}.{{ r.name }}Mapper;
 {% endfor %}
 
 import com.google.common.base.Preconditions;
@@ -27,6 +27,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
+
+{% if _tbi_.hasBigDecimal %}
+import java.math.BigDecimal;
+{% endif %}
 
 /**
  * Created by {{_user_}}.
@@ -269,27 +273,44 @@ public abstract class Abstract{{_tbi_.java.name}}MapperImpl extends MySqlMapper<
     }
 
 {% for rc in _tbi_.refFields %}
-    @Override
-    public void wrap{{rc.java.nameC}}(TableContext context, {{_tbi_.java.name}} item) throws DataAccessException, EntityNotFoundException{
-        Preconditions.checkNotNull(item);
 {% if rc.java.repeated %}
-        {{rc.java.typeName}} refItem = {{rc.java.mapper(_tbi_.java)}}.findRows(context, item.get{{rc.column.java.getterName}}(), false);
+    @Override
+    public List<{{rc.java.refJava.name}}> wrap{{rc.java.nameC}}(TableContext context, {{_tbi_.java.name}} item) throws DataAccessException, EntityNotFoundException{
+        Preconditions.checkNotNull(item);
+        {{rc.column.java.typeName}} v0 = item.get{{rc.column.java.getterName}}();
+        if(null == v0){
+            return null;
+        }
+        {{rc.java.typeName}} refItem = {{rc.java.mapper(_tbi_.java)}}.findRows(context, v0, false);
         item.set{{rc.java.setterName}}(refItem);
-{% else %}
-        {{rc.java.typeName}} refItem = {{rc.java.mapper(_tbi_.java)}}.find(context, item.get{{rc.column.java.getterName}}());
-        item.set{{rc.java.setterName}}(refItem);
-{% endif %}
+        return refItem;
     }
+{% else %}
+    @Override
+    public {{rc.java.refJava.name}} wrap{{rc.java.nameC}}(TableContext context, {{_tbi_.java.name}} item) throws DataAccessException, EntityNotFoundException{
+        Preconditions.checkNotNull(item);
+        {{rc.column.java.typeName}} v0 = item.get{{rc.column.java.getterName}}();
+        if(null == v0 || v0 <= 0){
+            return null;
+        }
+        {{rc.java.typeName}} refItem = {{rc.java.mapper(_tbi_.java)}}.find(context, v0);
+        item.set{{rc.java.setterName}}(refItem);
+        return refItem;
+    }
+{% endif %}
 
     @Override
-    public void wrap{{rc.java.nameC}}(TableContext context, List<{{_tbi_.java.name}}> list) throws DataAccessException{
+    public List<{{rc.java.refJava.name}}> wrap{{rc.java.nameC}}(TableContext context, List<{{_tbi_.java.name}}> list) throws DataAccessException{
         Preconditions.checkNotNull(list);
 {% if rc.repeated %}
+        List<{{rc.java.refJava.name}}> result = new ArrayList<{{rc.java.refJava.name}}>();
         for(int i=0; i<list.size(); i++){
             {{_tbi_.java.name}} item = list.get(i);
             {{rc.java.typeName}} refItems = {{rc.java.mapper(_tbi_.java)}}.findRows(context, item.get{{rc.column.java.getterName}}(), false);
             item.set{{rc.java.setterName}}(refItems);
+            result.addAll(refItems);
         }
+        return result;
 {% else %}
         List<{{rc.column.java.typeName}}> ids = new ArrayList<{{rc.column.java.typeName}}>();
         for(int i=0; i<list.size(); i++){
@@ -304,7 +325,11 @@ public abstract class Abstract{{_tbi_.java.name}}MapperImpl extends MySqlMapper<
         }
         List<{{rc.java.typeName}}> refItems = {{rc.java.mapper(_tbi_.java)}}.selectRows(context, ids, false);
         for(int i=0; i<refItems.size(); i++){
-            {{rc.table.pk.java.typeName}} v0 = refItems.get(i).get{{rc.table.pk.java.getterName}}();
+            {{rc.java.typeName}} refItem = refItems.get(i);
+            if(null == refItem){
+                continue;
+            }
+            {{rc.table.pk.java.typeName}} v0 = refItem.get{{rc.table.pk.java.getterName}}();
             for(int j=0; j<list.size(); j++){
                 {{rc.column.java.typeName}} v1 = list.get(j).get{{rc.column.java.getterName}}();
                 if(null != v1 && v0.equals(v1)){
@@ -312,6 +337,7 @@ public abstract class Abstract{{_tbi_.java.name}}MapperImpl extends MySqlMapper<
                 }
             }
         }
+        return refItems;
 {% endif %}
     }
 {% endfor %}

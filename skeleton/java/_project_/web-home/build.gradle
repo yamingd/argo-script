@@ -1,31 +1,38 @@
 
 apply plugin: 'war'
-apply plugin: 'jetty'
+apply plugin: 'org.akhikhl.gretty'
 
 description = 'Web Home Portal'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.encoding = 'UTF-8'
+}
+
+compileTestJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.encoding = 'UTF-8'
+}
 
 dependencies {
     compile project(':model')
     compile project(':common')
     compile project(':service')
     compile project(':serviceImpl')
-    compile 'com.github.yamingd.argo:argo-web:2.3.2'
+    compile 'com.github.yamingd.argo:argo-web:2.4.2'
 }
 
-jettyRun {
-    httpPort=8280
-    stopPort=8281
-    contextPath ="/"
-    reload ="automatic"
-    scanIntervalSeconds = 1
-}
+gretty {
+    overlay ':web-res'
+    httpPort = 8280
+    contextPath = "/"
+    servletContainer = 'jetty9'
+    extraResourceBase '../web-assets/src/main/webapp'
 
-jettyRunWar {
-    httpPort=8280
-    stopPort=8281
-    contextPath ="/"
-    reload ="automatic"
-    scanIntervalSeconds = 1
+    debugPort = 5005
+    debugSuspend = true
 }
 
 war {

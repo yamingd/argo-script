@@ -1,18 +1,20 @@
-package com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}};
+package {{ _tbi_.java.model_ns }};
 
 import com.argo.annotation.Column;
-import com.argo.annotation.Table;
-import com.google.common.base.Objects;
-import com.google.gson.annotations.Expose;
-import org.msgpack.annotation.MessagePackMessage;
+import com.google.common.base.MoreObjects;
+{% for r in _tbi_.impJavas %}
+import {{r.model_ns}}.{{r.name}};
+{% endfor %}
+
 import java.util.Date;
 import java.util.List;
 import java.io.Serializable;
 import javax.annotation.Generated;
+{% if _tbi_.hasBigDecimal %}
+import java.math.BigDecimal;
+{% endif %}
 
-{% for r in _tbi_.impJavas %}
-import com.{{prj._company_}}.{{prj._name_}}.model.{{r.package}}.{{r.name}};
-{% endfor %}
+
 
 /**
  * {{ _tbi_.hint }}
@@ -26,7 +28,7 @@ public abstract class Abstract{{_tbi_.java.name}} implements Serializable {
      * {{col.docComment}}
      * {{col.typeName}} {{col.defaultTips}}
      */
-    {{col.columnMark}} @Expose private {{col.java.typeName}} {{col.java.name}};
+    {{col.columnMark}} protected {{col.java.typeName}} {{col.java.name}};
 {% endfor %}
 
 {% for col in _tbi_.columns %}
@@ -48,7 +50,7 @@ public abstract class Abstract{{_tbi_.java.name}} implements Serializable {
      *
      * {{ref.docComment}}
      */
-    private {{ref.java.typeName}} {{ref.java.name}};
+    protected {{ref.java.typeName}} {{ref.java.name}};
     public {{ref.java.typeName}} get{{ ref.java.getterName }}(){
         return this.{{ ref.java.name }};
     }
@@ -57,5 +59,14 @@ public abstract class Abstract{{_tbi_.java.name}} implements Serializable {
     }
 
 {% endfor %}    
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+{% for col in _tbi_.columns %}
+                .add("{{ col.java.name }}", {{ col.java.name }})
+{% endfor %}
+                .toString();
+    }
 
 }

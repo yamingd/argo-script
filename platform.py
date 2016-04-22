@@ -15,11 +15,14 @@ class PBClass(object):
         self.comment = table.hint
         self.package = table.package
         if table.prefix and len(table.prefix) > 0:
-            self.name = 'PB' + common.gen_name(table.name.replace(table.prefix, ''))
-            self.varName = 'pb' + common.gen_name(table.name.replace(table.prefix, ''))
+            self.name = 'PB' + common.gen_name(table.name[len(table.prefix):])
+            self.varName = 'pb' + common.gen_name(table.name[len(table.prefix):])
         else:
             self.name = 'PB' + common.gen_name(table.name)
             self.varName = 'pb' + common.gen_name(table.name)
+        
+        # com.{{prj._company_}}.{{prj._project_}}.protobuf.{{_module_}}.PB{{_tbi_.java.name}}
+        self.model_ns = 'com.%s.%s.protobuf.%s' % (table.prj._company_, table.prj._name_, table.package)
 
 
 class PBField(object):
@@ -56,12 +59,19 @@ class JavaClass(object):
         self.comment = table.hint
         self.package = table.package
         if table.prefix and len(table.prefix) > 0:
-            self.name = common.gen_name(table.name.replace(table.prefix, ''))
+            self.name = common.gen_name(table.name[len(table.prefix):])
         else:
             self.name = common.gen_name(table.name)
         self.varName = common.lower_first(self.name)
         self.absName = 'Abstract' + self.name
-    
+        
+        self.model_ns = 'com.%s.%s.model.%s' % (table.prj._company_, table.prj._name_, table.package)
+        self.convertor_ns = 'com.%s.%s.convertor.%s' % (table.prj._company_, table.prj._name_, table.package)
+        self.mapper_ns = 'com.%s.%s.mapper.%s' % (table.prj._company_, table.prj._name_, table.package)
+        self.service_ns = 'com.%s.%s.service.%s' % (table.prj._company_, table.prj._name_, table.package)
+        self.mapper_impl_ns = 'com.%s.%s.mapper.impl.%s' % (table.prj._company_, table.prj._name_, table.package)
+        self.service_impl_ns = 'com.%s.%s.service.impl.%s' % (table.prj._company_, table.prj._name_, table.package)
+
     def dbFields(self):
         s = []
         for c in self.table.columns:
@@ -125,6 +135,8 @@ class JavaField(object):
     def pbValue(self):
         if self.typeName == 'Date':
             return 'dateToInt(item.get%s())' % self.getterName
+        if self.typeName == 'BigDecimal':
+            return 'item.get%s().doubleValue()' % self.getterName
         return 'item.get%s()' % self.getterName
 
 
@@ -184,7 +196,8 @@ class MySqlQueryFunc(object):
 
 class MySqlTable(object):
     """docstring for MySqlTable"""
-    def __init__(self, package, name, hint, prefix):
+    def __init__(self, prj, package, name, hint, prefix):
+        self.prj = prj
         self.package = package
         self.name = name
         self.hint = hint
@@ -199,15 +212,28 @@ class MySqlTable(object):
 
     def initJava(self):
         self.java = JavaClass(self)
+        self.model_ns = 'com.%s.%s.model.%s' % (self.prj._company_, self.prj._name_, self.package)
+        self.convertor_ns = 'com.%s.%s.convertor.%s' % (self.prj._company_, self.prj._name_, self.package)
+        self.mapper_ns = 'com.%s.%s.mapper.%s' % (self.prj._company_, self.prj._name_, self.package)
+        self.service_ns = 'com.%s.%s.service.%s' % (self.prj._company_, self.prj._name_, self.package)
     
     def initProtobuf(self):
         self.pb = PBClass(self)
+        self.java.pb = self.pb
     
     def initAndroid(self):
         self.android = AndroidClass(self)
+        self.java.android = self.android
 
     def initFMDB(self):
         self.ios = iOSClass(self)
+
+    @property
+    def hasBigDecimal(self):
+        for c in self.columns:
+            if c.isBigDecimal:
+                return True
+        return False
 
     def initRef(self, obj_pkgs):
         print 'initRef:', self.name, 'pks:', self.pks
@@ -256,13 +282,13 @@ class MySqlTable(object):
             return self.url
         url = self.name
         if self.prefix and len(self.prefix) > 0:
-            url = self.name.replace(self.prefix, '')
+            url = self.name[len(self.prefix):]
         if '_' in url and url.startswith(self.package):
             url = url[len(self.package) + 1:]
         if url.endswith('_'):
             url = url[0:-1]
         url = url.split('_')
-        url[-1] = names.pluralize(url[-1])
+        url = [names.pluralize(item) for item in url]
         url = '/'.join(url)
         if url.endswith('/'):
             url = url[0:-1]
@@ -315,8 +341,9 @@ class MySqlRef(object):
 
 class MySqlColumn(object):
     """docstring for MySqlColumn"""
-    def __init__(self, package, row, index, table):
+    def __init__(self, prj, package, row, index, table):
         self.table = table
+        self.prj = prj
         self.package = package
         self.name = row[0]  # column_name
         self.nameC = common.upper_first(self.name)
@@ -370,6 +397,10 @@ class MySqlColumn(object):
     def isNumber(self):
         return self.java.typeName in ['Integer', 'Byte', 'Short', 'Long']
     
+    @property
+    def isBigDecimal(self):
+        return self.java.typeName in ['BigDecimal']
+
     @property
     def isFormField(self):
         return self.isString or self.ref is not None
@@ -445,6 +476,12 @@ class AndroidClass(object):
 
     def __init__(self, table):
         self.table = table
+
+        self.model_ns = 'com.%s.%s.protobuf.%s' % (table.prj._company_, table.prj._name_, table.package)
+        self.convertor_ns = 'com.%s.%s.convertor.%s' % (table.prj._company_, table.prj._name_, table.package)
+        self.mapper_ns = 'com.%s.%s.mapper.%s' % (table.prj._company_, table.prj._name_, table.package)
+        self.service_ns = 'com.%s.%s.service.%s' % (table.prj._company_, table.prj._name_, table.package)
+        self.event_ns = 'com.%s.%s.event.%s' % (table.prj._company_, table.prj._name_, table.package)
 
     @property
     def createTableSql(self):

@@ -1,8 +1,8 @@
-package com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}};
+package {{ _tbi_.android.event_ns }};
 
 import com.argo.sdk.ApiError;
 import com.argo.sdk.event.AppBaseEvent;
-import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.package}}.{{_tbi_.pb.name}};
+import {{ _tbi_.android.model_ns }}.{{_tbi_.pb.name}};
 
 /**
  * {{_tbi_.pb.name}}新建事件

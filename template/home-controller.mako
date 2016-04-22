@@ -8,8 +8,8 @@ import com.argo.web.Enums;
 import com.argo.security.UserIdentity;
 
 import com.{{prj._company_}}.{{prj._project_}}.web.home.HomeBaseController;
-import com.{{prj._company_}}.{{prj._project_}}.model.{{_module_}}.{{_tbi_.java.name}};
-import com.{{prj._company_}}.{{prj._project_}}.service.{{_module_}}.{{_tbi_.java.name}}Service;
+import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
+import {{ _tbi_.java.service_ns }}.{{_tbi_.java.name}}Service;
 import com.{{prj._company_}}.{{prj._project_}}.ErrorCodes;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by {{_user_}}.
  */
-
 @Controller
 @RequestMapping("/{{_tbi_.mvc_url()}}/")
 public class Home{{_tbi_.java.name}}Controller extends HomeBaseController {
@@ -39,9 +38,10 @@ public class Home{{_tbi_.java.name}}Controller extends HomeBaseController {
     @Autowired
     private {{_tbi_.java.name}}Service {{_tbi_.java.varName}}Service;
     
-    @RequestMapping(value="{page}", method = RequestMethod.GET)
+    @RequestMapping(value="{page}/{start}", method = RequestMethod.GET)
     public ModelAndView all(ModelAndView model, HttpServletRequest request, HttpServletResponse response,
-                            @PathVariable Integer page) throws Exception {
+                            @PathVariable Integer page,
+                            @PathVariable Integer start) throws Exception {
 
         UserIdentity user = getCurrentUser();                    
         Pagination<{{_tbi_.java.name}}> result = new Pagination<{{_tbi_.java.name}}>();
@@ -70,14 +70,9 @@ public class Home{{_tbi_.java.name}}Controller extends HomeBaseController {
 
         UserIdentity user = getCurrentUser();
 
-        try {
-            {{_tbi_.java.name}} item = {{_tbi_.java.varName}}Service.find(user, id);
-            model.addObject("item", item);
-            model.setViewName("/home/{{_tbi_.mvc_url()}}/view");
-        } catch (EntityNotFoundException e) {
-            RedirectView view = new RedirectView("404");
-            model.setView(view);
-        }
+        {{_tbi_.java.name}} item = {{_tbi_.java.varName}}Service.find(user, id);
+        model.addObject("item", item);
+        model.setViewName("/home/{{_tbi_.mvc_url()}}/view");
 
         return model;
     }

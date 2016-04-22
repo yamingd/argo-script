@@ -1,4 +1,4 @@
-package com.{{prj._company_}}.{{prj._project_}}.mapper.{{_module_}};
+package {{ _tbi_.android.mapper_ns }};
 
 import android.support.v4.util.ArrayMap;
 import com.argo.sqlite.SqliteMapper;
@@ -12,11 +12,11 @@ import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteStatement;
 import timber.log.Timber;
 
-import com.{{prj._company_}}.{{prj._project_}}.protobuf.{{_module_}}.{{_tbi_.pb.name}};
+import {{ _tbi_.pb.model_ns }}.{{_tbi_.pb.name}};
 
 {% for r in _tbi_.impJavas %}
-import com.{{prj._company_}}.{{prj._project_}}.protobuf.{{ r.package }}.PB{{ r.name }};
-import com.{{prj._company_}}.{{prj._project_}}.mapper.{{ r.package }}.PB{{ r.name }}Mapper; 
+import {{ r.android.model_ns }}.PB{{ r.name }};
+import {{ r.android.mapper_ns }}.PB{{ r.name }}Mapper; 
 {% endfor %}
 
 

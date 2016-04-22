@@ -21,8 +21,8 @@ import com.{{prj._company_}}.{{prj._name_}}.KSessionImpl;
 {% for m in prj.mobile %}
 {% for name in m['tables'] %}
 {% set tb = prj._tbrefs_[name]%}
-import com.{{prj._company_}}.{{prj._name_}}.service.{{ tb.package }}.{{tb.pb.name}}Service;
-import com.{{prj._company_}}.{{prj._name_}}.service.{{ tb.package }}.{{tb.pb.name}}ServiceImpl;
+import {{ tb.android.service_ns }}.{{tb.pb.name}}Service;
+import {{ tb.android.service_ns }}.{{tb.pb.name}}ServiceImpl;
 {% endfor %}
 {% endfor %}
 

@@ -1,6 +1,6 @@
 
 apply plugin: 'war'
-apply plugin: 'jetty'
+//apply plugin: 'org.akhikhl.gretty'
 
 description = 'Web All'
 
@@ -11,25 +11,21 @@ dependencies {
     compile project(':serviceImpl')
     compile project(':web-home')
     compile project(':web-admin')
-    compile project(':web-wx')
-    compile project(':web-mobile')
+    //compile project(':web-wx')
+    //compile project(':web-mobile')
+    compile 'com.github.yamingd.argo:argo-web:2.4.2'
 }
 
-jettyRun {
-    httpPort=8080
-    stopPort=8081
-    contextPath ="/"
-    reload ="automatic"
-    scanIntervalSeconds = 1
-}
 
-jettyRunWar {
-    httpPort=8080
-    stopPort=8081
-    contextPath ="/"
-    reload ="automatic"
-    scanIntervalSeconds = 1
-}
+//gretty {
+//    overlay ':web-res'
+//    overlay ':web-admin'
+//    overlay ':web-home'
+//    httpPort=8080
+//    contextPath ="/"
+//    servletContainer = 'jetty9'
+//    extraResourceBase '../web-assets/src/main/webapp'
+//}
 
 war {
 

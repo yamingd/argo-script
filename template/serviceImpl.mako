@@ -1,4 +1,4 @@
-package com.{{prj._company_}}.{{prj._name_}}.service.impl.{{_module_}};
+package {{ _tbi_.java.service_impl_ns }};
 
 import com.argo.collection.Pagination;
 import com.argo.db.exception.EntityNotFoundException;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}}.{{_tbi_.java.name}}Mapper;
-import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.java.name}};
-import com.{{prj._company_}}.{{prj._name_}}.service.{{_module_}}.{{_tbi_.java.name}}Service;
+import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
+import {{ _tbi_.java.mapper_ns }}.{{_tbi_.java.name}}Mapper;
+import {{ _tbi_.java.service_ns }}.{{_tbi_.java.name}}Service;
 import com.{{prj._company_}}.{{prj._name_}}.service.impl.ServiceBaseImpl;
 
 /**

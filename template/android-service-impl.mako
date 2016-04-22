@@ -1,4 +1,4 @@
-package com.{{prj._company_}}.{{prj._name_}}.service.{{_tbi_.package}};
+package {{ _tbi_.android.service_ns }};
 
 import com.argo.sdk.ApiError;
 import com.argo.sdk.AppSession;
@@ -11,14 +11,14 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import com.{{prj._company_}}.{{prj._name_}}.service.PBServiceBaseImpl;
 
-import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}}.{{_tbi_.pb.name}}ListResultEvent;
-import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}}.{{_tbi_.pb.name}}CreateResultEvent;
-import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}}.{{_tbi_.pb.name}}SaveResultEvent;
-import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}}.{{_tbi_.pb.name}}RemoveResultEvent;
-import com.{{prj._company_}}.{{prj._name_}}.event.{{_tbi_.package}}.{{_tbi_.pb.name}}DetailResultEvent;
+import {{ _tbi_.android.event_ns }}.{{_tbi_.pb.name}}ListResultEvent;
+import {{ _tbi_.android.event_ns }}.{{_tbi_.pb.name}}CreateResultEvent;
+import {{ _tbi_.android.event_ns }}.{{_tbi_.pb.name}}SaveResultEvent;
+import {{ _tbi_.android.event_ns }}.{{_tbi_.pb.name}}RemoveResultEvent;
+import {{ _tbi_.android.event_ns }}.{{_tbi_.pb.name}}DetailResultEvent;
 
-import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.package}}.{{_tbi_.pb.name}};
-import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_tbi_.package}}.{{_tbi_.pb.name}}Mapper;
+import {{ _tbi_.android.model_ns }}.{{_tbi_.pb.name}};
+import {{ _tbi_.android.mapper_ns }}.{{_tbi_.pb.name}}Mapper;
 
 import com.squareup.okhttp.Request;
 import com.squareup.otto.Bus;
@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import timber.log.Timber;
 
 /**
+ * {{ _tbi_.hint }}
  * Created by {{_user_}}.
  */
 public class {{_tbi_.pb.name}}ServiceImpl extends PBServiceBaseImpl implements {{_tbi_.pb.name}}Service {

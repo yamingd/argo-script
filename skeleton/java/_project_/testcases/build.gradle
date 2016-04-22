@@ -1,7 +1,16 @@
 description = 'test cases'
 
 dependencies {
+    compile project(':common')
     compile project(':model')
     compile project(':service')
     compile project(':serviceImpl')
+    compile project(':web-admin')
+    compile project(':web-home')
+
+    compile 'junit:junit:4.12'
+    compile 'com.github.yamingd.argo:argo-web:2.4.1'
+    compile 'org.springframework:spring-test:3.2.12.RELEASE'
+    compile 'org.jsoup:jsoup:1.8.3'
+    compile 'com.alibaba:fastjson:1.2.8'
 }

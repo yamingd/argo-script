@@ -3,7 +3,7 @@ import "{{ r.name }}Proto.proto";
 {% endfor %}
 
 package {{_tbi_.package}};
-option java_package = "com.{{prj._company_}}.{{prj._project_}}.protobuf.{{_module_}}";
+option java_package = "{{ _tbi_.pb.model_ns }}";
 option java_multiple_files = true;
 
 message {{_tbi_.pb.name}} {

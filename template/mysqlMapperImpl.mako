@@ -1,4 +1,4 @@
-package com.{{prj._company_}}.{{prj._name_}}.mapper.impl.{{_module_}};
+package {{ _tbi_.java.mapper_impl_ns }};
 
 import org.springframework.stereotype.Repository;
 

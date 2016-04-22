@@ -3,6 +3,7 @@ description = 'service definition'
 dependencies {
 	apt 'com.github.yamingd.argo:processor:2.2.0'
     compile project(':model')
-    compile 'com.github.yamingd.argo:argo-service:2.1.2'
-    compile 'com.github.yamingd.argo:mail-service:2.1.6'
+    compile project(':payment')
+    compile 'com.github.yamingd.argo:argo-service:2.1.3'
+    # compile 'com.github.yamingd.argo:mail-service:2.1.6'
 }

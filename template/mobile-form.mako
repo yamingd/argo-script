@@ -1,7 +1,7 @@
 package com.{{prj._company_}}.{{prj._project_}}.web.mobile.{{_module_}};
 
 import com.argo.annotation.ApiParameterDoc;
-import com.{{prj._company_}}.{{prj._project_}}.model.{{_module_}}.{{_tbi_.java.name}};
+import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

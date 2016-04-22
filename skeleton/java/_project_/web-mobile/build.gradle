@@ -1,6 +1,6 @@
 
 apply plugin: 'war'
-apply plugin: 'jetty'
+apply plugin: 'org.akhikhl.gretty'
 
 description = 'Web Mobile API'
 
@@ -10,23 +10,16 @@ dependencies {
     compile project(':common')
     compile project(':service')
     compile project(':serviceImpl')
-    compile 'com.github.yamingd.argo:argo-web:2.3.2'
+    compile 'com.github.yamingd.argo:argo-web:2.4.2'
 }
 
-jettyRun {
-    httpPort=8380
-    stopPort=8381
-    contextPath ="/"
-    reload ="automatic"
-    scanIntervalSeconds = 1
-}
 
-jettyRunWar {
-    httpPort=8380
-    stopPort=8381
-    contextPath ="/"
-    reload ="automatic"
-    scanIntervalSeconds = 1
+gretty {
+    overlay ':web-res'
+    httpPort = 8280
+    contextPath = "/"
+    servletContainer = 'jetty9'
+    extraResourceBase '../web-assets/src/main/webapp'
 }
 
 war {

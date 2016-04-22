@@ -1,4 +1,4 @@
-package com.{{prj._company_}}.{{prj._project_}}.convertor.{{_module_}};
+package {{ _tbi_.java.convertor_ns }};
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -6,18 +6,19 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.Date;
-
+{% if _tbi_.hasBigDecimal %}
+import java.math.BigDecimal;
+{% endif %}
 import com.argo.db.Values;
 
 import com.{{prj._company_}}.{{prj._project_}}.ConvertorBase;
-import com.{{prj._company_}}.{{prj._project_}}.model.{{_module_}}.{{_tbi_.java.name}};
-import com.{{prj._company_}}.{{prj._project_}}.protobuf.{{_module_}}.PB{{_tbi_.java.name}};
+import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
+import {{ _tbi_.pb.model_ns }}.{{_tbi_.pb.name}};
 
 {% for r in _tbi_.impJavas %}
-import com.{{prj._company_}}.{{prj._project_}}.model.{{r.package}}.{{r.name}};
-import com.{{prj._company_}}.{{prj._project_}}.protobuf.{{r.package}}.PB{{r.name}};
-import com.{{prj._company_}}.{{prj._project_}}.convertor.{{r.package}}.{{r.name}}Convertor;
-
+import {{ r.model_ns }}.{{r.name}};
+import {{ r.pb.model_ns }}.{{r.pb.name}};
+import {{ r.convertor_ns }}.{{r.name}}Convertor;
 {% endfor %}
 
 public class {{_tbi_.java.name}}Convertor extends ConvertorBase{

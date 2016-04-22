@@ -1,7 +1,7 @@
-apply plugin: 'war'
 
-war {
+task dpzip(type:Zip) {
     into('/assets'){
+        from 'src/main/webapp/assets'
         from '../web-admin/src/main/webapp/assets'
         from '../web-home/src/main/webapp/assets'
         from '../web-wx/src/main/webapp/assets'

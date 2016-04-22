@@ -6,8 +6,8 @@ import com.argo.collection.Pagination;
 import com.argo.security.UserIdentity;
 
 import com.{{prj._company_}}.{{prj._project_}}.web.admin.AdminBaseController;
-import com.{{prj._company_}}.{{prj._project_}}.model.{{_module_}}.{{_tbi_.java.name}};
-import com.{{prj._company_}}.{{prj._project_}}.service.{{_module_}}.{{_tbi_.java.name}}Service;
+import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
+import {{ _tbi_.java.service_ns }}.{{_tbi_.java.name}}Service;
 import com.{{prj._company_}}.{{prj._project_}}.ErrorCodes;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by {{_user_}}.
  */
-
 @Controller
 @RequestMapping("/a/{{_tbi_.mvc_url()}}/")
 public class Admin{{_tbi_.java.name}}Controller extends AdminBaseController {
@@ -37,9 +36,10 @@ public class Admin{{_tbi_.java.name}}Controller extends AdminBaseController {
 	@Autowired
     private {{_tbi_.java.name}}Service {{_tbi_.java.varName}}Service;
     
-    @RequestMapping(value="{page}", method = RequestMethod.GET)
+    @RequestMapping(value="{page}/{start}", method = RequestMethod.GET)
     public ModelAndView all(ModelAndView model, HttpServletRequest request, HttpServletResponse response,
-                            @PathVariable Integer page) throws Exception {
+                            @PathVariable Integer page,
+                            @PathVariable Integer start) throws Exception {
 
         UserIdentity user = getCurrentUser();                    
         Pagination<{{_tbi_.java.name}}> result = new Pagination<{{_tbi_.java.name}}>();
@@ -68,14 +68,9 @@ public class Admin{{_tbi_.java.name}}Controller extends AdminBaseController {
 
         UserIdentity user = getCurrentUser();
 
-        try {
-            {{_tbi_.java.name}} item = {{_tbi_.java.varName}}Service.find(user, id);
-            model.addObject("item", item);
-            model.setViewName("/admin/{{_tbi_.mvc_url()}}/view");
-        } catch (EntityNotFoundException e) {
-            RedirectView view = new RedirectView("404");
-            model.setView(view);
-        }
+        {{_tbi_.java.name}} item = {{_tbi_.java.varName}}Service.find(user, id);
+        model.addObject("item", item);
+        model.setViewName("/admin/{{_tbi_.mvc_url()}}/view");
 
         return model;
     }

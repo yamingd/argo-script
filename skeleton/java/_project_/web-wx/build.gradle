@@ -1,6 +1,6 @@
 
 apply plugin: 'war'
-apply plugin: 'jetty'
+apply plugin: 'org.akhikhl.gretty'
 
 description = 'Web Wx Portal'
 
@@ -9,27 +9,19 @@ dependencies {
     compile project(':common')
     compile project(':service')
     compile project(':serviceImpl')
-    compile 'com.github.yamingd.argo:argo-web:2.3.2'
+    compile 'com.github.yamingd.argo:argo-web:2.4.1'
     compile 'com.github.yamingd.argo:wx-model:2.2.0'
     compile 'com.github.yamingd.argo:wx-service:2.2.0'
     compile 'com.github.yamingd.argo:wx-serviceImpl:2.2.0'
     compile 'com.github.yamingd.argo:wx-controllers:2.2.0'
 }
 
-jettyRun {
-    httpPort=8480
-    stopPort=8481
-    contextPath ="/"
-    reload ="automatic"
-    scanIntervalSeconds = 1
-}
-
-jettyRunWar {
-    httpPort=8480
-    stopPort=8481
-    contextPath ="/"
-    reload ="automatic"
-    scanIntervalSeconds = 1
+gretty {
+    overlay ':web-res'
+    httpPort = 8480
+    contextPath = "/"
+    servletContainer = 'jetty9'
+    extraResourceBase '../web-assets/src/main/webapp'
 }
 
 war {

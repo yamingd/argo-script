@@ -1,7 +1,7 @@
-package com.{{prj._company_}}.{{prj._name_}}.service.{{_tbi_.package}};
+package {{ _tbi_.android.service_ns }};
 
-import com.{{prj._company_}}.{{prj._name_}}.protobuf.{{_tbi_.package}}.{{_tbi_.pb.name}};
-import com.{{prj._company_}}.{{prj._name_}}.mapper.{{_tbi_.package}}.{{_tbi_.pb.name}}Mapper;
+import {{ _tbi_.android.model_ns }}.{{_tbi_.pb.name}};
+import {{ _tbi_.android.mapper_ns }}.{{_tbi_.pb.name}}Mapper;
 import com.{{prj._company_}}.{{prj._name_}}.service.PBServiceBase;
 
 import java.util.List;

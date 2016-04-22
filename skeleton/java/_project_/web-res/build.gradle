@@ -1,1 +1,2 @@
 
+apply plugin: 'org.akhikhl.gretty'

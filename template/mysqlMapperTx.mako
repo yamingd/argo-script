@@ -1,4 +1,4 @@
-package com.{{prj._company_}}.{{prj._name_}}.mapper.impl.{{_module_}};
+package {{ _tbi_.java.mapper_impl_ns }};
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Transactional(value="{{_module_}}Tx", rollbackFor=Exception.class)
+@Transactional(value="{{_tbi_.java.package}}Tx", rollbackFor=Exception.class)
 public @interface {{_tbi_.java.name}}Tx {
 }

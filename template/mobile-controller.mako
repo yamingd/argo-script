@@ -12,10 +12,10 @@ import com.argo.web.Enums;
 import com.argo.security.UserIdentity;
 
 import com.{{prj._company_}}.{{prj._project_}}.web.mobile.MobileBaseController;
-import com.{{prj._company_}}.{{prj._project_}}.model.{{_module_}}.{{_tbi_.java.name}};
-import com.{{prj._company_}}.{{prj._project_}}.protobuf.{{_module_}}.PB{{_tbi_.java.name}};
-import com.{{prj._company_}}.{{prj._project_}}.convertor.{{_module_}}.{{_tbi_.java.name}}Convertor;
-import com.{{prj._company_}}.{{prj._project_}}.service.{{_module_}}.{{_tbi_.java.name}}Service;
+import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
+import {{ _tbi_.java.pb.model_ns }}.{{_tbi_.java.pb.name}};
+import {{ _tbi_.java.convertor_ns }}.{{_tbi_.java.name}}Convertor;
+import {{ _tbi_.java.service_ns }}.{{_tbi_.java.name}}Service;
 import com.{{prj._company_}}.{{prj._project_}}.ErrorCodes;
 
 import org.springframework.beans.factory.annotation.Autowired;

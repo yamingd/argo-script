@@ -10,7 +10,7 @@ java_types = {
     'bit': 'Byte',
 
     'float': 'Float',
-    'decimal': 'Double',
+    'decimal': 'BigDecimal',
     'double': 'Double',
 
     'text': 'String',
@@ -35,7 +35,7 @@ jdbc_setter = {
     'bit': 'setByte',
 
     'float': 'setFloat',
-    'decimal': 'setDouble',
+    'decimal': 'setBigDecimal',
     'double': 'setDouble',
 
     'text': 'setString',
@@ -67,7 +67,7 @@ jdbc_getter = {
     'bit': 'getByte',
 
     'float': 'getFloat',
-    'decimal': 'getDouble',
+    'decimal': 'getDecimal',
     'double': 'getDouble',
 
     'text': 'getString',

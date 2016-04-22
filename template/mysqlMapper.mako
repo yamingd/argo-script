@@ -1,4 +1,4 @@
-package com.{{prj._company_}}.{{prj._name_}}.mapper.{{_module_}};
+package {{ _tbi_.java.mapper_ns }};
 
 import com.argo.db.SqlMapper;
 import com.argo.db.exception.EntityNotFoundException;
@@ -7,7 +7,11 @@ import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
-import com.{{prj._company_}}.{{prj._name_}}.model.{{_module_}}.{{_tbi_.java.name}};
+{% for r in _tbi_.impJavas %}
+import {{ r.model_ns }}.{{ r.name }};
+{% endfor %}
+
+import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
 
 /**
  * Created by {{_user_}}.
@@ -21,16 +25,19 @@ public interface {{_tbi_.java.name}}Mapper extends SqlMapper<{{_tbi_.java.name}}
      * @param item
      * @throws DataAccessException
      * @throws EntityNotFoundException
-     */    
-    void wrap{{rc.java.nameC}}(TableContext context, {{_tbi_.java.name}} item) throws DataAccessException, EntityNotFoundException;
-
+     */
+{% if rc.java.repeated %}    
+    List<{{rc.java.refJava.name}}> wrap{{rc.java.nameC}}(TableContext context, {{_tbi_.java.name}} item) throws DataAccessException, EntityNotFoundException;
+{% else %}
+    {{rc.java.refJava.name}} wrap{{rc.java.nameC}}(TableContext context, {{_tbi_.java.name}} item) throws DataAccessException, EntityNotFoundException;
+{% endif %}
     /**
      * 关联 {{rc.java.nameC}}
      * @param context
      * @param list
      * @throws DataAccessException
      */
-    void wrap{{rc.java.nameC}}(TableContext context, List<{{_tbi_.java.name}}> list) throws DataAccessException;
+    List<{{rc.java.refJava.name}}> wrap{{rc.java.nameC}}(TableContext context, List<{{_tbi_.java.name}}> list) throws DataAccessException;
     
 {% endfor %}
 
