@@ -147,6 +147,9 @@ public abstract class Abstract{{_tbi_.java.name}}MapperImpl extends MySqlMapper<
 
     @Override
     public {{_tbi_.pk.java.typeName}}[] toPKArrays(String pkWithCommas){
+        if (null == pkWithCommas || pkWithCommas.length() == 0){
+            return new {{_tbi_.pk.java.typeName}}[0];
+        }
         String[] tmp = pkWithCommas.split(",");
         {{_tbi_.pk.java.typeName}}[] vals = new {{_tbi_.pk.java.typeName}}[tmp.length];
         for(int i=0; i<tmp.length; i++){

@@ -27,6 +27,24 @@ def gen_sh(prjinfo, base_folder, tmpl_name):
         os.remove(fpath)
     render_template(fpath, tmpl_name, **kwargs)
 
+def gen_convertor(prjinfo, minfo):
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/model/src/main/java/com/_company_/_project_/convertor')
+    outfolder = format_line(outfolder, prjinfo)
+    fpath = os.path.join(outfolder, minfo['ns'])
+    if not os.path.exists(fpath):
+        os.makedirs(fpath)
+
+    kwargs = {}
+    kwargs['prj'] = prjinfo
+    kwargs['emm'] = prjinfo.emm
+    kwargs['minfo'] = minfo
+    kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
+    kwargs['_module_'] = minfo['ns']
+    
+    for table in minfo['tables']:
+        fname = os.path.join(fpath, table.java.name + 'Convertor.java')
+        kwargs['_tbi_'] = table
+        render_template(fname, 'entity-convertor.mako', **kwargs)
 
 def gen_proto(prjinfo, minfo, base_folder, lang):
 
@@ -86,6 +104,7 @@ def start(prjinfo):
     gen_sh(prjinfo, ios_base, 'protobuf-sh-ios.mako')
 
     for minfo in prjinfo._modules_:
+        gen_convertor(prjinfo, minfo)
         gen_proto(prjinfo, minfo, java_base, 'java')
         gen_proto(prjinfo, minfo, android_base, 'android')
         gen_proto(prjinfo, minfo, ios_base, 'ios')

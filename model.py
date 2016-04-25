@@ -29,27 +29,6 @@ def gen_java_model(prjinfo, minfo):
         render_template(fname, 'entity-meta.mako', **kwargs)
         fname = os.path.join(fpath, table.java.name + '.java')    
         render_template(fname, 'entity.mako', **kwargs)
-    
-
-def gen_convertor(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/_project_/model/src/main/java/com/_company_/_project_/convertor')
-    outfolder = format_line(outfolder, prjinfo)
-    fpath = os.path.join(outfolder, minfo['ns'])
-    if not os.path.exists(fpath):
-        os.makedirs(fpath)
-
-    kwargs = {}
-    kwargs['prj'] = prjinfo
-    kwargs['emm'] = prjinfo.emm
-    kwargs['minfo'] = minfo
-    kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
-    kwargs['_module_'] = minfo['ns']
-    
-    for table in minfo['tables']:
-        fname = os.path.join(fpath, table.java.name + 'Convertor.java')
-        kwargs['_tbi_'] = table
-        render_template(fname, 'entity-convertor.mako', **kwargs)
-
 
 def start(prjinfo):
     if not os.path.exists(prjinfo._root_):
@@ -59,4 +38,3 @@ def start(prjinfo):
 
     for minfo in prjinfo._modules_:
         gen_java_model(prjinfo, minfo)
-        gen_convertor(prjinfo, minfo)

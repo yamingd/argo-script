@@ -62,8 +62,12 @@ def main():
             emm[t] = m['ns']
     prjinfo.emm = emm
     if options.action == 'init':
-        for act in actions:
-            actions[act].start(prjinfo)
+        if '_actions_' in dir(prjinfo):
+            for act in prjinfo._actions_:
+                actions[act].start(prjinfo)
+        else:
+            for act in actions:
+                actions[act].start(prjinfo)
     else:
         act = actions[options.action]
         act.start(prjinfo)
