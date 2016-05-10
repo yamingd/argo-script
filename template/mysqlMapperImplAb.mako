@@ -309,6 +309,9 @@ public abstract class Abstract{{_tbi_.java.name}}MapperImpl extends MySqlMapper<
         List<{{rc.java.refJava.name}}> result = new ArrayList<{{rc.java.refJava.name}}>();
         for(int i=0; i<list.size(); i++){
             {{_tbi_.java.name}} item = list.get(i);
+            if(null == item){
+                continue;
+            }
             {{rc.java.typeName}} refItems = {{rc.java.mapper(_tbi_.java)}}.findRows(context, item.get{{rc.column.java.getterName}}(), false);
             item.set{{rc.java.setterName}}(refItems);
             result.addAll(refItems);
@@ -317,7 +320,11 @@ public abstract class Abstract{{_tbi_.java.name}}MapperImpl extends MySqlMapper<
 {% else %}
         List<{{rc.column.java.typeName}}> ids = new ArrayList<{{rc.column.java.typeName}}>();
         for(int i=0; i<list.size(); i++){
-            {{rc.column.java.typeName}} v0 = list.get(i).get{{rc.column.java.getterName}}();
+            {{_tbi_.java.name}} item = list.get(i);
+            if(null == item){
+                continue;
+            }
+            {{rc.column.java.typeName}} v0 = item.get{{rc.column.java.getterName}}();
             if(null == v0 || v0 <= 0){
                 continue;
             }
@@ -334,9 +341,13 @@ public abstract class Abstract{{_tbi_.java.name}}MapperImpl extends MySqlMapper<
             }
             {{rc.table.pk.java.typeName}} v0 = refItem.get{{rc.table.pk.java.getterName}}();
             for(int j=0; j<list.size(); j++){
-                {{rc.column.java.typeName}} v1 = list.get(j).get{{rc.column.java.getterName}}();
+                {{_tbi_.java.name}} item = list.get(j);
+                if(null == item){
+                    continue;
+                }
+                {{rc.column.java.typeName}} v1 = item.get{{rc.column.java.getterName}}();
                 if(null != v1 && v0.equals(v1)){
-                    list.get(j).set{{rc.java.setterName}}(refItems.get(i));
+                    item.set{{rc.java.setterName}}(refItems.get(i));
                 }
             }
         }
